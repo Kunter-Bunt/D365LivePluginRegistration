@@ -348,3 +348,4 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/D365LivePluginRegistration/mwo.LiveRegistration.Plugins/spkl/Log1.txt
