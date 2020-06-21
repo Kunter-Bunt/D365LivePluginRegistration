@@ -30,6 +30,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>LiveRegistration.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Crm.Sdk.Proxy, Version=9.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CrmSdk.CoreAssemblies.9.0.2.26\lib\net462\Microsoft.Crm.Sdk.Proxy.dll</HintPath>
@@ -57,11 +63,12 @@
   <ItemGroup>
     <Compile Include="EntryPoints\PostOpLiveRegistration.cs" />
     <Compile Include="Executables\Registrator.cs" />
+    <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="Interfaces\ICRMExecutable.cs" />
     <Compile Include="Models\Stage.cs" />
     <Compile Include="spkl\CrmPluginRegistrationAttribute.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />
-    <Compile Include="Interfaces\IPluginRegistrationManager.cs" />
+    <Compile Include="Interfaces\IPluginStepRegistrationManager.cs" />
     <Compile Include="Helpers\PluginStepRegistrationManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -69,6 +76,7 @@
     <None Include="bin\coretools\CrmSvcUtil.exe.config" />
     <None Include="bin\coretools\LicenseTerms.docx" />
     <None Include="bin\coretools\SolutionPackager.exe.config" />
+    <None Include="LiveRegistration.snk" />
     <None Include="packages.config" />
     <None Include="spkl.json" />
     <None Include="spkl\deploy-plugins.bat" />

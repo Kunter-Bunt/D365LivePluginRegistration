@@ -1,0 +1,61 @@
+13:55:25	Deploying Plugins
+13:55:25	Searching for plugin config in 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins\spkl\..'
+13:55:51	Deploying Plugins
+13:55:51	Searching for plugin config in 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins\spkl\..'
+13:56:28	Deploying Plugins
+13:56:28	Searching for plugin config in 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins\spkl\..'
+13:56:28	Using Config 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins'
+13:56:28	Checking assembly 'mwo.LiveRegistration.Plugins.dll' for plugins
+13:56:28	1 plugin(s) found!
+13:56:30	Registering Plugin 'mwo.LiveRegistration.Plugins' from 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins\bin\Debug\mwo.LiveRegistration.Plugins.dll'
+13:58:02	Deploying Plugins
+13:58:02	Searching for plugin config in 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins\spkl\..'
+13:58:02	Using Config 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins'
+13:58:02	Checking assembly 'mwo.LiveRegistration.Plugins.dll' for plugins
+13:58:02	1 plugin(s) found!
+13:58:05	Registering Plugin 'mwo.LiveRegistration.Plugins' from 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins\bin\Debug\mwo.LiveRegistration.Plugins.dll'
+13:58:06	Adding Plugin 'mwo.LiveRegistration.Plugins' to solution 'LivePluginRegistration'
+13:58:06	Adding to solution 'LivePluginRegistration'
+13:58:07	Registering Type 'mwo.LiveRegistration.Plugins.EntryPoints.PostOpLiveRegistration'
+13:58:08	Registering Step 'mwo.LiveRegistration.Plugins.EntryPoints.PostOpLiveRegistration'
+13:58:09	Adding to solution 'LivePluginRegistration'
+13:58:10	Processed 1 config(s)
+14:04:34	Deploying Plugins
+14:04:34	Searching for plugin config in 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins\spkl\..'
+14:04:34	Using Config 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins'
+14:04:34	Checking assembly 'mwo.LiveRegistration.Plugins.dll' for plugins
+14:04:34	1 plugin(s) found!
+14:04:37	Checking for orphaned PluginTypes: 'mwo.LiveRegistration.Plugins' 
+14:04:37	Updating Plugin 'mwo.LiveRegistration.Plugins' from 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins\bin\Debug\mwo.LiveRegistration.Plugins.dll'
+14:04:38	Adding Plugin 'mwo.LiveRegistration.Plugins' to solution 'LivePluginRegistration'
+14:04:38	Adding to solution 'LivePluginRegistration'
+14:04:38	Updating Type 'mwo.LiveRegistration.Plugins.EntryPoints.PostOpLiveRegistration'
+14:04:39	Updating Step 'mwo.LiveRegistration.Plugins.EntryPoints.PostOpLiveRegistration'
+14:04:41	Adding to solution 'LivePluginRegistration'
+14:04:41	Processed 1 config(s)
+14:07:42	Deploying Plugins
+14:07:42	Searching for plugin config in 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins\spkl\..'
+14:07:42	Using Config 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins'
+14:07:42	Checking assembly 'mwo.LiveRegistration.Plugins.dll' for plugins
+14:07:42	1 plugin(s) found!
+14:07:44	Checking for orphaned PluginTypes: 'mwo.LiveRegistration.Plugins' 
+14:07:44	Updating Plugin 'mwo.LiveRegistration.Plugins' from 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins\bin\Debug\mwo.LiveRegistration.Plugins.dll'
+14:07:45	Adding Plugin 'mwo.LiveRegistration.Plugins' to solution 'LivePluginRegistration'
+14:07:45	Adding to solution 'LivePluginRegistration'
+14:07:45	Updating Type 'mwo.LiveRegistration.Plugins.EntryPoints.PostOpLiveRegistration'
+14:07:46	Updating Step 'mwo.LiveRegistration.Plugins.EntryPoints.PostOpLiveRegistration'
+14:07:46	Adding to solution 'LivePluginRegistration'
+14:07:47	Processed 1 config(s)
+14:09:14	Deploying Plugins
+14:09:14	Searching for plugin config in 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins\spkl\..'
+14:09:14	Using Config 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins'
+14:09:14	Checking assembly 'mwo.LiveRegistration.Plugins.dll' for plugins
+14:09:14	1 plugin(s) found!
+14:09:16	Checking for orphaned PluginTypes: 'mwo.LiveRegistration.Plugins' 
+14:09:16	Updating Plugin 'mwo.LiveRegistration.Plugins' from 'C:\Users\marius.wodtke\source\repos\Kunter-Bunt\D365LivePluginRegistration\D365LivePluginRegistration\mwo.LiveRegistration.Plugins\bin\Debug\mwo.LiveRegistration.Plugins.dll'
+14:09:17	Adding Plugin 'mwo.LiveRegistration.Plugins' to solution 'LivePluginRegistration'
+14:09:17	Adding to solution 'LivePluginRegistration'
+14:09:17	Updating Type 'mwo.LiveRegistration.Plugins.EntryPoints.PostOpLiveRegistration'
+14:09:18	Updating Step 'mwo.LiveRegistration.Plugins.EntryPoints.PostOpLiveRegistration'
+14:09:18	Adding to solution 'LivePluginRegistration'
+14:09:19	Processed 1 config(s)

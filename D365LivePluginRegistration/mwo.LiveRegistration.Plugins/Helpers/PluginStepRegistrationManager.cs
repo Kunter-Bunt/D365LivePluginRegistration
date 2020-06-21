@@ -74,7 +74,6 @@ namespace mwo.LiveRegistration.Plugins.Helpers
                 ["plugintypeid"] = plugin.ToEntityReference(),
                 ["sdkmessageid"] = message.ToEntityReference(),
                 ["sdkmessagefilterid"] = messageFilter?.ToEntityReference(),
-                ["asyncautodelete"] = 1.ToOptionSetValue(),
                 ["name"] = BuildName(pluginTypeName, sdkMessage, stage, primaryEntity, secondaryEntity, asynchronous),
                 ["configuration"] = stepconfiguration,
                 ["mode"] = asynchronous ? 1.ToOptionSetValue() : 0.ToOptionSetValue(),
@@ -85,6 +84,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
                 ["filteringattributes"] = filteringAttributes,
                 ["description"] = description,
             };
+            if (asynchronous) entity["asyncautodelete"] = true;
             return entity;
         }
 

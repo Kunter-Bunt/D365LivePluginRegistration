@@ -40,7 +40,7 @@ namespace mwo.LiveRegistration.Plugins.EntryPoints
 
             IOrganizationService svc = factory.CreateOrganizationService(pluginExecutionContext.UserId);
 
-            new Registrator().Execute(svc, tracingService, target, preImage);
+            new Registrator().Execute(svc, tracingService, pluginExecutionContext, target, preImage);
         }
     }
 }
