@@ -1,6 +1,7 @@
-﻿using System;
+﻿using mwo.LiveRegistration.Plugins.Models;
+using System;
 
-namespace mwo.LiveRegistration.Plugins
+namespace mwo.LiveRegistration.Plugins.Interfaces
 {
     public interface IPluginStepRegistrationManager
     {

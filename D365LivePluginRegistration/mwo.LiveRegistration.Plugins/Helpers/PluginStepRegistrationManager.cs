@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
+using mwo.LiveRegistration.Plugins.Interfaces;
+using mwo.LiveRegistration.Plugins.Models;
 using System;
 using System.Linq;
 
-namespace mwo.LiveRegistration.Plugins
+namespace mwo.LiveRegistration.Plugins.Helpers
 {
     public class PluginStepRegistrationManager : IPluginStepRegistrationManager
     {
@@ -47,14 +49,14 @@ namespace mwo.LiveRegistration.Plugins
             Svc.Update(step);
         }
 
-        public Guid Register(string pluginTypeName, 
-                            string sdkMessage, 
+        public Guid Register(string pluginTypeName,
+                            string sdkMessage,
                             string primaryEntity,
-                            string secondaryEntity, 
-                            string stepconfiguration, 
-                            bool asynchronous, 
-                            Stage stage, 
-                            string filteringAttributes, 
+                            string secondaryEntity,
+                            string stepconfiguration,
+                            bool asynchronous,
+                            Stage stage,
+                            string filteringAttributes,
                             string description)
         {
             Entity step = ComposeEntity(pluginTypeName, sdkMessage, primaryEntity, secondaryEntity, stepconfiguration, asynchronous, stage, filteringAttributes, description);

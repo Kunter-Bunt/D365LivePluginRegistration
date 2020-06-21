@@ -2,6 +2,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
+using mwo.LiveRegistration.Plugins.Helpers;
+using mwo.LiveRegistration.Plugins.Interfaces;
+using mwo.LiveRegistration.Plugins.Models;
 using System;
 using System.ServiceModel;
 
