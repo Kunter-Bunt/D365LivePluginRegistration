@@ -1,8 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xrm.Sdk;
+using mwo.LiveRegistration.Plugins.Extensions;
 using System;
 
-namespace mwo.LiveRegistration.Plugins.Extensions.Tests
+namespace mwo.LiveRegistration.Plugins.Tests.Extensions
 {
     [TestClass()]
     public class EntityExtensionsTests

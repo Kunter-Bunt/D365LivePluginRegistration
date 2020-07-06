@@ -8,7 +8,7 @@ using mwo.LiveRegistration.Plugins.Models;
 using System;
 using System.ServiceModel;
 
-namespace mwo.LiveRegistration.Plugins.Tests
+namespace mwo.LiveRegistration.Plugins.Tests.Helpers
 {
     [TestClass]
     public class PluginRegistrationManagerTests
