@@ -117,8 +117,8 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             if (!string.IsNullOrEmpty(primaryEntity)) query.Criteria.AddCondition("primaryobjecttypecode", ConditionOperator.Equal, primaryEntity);
             if (!string.IsNullOrEmpty(secondaryEntity)) query.Criteria.AddCondition("secondaryobjecttypecode", ConditionOperator.Equal, secondaryEntity);
             var results = Svc.RetrieveMultiple(query);
-            var filter = results.Entities.FirstOrDefault();
-            return filter;
+
+            return results.Entities.FirstOrDefault();
         }
 
         private Entity GetMessage(string sdkMessageName)
@@ -129,9 +129,9 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             };
             query.Criteria.AddCondition("name", ConditionOperator.Equal, sdkMessageName);
             var results = Svc.RetrieveMultiple(query);
-            if (results.Entities.Count <= 0) throw new ArgumentException(nameof(sdkMessageName));
-            var message = results.Entities.First();
-            return message;
+            if (!results.Entities.Any()) throw new ArgumentException(nameof(sdkMessageName) + " does not exist");
+
+            return results.Entities.First();
         }
 
         private Entity GetPlugin(string pluginTypeName)
@@ -142,9 +142,9 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             };
             query.Criteria.AddCondition("typename", ConditionOperator.Equal, pluginTypeName);
             var results = Svc.RetrieveMultiple(query);
-            if (results.Entities.Count <= 0) throw new ArgumentException(nameof(pluginTypeName));
-            var plugin = results.Entities.First();
-            return plugin;
+            if (!results.Entities.Any()) throw new ArgumentException(nameof(pluginTypeName) + " does not exist");
+
+            return results.Entities.First();
         }
     }
 }

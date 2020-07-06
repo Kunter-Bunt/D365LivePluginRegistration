@@ -1,17 +1,13 @@
 ﻿using Microsoft.Xrm.Sdk;
 using mwo.LiveRegistration.Plugins.Executables;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace mwo.LiveRegistration.Plugins.EntryPoints
 {
-    [CrmPluginRegistration(MessageNameEnum.Create, "account",
-    StageEnum.PostOperation, ExecutionModeEnum.Synchronous, "",
+    [CrmPluginRegistration(MessageNameEnum.Create, "mwo_pluginstepregistration",
+    StageEnum.PreOperation, ExecutionModeEnum.Synchronous, "",
     "mwo.LiveRegistration.Plugins.EntryPoints.PostOpLiveRegistration", 1, IsolationModeEnum.Sandbox)]
-    public class PostOpLiveRegistration : IPlugin
+    public class PreOpLiveRegistration : IPlugin
     {
         public const string TargetName = "Target";
         public const string PreImageName = "Default";
