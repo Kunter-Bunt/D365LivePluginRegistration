@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mwo.LiveRegistration.Plugin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mwo.LiveRegistration.Plugins.Tests", "mwo.LiveRegistration.Plugins.Tests\mwo.LiveRegistration.Plugins.Tests.csproj", "{F5606751-C16C-4DA8-8404-E9B3685A3CD9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{25EF097C-7B71-47C9-8835-3E359675D0C6}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
