@@ -106,6 +106,7 @@
   <ItemGroup>
     <Compile Include="Extensions\EntityExtensionsTests.cs" />
     <Compile Include="EntryPoints\PostOpLiveRegistrationTests.cs" />
+    <Compile Include="Helpers\ImageManagerTests.cs" />
     <Compile Include="Helpers\PluginRegistrationManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

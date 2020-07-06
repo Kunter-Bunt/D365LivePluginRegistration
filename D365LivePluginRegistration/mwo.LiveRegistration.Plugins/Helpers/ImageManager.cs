@@ -14,6 +14,12 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             Service = svc;
         }
 
+        public void Delete(string imageName, EntityReference sdkMessageProcessingStepRef)
+        {
+            var existing = Get(imageName, sdkMessageProcessingStepRef);
+            if (existing != null) Service.Delete("sdkmessageprocessingstepimage", existing.Id);
+        }
+
         public void Upsert(ImageTypeEnum imageType, string imageName, EntityReference sdkMessageProcessingStepRef, string attributes)
         {
             var existing = Get(imageName, sdkMessageProcessingStepRef);
