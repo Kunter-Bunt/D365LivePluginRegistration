@@ -68,10 +68,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EntryPoints\PostOpLiveRegistration.cs" />
+    <Compile Include="EntryPoints\PreOpLiveRegistration.cs" />
     <Compile Include="Executables\Registrator.cs" />
     <Compile Include="Extensions\EntityExtensions.cs" />
+    <Compile Include="Helpers\ImageManager.cs" />
     <Compile Include="Interfaces\ICRMExecutable.cs" />
+    <Compile Include="Models\ImageType.cs" />
     <Compile Include="Models\Stage.cs" />
     <Compile Include="spkl\CrmPluginRegistrationAttribute.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />
