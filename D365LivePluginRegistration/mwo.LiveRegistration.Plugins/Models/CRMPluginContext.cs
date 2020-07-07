@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 using mwo.LiveRegistration.Plugins.Extensions;
+using mwo.LiveRegistration.Plugins.Interfaces;
 using System;
 using System.Diagnostics.CodeAnalysis;
 

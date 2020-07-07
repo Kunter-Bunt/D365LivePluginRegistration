@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xrm.Sdk;
 using mwo.LiveRegistration.Plugins.Executables;
+using mwo.LiveRegistration.Plugins.Interfaces;
 using mwo.LiveRegistration.Plugins.Models;
 using System;
 

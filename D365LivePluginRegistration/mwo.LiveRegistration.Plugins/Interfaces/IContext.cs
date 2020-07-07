@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xrm.Sdk;
 
-namespace mwo.LiveRegistration.Plugins.Models
+namespace mwo.LiveRegistration.Plugins.Interfaces
 {
     interface IContext : IOrganizationService, ITracingService
     {

@@ -1,6 +1,4 @@
-﻿using mwo.LiveRegistration.Plugins.Models;
-
-namespace mwo.LiveRegistration.Plugins.Interfaces
+﻿namespace mwo.LiveRegistration.Plugins.Interfaces
 {
     interface ICRMExecutable
     {
