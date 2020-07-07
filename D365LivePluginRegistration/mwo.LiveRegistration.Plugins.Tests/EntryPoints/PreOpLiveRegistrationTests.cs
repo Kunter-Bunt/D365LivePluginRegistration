@@ -220,8 +220,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Create_ImageCreatedTest();
             var preImage = Context.CreateQuery("mwo_pluginstepregistration").First();
 
-            var target = new Entity("mwo_pluginstepregistration", preImage.Id);
-            var ctx = CreateContext(target, preImage, "Delete");
+            var ctx = CreateContext(preImage.ToEntityReference(), preImage, "Delete");
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
@@ -237,12 +236,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             //Arrange
             Create_StepCreatedTest();
             var preImage = Context.CreateQuery("mwo_pluginstepregistration").First();
+            preImage["mwo_managed"] = false;
 
-            var target = new Entity("mwo_pluginstepregistration", preImage.Id)
-            {
-                ["mwo_managed"] = false
-            };
-            var ctx = CreateContext(target, preImage, "Delete");
+            var ctx = CreateContext(preImage.ToEntityReference(), preImage, "Delete");
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
@@ -252,6 +248,27 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Assert.AreEqual(1, steps.Count);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(InvalidPluginExecutionException))]
+        public void Delete_NoTargetTest()
+        {
+            //Arrange
+            var ctx = CreateContext(null, null, "Delete");
+
+            //Act
+            Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidPluginExecutionException))]
+        public void Delete_NoMessageTest()
+        {
+            //Arrange
+            var ctx = CreateContext(new Entity("mwo_pluginstepregistration") { ["mwo_managed"] = true }, null, null);
+
+            //Act
+            Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
+        }
 
         [TestMethod]
         public void Retrieve_IgnoreMessagesTest()
@@ -271,7 +288,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Assert.AreEqual(1, steps.Count);
         }
 
-        private XrmFakedPluginExecutionContext CreateContext(Entity target, Entity preImage, string messagename)
+        private XrmFakedPluginExecutionContext CreateContext(object target, Entity preImage, string messagename)
         {
             var ctx = Context.GetDefaultPluginContext();
             ctx.InputParameters.Add("Target", target);

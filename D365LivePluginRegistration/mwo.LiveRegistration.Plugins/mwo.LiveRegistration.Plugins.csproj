@@ -74,6 +74,8 @@
     <Compile Include="Interfaces\IImageManager.cs" />
     <Compile Include="Helpers\ImageManager.cs" />
     <Compile Include="Interfaces\ICRMExecutable.cs" />
+    <Compile Include="Models\CRMPluginContext.cs" />
+    <Compile Include="Models\IContext.cs" />
     <Compile Include="Models\ImageType.cs" />
     <Compile Include="Models\Stage.cs" />
     <Compile Include="spkl\CrmPluginRegistrationAttribute.cs" />

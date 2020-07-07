@@ -22,5 +22,28 @@ namespace mwo.LiveRegistration.Plugins.Tests.Extensions
             Assert.AreEqual(baseEnt.Id, mergedEnt.Id);
             Assert.AreEqual(additionalEnt["name"], mergedEnt["name"]);
         }
+
+        [TestMethod()]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NoAdditonalTest()
+        {
+            //Arrange
+            var baseEnt = new Entity("account", Guid.NewGuid()) { ["name"] = "baseEnt" };
+
+            //Act
+            baseEnt.Merge(null);
+        }
+
+        [TestMethod()]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NobaseTest()
+        {
+            //Arrange
+            Entity baseEnt = null;
+            var additionalEnt = new Entity("account", Guid.NewGuid()) { ["name"] = "additionalEnt" };
+
+            //Act
+            baseEnt.Merge(additionalEnt);
+        }
     }
 }

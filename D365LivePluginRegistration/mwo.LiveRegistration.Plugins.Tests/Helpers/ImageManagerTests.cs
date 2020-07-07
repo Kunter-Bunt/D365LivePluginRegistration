@@ -66,6 +66,26 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
         }
 
         [TestMethod]
+        public void Upsert_NoNameTest()
+        {
+            //Act
+            ImageManager.Upsert(TypeEnum, null, MessageProccessingStep.ToEntityReference(), Attributes);
+
+            //Assert
+            Assert.IsTrue(true); //No Error
+        }
+
+        [TestMethod]
+        public void Upsert_NoStepTest()
+        {
+            //Act
+            ImageManager.Upsert(TypeEnum, ImageName, null, Attributes);
+
+            //Assert
+            Assert.IsTrue(true); //No Error
+        }
+
+        [TestMethod]
         public void Delete_NoMoreImageTest()
         {
             //Arrange
@@ -77,6 +97,17 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
             //Assert
             var results = Context.CreateQuery("sdkmessageprocessingstepimage").ToList();
             Assert.AreEqual(0, results.Count);
+        }
+
+
+        [TestMethod]
+        public void Delete_NoInputTest()
+        {
+            //Act
+            ImageManager.Delete(null);
+
+            //Assert
+            Assert.IsTrue(true); //No Error
         }
     }
 }

@@ -1,9 +1,9 @@
-﻿using Microsoft.Xrm.Sdk;
+﻿using mwo.LiveRegistration.Plugins.Models;
 
 namespace mwo.LiveRegistration.Plugins.Interfaces
 {
-    interface ICRMExecutable<T>
+    interface ICRMExecutable
     {
-        void Execute(IOrganizationService svc, ITracingService trace, IPluginExecutionContext ctx, T target, T preImage = default);
+        void Execute(IContext context);
     }
 }
