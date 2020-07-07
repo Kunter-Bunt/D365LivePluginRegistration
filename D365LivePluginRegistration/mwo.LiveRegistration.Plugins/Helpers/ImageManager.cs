@@ -1,11 +1,13 @@
 ﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
+using mwo.LiveRegistration.Plugins.Interfaces;
+using mwo.LiveRegistration.Plugins.Models;
 using System;
 using System.Linq;
 
 namespace mwo.LiveRegistration.Plugins.Helpers
 {
-    public class ImageManager
+    public class ImageManager : IImageManager
     {
         private readonly IOrganizationService Service;
 
@@ -20,14 +22,14 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             if (existing != null) Service.Delete("sdkmessageprocessingstepimage", existing.Id);
         }
 
-        public void Upsert(ImageTypeEnum imageType, string imageName, EntityReference sdkMessageProcessingStepRef, string attributes)
+        public void Upsert(ImageType imageType, string imageName, EntityReference sdkMessageProcessingStepRef, string attributes)
         {
             var existing = Get(imageName, sdkMessageProcessingStepRef);
             if (existing != null) Update(existing.Id, imageType, imageName, sdkMessageProcessingStepRef, attributes);
             else Create(imageType, imageName, sdkMessageProcessingStepRef, attributes);
         }
 
-        private void Update(Guid id, ImageTypeEnum imageType, string imageName, EntityReference sdkMessageProcessingStepRef, string attributes)
+        private void Update(Guid id, ImageType imageType, string imageName, EntityReference sdkMessageProcessingStepRef, string attributes)
         {
             Entity image = ComposeEntity(imageType, imageName, sdkMessageProcessingStepRef, attributes);
             image.Id = id;
@@ -35,14 +37,14 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             Service.Update(image);
         }
 
-        private void Create(ImageTypeEnum imageType, string imageName, EntityReference sdkMessageProcessingStepRef, string attributes)
+        private void Create(ImageType imageType, string imageName, EntityReference sdkMessageProcessingStepRef, string attributes)
         {
             Entity image = ComposeEntity(imageType, imageName, sdkMessageProcessingStepRef, attributes);
 
             Service.Create(image);
         }
 
-        private static Entity ComposeEntity(ImageTypeEnum imageType, string imageName, EntityReference sdkMessageProcessingStepRef, string attributes)
+        private static Entity ComposeEntity(ImageType imageType, string imageName, EntityReference sdkMessageProcessingStepRef, string attributes)
         {
             var image = new Entity("sdkmessageprocessingstepimage")
             {

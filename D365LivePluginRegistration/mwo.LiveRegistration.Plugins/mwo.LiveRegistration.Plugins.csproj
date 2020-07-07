@@ -71,6 +71,7 @@
     <Compile Include="EntryPoints\PreOpLiveRegistration.cs" />
     <Compile Include="Executables\Registrator.cs" />
     <Compile Include="Extensions\EntityExtensions.cs" />
+    <Compile Include="Interfaces\IImageManager.cs" />
     <Compile Include="Helpers\ImageManager.cs" />
     <Compile Include="Interfaces\ICRMExecutable.cs" />
     <Compile Include="Models\ImageType.cs" />
