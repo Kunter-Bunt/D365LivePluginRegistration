@@ -104,7 +104,7 @@ namespace mwo.LiveRegistration.Plugins.Executables
 
         private static void DoManageImage(ITracingService trace, Entity subject, IImageManager imageManager, Guid pluginStepId)
         {
-            if (subject.Contains("mwo_imagetype") && subject.GetAttributeValue<OptionSetValue>("mwo_imagetype").Value != 122870010)
+            if (subject.Contains("mwo_imagetype") && subject.GetAttributeValue<OptionSetValue>("mwo_imagetype") != null && subject.GetAttributeValue<OptionSetValue>("mwo_imagetype").Value != 122870010)
             {
                 imageManager.Upsert(MapImageType(subject.GetAttributeValue<OptionSetValue>("mwo_imagetype")), subject.GetAttributeValue<string>("mwo_imagename"), new EntityReference("sdkmessageprocessingstep", pluginStepId), subject.GetAttributeValue<string>("mwo_imageattributes"));
                 trace.Trace($"Upserted image: {subject.GetAttributeValue<string>("mwo_imagename")}");

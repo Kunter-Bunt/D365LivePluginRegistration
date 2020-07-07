@@ -54,6 +54,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
                 ["mwo_filteringattributes"] = null,
                 ["mwo_description"] = null,
                 ["mwo_managed"] = true,
+                ["mwo_imagetype"] = null,
             };
             
             var ctx = CreateContext(target, null, "Create");
