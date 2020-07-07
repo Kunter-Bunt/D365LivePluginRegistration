@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xrm.Sdk;
 using mwo.LiveRegistration.Plugins.Helpers;
 using mwo.LiveRegistration.Plugins.Interfaces;
+using mwo.LiveRegistration.Plugins.Models;
 using System.Linq;
 
 namespace mwo.LiveRegistration.Plugins.Tests.Helpers
@@ -15,7 +16,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
         private IImageManager ImageManager;
         private const string ImageName = nameof(ImageName);
         private const string Attributes = nameof(Attributes);
-        private const ImageTypeEnum TypeEnum = ImageTypeEnum.Both;
+        private const ImageType TypeEnum = ImageType.Both;
         private Entity MessageProccessingStep;
 
         [TestInitialize]
