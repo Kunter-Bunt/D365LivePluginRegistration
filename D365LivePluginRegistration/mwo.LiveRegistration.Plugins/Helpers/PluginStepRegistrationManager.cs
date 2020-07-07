@@ -109,6 +109,8 @@ namespace mwo.LiveRegistration.Plugins.Helpers
 
         private Entity GetMessageFilter(Entity message, string primaryEntity, string secondaryEntity)
         {
+            if (string.IsNullOrEmpty(primaryEntity) && string.IsNullOrEmpty(secondaryEntity)) return null;
+
             var query = new QueryExpression("sdkmessagefilter")
             {
                 ColumnSet = new ColumnSet(false)
@@ -117,8 +119,9 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             if (!string.IsNullOrEmpty(primaryEntity)) query.Criteria.AddCondition("primaryobjecttypecode", ConditionOperator.Equal, primaryEntity);
             if (!string.IsNullOrEmpty(secondaryEntity)) query.Criteria.AddCondition("secondaryobjecttypecode", ConditionOperator.Equal, secondaryEntity);
             var results = Svc.RetrieveMultiple(query);
+            if (!results.Entities.Any()) throw new ArgumentException($"Message does not exist on {primaryEntity} {secondaryEntity}");
 
-            return results.Entities.FirstOrDefault();
+            return results.Entities.First();
         }
 
         private Entity GetMessage(string sdkMessageName)

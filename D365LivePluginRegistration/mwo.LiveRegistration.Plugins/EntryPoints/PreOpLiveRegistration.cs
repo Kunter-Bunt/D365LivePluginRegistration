@@ -51,11 +51,10 @@ namespace mwo.LiveRegistration.Plugins.EntryPoints
             try
             {
                 new Registrator().Execute(svc, tracingService, pluginExecutionContext, target, preImage);
-
             }
-            catch (FaultException<OrganizationServiceFault> e)
+            catch (Exception e)
             {
-                throw new InvalidPluginExecutionException("Therre was a problem in registering, check inner Exception", e);
+                throw new InvalidPluginExecutionException(e.Message, e);
             }
         }
     }
