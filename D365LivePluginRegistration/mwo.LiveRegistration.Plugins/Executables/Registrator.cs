@@ -74,7 +74,7 @@ namespace mwo.LiveRegistration.Plugins.Executables
                                 subject.GetAttributeValue<string>("mwo_secondaryentity"),
                                 subject.GetAttributeValue<string>("mwo_stepconfiguration"),
                                 subject.GetAttributeValue<bool>("mwo_asynchronous"),
-                                MapStage(subject.GetAttributeValue<OptionSetValue>("mwwo_pluginstepstage")),
+                                MapStage(subject.GetAttributeValue<OptionSetValue>("mwo_pluginstepstage")),
                                 subject.GetAttributeValue<string>("mwo_filteringattributes"),
                                 subject.GetAttributeValue<string>("mwo_description"));
 
@@ -92,12 +92,12 @@ namespace mwo.LiveRegistration.Plugins.Executables
                 subject.GetAttributeValue<string>("mwo_secondaryentity"),
                 subject.GetAttributeValue<string>("mwo_stepconfiguration"),
                 subject.GetAttributeValue<bool>("mwo_asynchronous"),
-                MapStage(subject.GetAttributeValue<OptionSetValue>("mwwo_pluginstepstage")),
+                MapStage(subject.GetAttributeValue<OptionSetValue>("mwo_pluginstepstage")),
                 subject.GetAttributeValue<string>("mwo_filteringattributes"),
                 subject.GetAttributeValue<string>("mwo_description"));
 
             trace.Trace($"Created new PluginStep: {res}");
-            subject["mwo_pluginstepid"] = res;
+            subject["mwo_pluginstepid"] = res.ToString();
 
             DoManageImage(trace, subject, imageManager, res);
         }
@@ -111,7 +111,7 @@ namespace mwo.LiveRegistration.Plugins.Executables
             }
             else
             {
-                imageManager.Delete(subject.GetAttributeValue<string>("mwo_imagename"), new EntityReference("sdkmessageprocessingstep", pluginStepId));
+                imageManager.Delete(new EntityReference("sdkmessageprocessingstep", pluginStepId));
                 trace.Trace($"Deleted image: {subject.GetAttributeValue<string>("mwo_imagename")}");
             }
         }

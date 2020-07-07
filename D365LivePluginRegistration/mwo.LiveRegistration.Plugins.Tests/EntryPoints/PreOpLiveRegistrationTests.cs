@@ -8,7 +8,7 @@ using System.Linq;
 namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
 {
     [TestClass]
-    public class PostOpLiveRegistrationTests
+    public class PreOpLiveRegistrationTests
     {
         private XrmFakedContext Context;
         private IOrganizationService Service;
@@ -50,7 +50,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
                 ["mwo_secondaryentity"] = null,
                 ["mwo_stepconfiguration"] = null,
                 ["mwo_asynchronous"] = true,
-                ["mwwo_pluginstepstage"] = new OptionSetValue(122870040),
+                ["mwo_pluginstepstage"] = new OptionSetValue(122870040),
                 ["mwo_filteringattributes"] = null,
                 ["mwo_description"] = null,
                 ["mwo_managed"] = true,
@@ -62,7 +62,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            Assert.AreNotEqual(Guid.Empty, target.GetAttributeValue<Guid>("mwo_pluginstepid"));
+            Assert.IsNotNull(target.GetAttributeValue<string>("mwo_pluginstepid"));
 
             var steps = Context.CreateQuery("sdkmessageprocessingstep").ToList();
             Assert.AreEqual(1, steps.Count);
@@ -82,7 +82,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
                 ["mwo_secondaryentity"] = null,
                 ["mwo_stepconfiguration"] = null,
                 ["mwo_asynchronous"] = true,
-                ["mwwo_pluginstepstage"] = new OptionSetValue(122870040),
+                ["mwo_pluginstepstage"] = new OptionSetValue(122870040),
                 ["mwo_filteringattributes"] = null,
                 ["mwo_description"] = null,
                 ["mwo_managed"] = true,

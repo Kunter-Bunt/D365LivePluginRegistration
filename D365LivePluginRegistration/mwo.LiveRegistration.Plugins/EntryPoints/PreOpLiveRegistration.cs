@@ -1,12 +1,21 @@
 ﻿using Microsoft.Xrm.Sdk;
 using mwo.LiveRegistration.Plugins.Executables;
 using System;
+using System.ServiceModel;
 
 namespace mwo.LiveRegistration.Plugins.EntryPoints
 {
     [CrmPluginRegistration(MessageNameEnum.Create, "mwo_pluginstepregistration",
     StageEnum.PreOperation, ExecutionModeEnum.Synchronous, "",
-    "mwo.LiveRegistration.Plugins.EntryPoints.PostOpLiveRegistration", 1, IsolationModeEnum.Sandbox)]
+    "mwo.LiveRegistration.Plugins.EntryPoints.PreOpLiveRegistration_Create", 1, IsolationModeEnum.Sandbox)]
+    [CrmPluginRegistration(MessageNameEnum.Update, "mwo_pluginstepregistration",
+    StageEnum.PreOperation, ExecutionModeEnum.Synchronous, "",
+    "mwo.LiveRegistration.Plugins.EntryPoints.PreOpLiveRegistration_Update", 1, IsolationModeEnum.Sandbox,
+        Image1Type = ImageTypeEnum.PreImage, Image1Name = "Default")]
+    [CrmPluginRegistration(MessageNameEnum.Delete, "mwo_pluginstepregistration",
+    StageEnum.PreOperation, ExecutionModeEnum.Synchronous, "",
+    "mwo.LiveRegistration.Plugins.EntryPoints.PreOpLiveRegistration_Delete", 1, IsolationModeEnum.Sandbox,
+        Image1Type = ImageTypeEnum.PreImage, Image1Name = "Default")]
     public class PreOpLiveRegistration : IPlugin
     {
         public const string TargetName = "Target";
@@ -23,6 +32,9 @@ namespace mwo.LiveRegistration.Plugins.EntryPoints
             if (pluginExecutionContext.InputParameters.ContainsKey(TargetName)
                 && (pluginExecutionContext.InputParameters[TargetName] is Entity targetEntity))
                 target = targetEntity;
+            else if (pluginExecutionContext.InputParameters.ContainsKey(TargetName)
+                && (pluginExecutionContext.InputParameters[TargetName] is EntityReference targetRef))
+                target = new Entity(targetRef.LogicalName, targetRef.Id);
             else
             {
                 tracingService.Trace("Context did not have an Entity as Target, aborting.");
@@ -36,7 +48,15 @@ namespace mwo.LiveRegistration.Plugins.EntryPoints
 
             IOrganizationService svc = factory.CreateOrganizationService(pluginExecutionContext.UserId);
 
-            new Registrator().Execute(svc, tracingService, pluginExecutionContext, target, preImage);
+            try
+            {
+                new Registrator().Execute(svc, tracingService, pluginExecutionContext, target, preImage);
+
+            }
+            catch (FaultException<OrganizationServiceFault> e)
+            {
+                throw new InvalidPluginExecutionException("Therre was a problem in registering, check inner Exception", e);
+            }
         }
     }
 }

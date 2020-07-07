@@ -16,15 +16,20 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             Service = svc;
         }
 
-        public void Delete(string imageName, EntityReference sdkMessageProcessingStepRef)
+        public void Delete(EntityReference sdkMessageProcessingStepRef)
         {
-            var existing = Get(imageName, sdkMessageProcessingStepRef);
+            if (sdkMessageProcessingStepRef == null) return;
+
+            var existing = Get(sdkMessageProcessingStepRef);
             if (existing != null) Service.Delete("sdkmessageprocessingstepimage", existing.Id);
         }
 
         public void Upsert(ImageType imageType, string imageName, EntityReference sdkMessageProcessingStepRef, string attributes)
         {
-            var existing = Get(imageName, sdkMessageProcessingStepRef);
+            if (string.IsNullOrEmpty(imageName)) return;
+            if (sdkMessageProcessingStepRef == null) return;
+
+            var existing = Get(sdkMessageProcessingStepRef);
             if (existing != null) Update(existing.Id, imageType, imageName, sdkMessageProcessingStepRef, attributes);
             else Create(imageType, imageName, sdkMessageProcessingStepRef, attributes);
         }
@@ -58,14 +63,13 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             return image;
         }
 
-        private Entity Get(string imageName, EntityReference sdkMessageProcessingStepRef)
+        private Entity Get(EntityReference sdkMessageProcessingStepRef)
         {
             var query = new QueryExpression("sdkmessageprocessingstepimage")
             {
                 ColumnSet = new ColumnSet(false)
             };
-            query.Criteria.AddCondition("name", ConditionOperator.Equal, imageName);
-            query.Criteria.AddCondition("sdkmessageprocessingstepid", ConditionOperator.Equal, sdkMessageProcessingStepRef);
+            query.Criteria.AddCondition(new ConditionExpression("sdkmessageprocessingstepid", ConditionOperator.Equal, sdkMessageProcessingStepRef.Id));
             var results = Service.RetrieveMultiple(query);
 
             return results.Entities.FirstOrDefault();

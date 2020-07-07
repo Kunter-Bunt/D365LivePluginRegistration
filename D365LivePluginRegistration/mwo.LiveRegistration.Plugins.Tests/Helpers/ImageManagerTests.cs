@@ -4,6 +4,7 @@ using Microsoft.Xrm.Sdk;
 using mwo.LiveRegistration.Plugins.Helpers;
 using mwo.LiveRegistration.Plugins.Interfaces;
 using mwo.LiveRegistration.Plugins.Models;
+using System;
 using System.Linq;
 
 namespace mwo.LiveRegistration.Plugins.Tests.Helpers
@@ -41,7 +42,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
             Assert.AreEqual(1, results.Count);
 
             var result = results.First();
-            Assert.AreEqual(MessageProccessingStep.Id, result.GetAttributeValue<EntityReference>("sdkmessageprocessingstepid").Id);
+            Assert.AreEqual(MessageProccessingStep, result.GetAttributeValue<EntityReference>("sdkmessageprocessingstepid"));
             Assert.AreEqual(2, result.GetAttributeValue<OptionSetValue>("imagetype").Value);
             Assert.AreEqual(ImageName, result.GetAttributeValue<string>("name"));
             Assert.AreEqual("Target", result.GetAttributeValue<string>("messagepropertyname"));
