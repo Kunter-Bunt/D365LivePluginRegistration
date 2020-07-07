@@ -42,7 +42,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
             Assert.AreEqual(1, results.Count);
 
             var result = results.First();
-            Assert.AreEqual(MessageProccessingStep, result.GetAttributeValue<EntityReference>("sdkmessageprocessingstepid"));
+            Assert.AreEqual(MessageProccessingStep.Id, result.GetAttributeValue<EntityReference>("sdkmessageprocessingstepid").Id);
             Assert.AreEqual(2, result.GetAttributeValue<OptionSetValue>("imagetype").Value);
             Assert.AreEqual(ImageName, result.GetAttributeValue<string>("name"));
             Assert.AreEqual("Target", result.GetAttributeValue<string>("messagepropertyname"));
@@ -72,7 +72,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
             Upsert_CreateTest();
 
             //Act
-            ImageManager.Delete(ImageName, MessageProccessingStep.ToEntityReference());
+            ImageManager.Delete(MessageProccessingStep.ToEntityReference());
 
             //Assert
             var results = Context.CreateQuery("sdkmessageprocessingstepimage").ToList();
