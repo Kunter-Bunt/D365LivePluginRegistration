@@ -18,18 +18,18 @@ namespace mwo.LiveRegistration.Plugins.Helpers
 
         public void Delete(Guid id)
         {
-            Svc.Delete("sdkmessageprocessingstep", id);
+            Svc.Delete(Sdkmessageprocessingstep.LogicalName, id);
         }
 
         public void Activate(Guid id)
         {
-            Entity step = ComposeMoniker(id, 0, 1);
+            Entity step = ComposeMoniker(id, Sdkmessageprocessingstep.StateActive, Sdkmessageprocessingstep.StatusActive);
             Svc.Update(step);
         }
 
         public void Deactivate(Guid id)
         {
-            Entity step = ComposeMoniker(id, 1, 2);
+            Entity step = ComposeMoniker(id, Sdkmessageprocessingstep.StateInactive, Sdkmessageprocessingstep.StatusInactive);
             Svc.Update(step);
         }
 
@@ -69,32 +69,34 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             Entity message = GetMessage(sdkMessage);
             Entity messageFilter = GetMessageFilter(message, primaryEntity, secondaryEntity);
 
-            var entity = new Entity("sdkmessageprocessingstep")
+            var entity = new Entity(Sdkmessageprocessingstep.LogicalName)
             {
-                ["plugintypeid"] = plugin.ToEntityReference(),
-                ["sdkmessageid"] = message.ToEntityReference(),
-                ["sdkmessagefilterid"] = messageFilter?.ToEntityReference(),
-                ["name"] = BuildName(pluginTypeName, sdkMessage, stage, primaryEntity, secondaryEntity, asynchronous),
-                ["configuration"] = stepconfiguration,
-                ["mode"] = asynchronous ? 1.ToOptionSetValue() : 0.ToOptionSetValue(),
-                ["rank"] = 1,
-                ["stage"] = ((int)stage).ToOptionSetValue(),
-                ["supporteddeployment"] = 0.ToOptionSetValue(),
-                ["invocationsource"] = 0.ToOptionSetValue(),
-                ["filteringattributes"] = filteringAttributes,
-                ["description"] = description,
+                [Sdkmessageprocessingstep.Plugintypeid] = plugin.ToEntityReference(),
+                [Sdkmessageprocessingstep.Sdkmessageid] = message.ToEntityReference(),
+                [Sdkmessageprocessingstep.Sdkmessagefilterid] = messageFilter?.ToEntityReference(),
+                [Sdkmessageprocessingstep.Name] = BuildName(pluginTypeName, sdkMessage, stage, primaryEntity, secondaryEntity, asynchronous),
+                [Sdkmessageprocessingstep.Configuration] = stepconfiguration,
+                [Sdkmessageprocessingstep.Mode] = asynchronous ?
+                                                    Sdkmessageprocessingstep.ModeAsynchronous.ToOptionSetValue() :
+                                                    Sdkmessageprocessingstep.ModeSynchronous.ToOptionSetValue(),
+                [Sdkmessageprocessingstep.Rank] = Sdkmessageprocessingstep.RankDefault,
+                [Sdkmessageprocessingstep.Stage] = ((int)stage).ToOptionSetValue(),
+                [Sdkmessageprocessingstep.Supporteddeployment] = Sdkmessageprocessingstep.SupporteddeploymentServerOnly.ToOptionSetValue(),
+                [Sdkmessageprocessingstep.Invocationsource] = Sdkmessageprocessingstep.InvocationsourceParent.ToOptionSetValue(),
+                [Sdkmessageprocessingstep.Filteringattributes] = filteringAttributes,
+                [Sdkmessageprocessingstep.Description] = description,
             };
-            if (asynchronous) entity["asyncautodelete"] = true;
+            if (asynchronous) entity[Sdkmessageprocessingstep.Asyncautodelete] = true;
             return entity;
         }
 
         private Entity ComposeMoniker(Guid id, int statecode, int statuscode)
         {
-            return new Entity("sdkmessageprocessingstep")
+            return new Entity(Sdkmessageprocessingstep.LogicalName)
             {
                 Id = id,
-                ["statecode"] = statecode.ToOptionSetValue(),
-                ["statuscode"] = statuscode.ToOptionSetValue()
+                [Sdkmessageprocessingstep.Statecode] = statecode.ToOptionSetValue(),
+                [Sdkmessageprocessingstep.Statuscode] = statuscode.ToOptionSetValue()
             };
         }
 
@@ -111,13 +113,13 @@ namespace mwo.LiveRegistration.Plugins.Helpers
         {
             if (string.IsNullOrEmpty(primaryEntity) && string.IsNullOrEmpty(secondaryEntity)) return null;
 
-            var query = new QueryExpression("sdkmessagefilter")
+            var query = new QueryExpression(Sdkmessagefilter.LogicalName)
             {
                 ColumnSet = new ColumnSet(false)
             };
-            query.Criteria.AddCondition("sdkmessageid", ConditionOperator.Equal, message.Id);
-            if (!string.IsNullOrEmpty(primaryEntity)) query.Criteria.AddCondition("primaryobjecttypecode", ConditionOperator.Equal, primaryEntity);
-            if (!string.IsNullOrEmpty(secondaryEntity)) query.Criteria.AddCondition("secondaryobjecttypecode", ConditionOperator.Equal, secondaryEntity);
+            query.Criteria.AddCondition(Sdkmessagefilter.Sdkmessageid, ConditionOperator.Equal, message.Id);
+            if (!string.IsNullOrEmpty(primaryEntity)) query.Criteria.AddCondition(Sdkmessagefilter.Primaryobjecttypecode, ConditionOperator.Equal, primaryEntity);
+            if (!string.IsNullOrEmpty(secondaryEntity)) query.Criteria.AddCondition(Sdkmessagefilter.Secondaryobjecttypecode, ConditionOperator.Equal, secondaryEntity);
             var results = Svc.RetrieveMultiple(query);
             if (!results.Entities.Any()) throw new ArgumentException($"Message does not exist on {primaryEntity} {secondaryEntity}");
 
@@ -126,11 +128,11 @@ namespace mwo.LiveRegistration.Plugins.Helpers
 
         private Entity GetMessage(string sdkMessageName)
         {
-            var query = new QueryExpression("sdkmessage")
+            var query = new QueryExpression(Sdkmessage.LogicalName)
             {
                 ColumnSet = new ColumnSet(false)
             };
-            query.Criteria.AddCondition("name", ConditionOperator.Equal, sdkMessageName);
+            query.Criteria.AddCondition(Sdkmessage.Name, ConditionOperator.Equal, sdkMessageName);
             var results = Svc.RetrieveMultiple(query);
             if (!results.Entities.Any()) throw new ArgumentException(nameof(sdkMessageName) + " does not exist");
 
@@ -139,11 +141,11 @@ namespace mwo.LiveRegistration.Plugins.Helpers
 
         private Entity GetPlugin(string pluginTypeName)
         {
-            var query = new QueryExpression("plugintype")
+            var query = new QueryExpression(Plugintype.LogicalName)
             {
                 ColumnSet = new ColumnSet(false)
             };
-            query.Criteria.AddCondition("typename", ConditionOperator.Equal, pluginTypeName);
+            query.Criteria.AddCondition(Plugintype.Typename, ConditionOperator.Equal, pluginTypeName);
             var results = Svc.RetrieveMultiple(query);
             if (!results.Entities.Any()) throw new ArgumentException(nameof(pluginTypeName) + " does not exist");
 

@@ -78,6 +78,11 @@
     <Compile Include="Interfaces\IContext.cs" />
     <Compile Include="Models\ImageType.cs" />
     <Compile Include="Models\Stage.cs" />
+    <Compile Include="Models\Plugintype.cs" />
+    <Compile Include="Models\Sdkmessage.cs" />
+    <Compile Include="Models\Sdkmessagefilter.cs" />
+    <Compile Include="Models\Sdkmessageprocessingstep.cs" />
+    <Compile Include="Models\Sdkmessageprocessingstepimage.cs" />
     <Compile Include="spkl\CrmPluginRegistrationAttribute.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Interfaces\IPluginStepRegistrationManager.cs" />

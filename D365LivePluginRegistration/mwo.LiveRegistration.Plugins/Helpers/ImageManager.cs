@@ -21,7 +21,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             if (sdkMessageProcessingStepRef == null) return;
 
             var existing = Get(sdkMessageProcessingStepRef);
-            if (existing != null) Service.Delete("sdkmessageprocessingstepimage", existing.Id);
+            if (existing != null) Service.Delete(Sdkmessageprocessingstepimage.LogicalName, existing.Id);
         }
 
         public void Upsert(ImageType imageType, string imageName, EntityReference sdkMessageProcessingStepRef, string attributes)
@@ -51,25 +51,25 @@ namespace mwo.LiveRegistration.Plugins.Helpers
 
         private static Entity ComposeEntity(ImageType imageType, string imageName, EntityReference sdkMessageProcessingStepRef, string attributes)
         {
-            var image = new Entity("sdkmessageprocessingstepimage")
+            var image = new Entity(Sdkmessageprocessingstepimage.LogicalName)
             {
-                ["imagetype"] = new OptionSetValue((int)imageType),//Types are matched!
-                ["name"] = imageName,
-                ["entityalias"] = imageName,
-                ["sdkmessageprocessingstepid"] = sdkMessageProcessingStepRef,
-                ["messagepropertyname"] = "Target",
-                ["attributes"] = attributes,
+                [Sdkmessageprocessingstepimage.Imagetype] = new OptionSetValue((int)imageType),//Types are matched!
+                [Sdkmessageprocessingstepimage.Name] = imageName,
+                [Sdkmessageprocessingstepimage.Entityalias] = imageName,
+                [Sdkmessageprocessingstepimage.Sdkmessageprocessingstepid] = sdkMessageProcessingStepRef,
+                [Sdkmessageprocessingstepimage.Messagepropertyname] = Sdkmessageprocessingstepimage.MessagepropertynameTarget,
+                [Sdkmessageprocessingstepimage.Attributes] = attributes,
             };
             return image;
         }
 
         private Entity Get(EntityReference sdkMessageProcessingStepRef)
         {
-            var query = new QueryExpression("sdkmessageprocessingstepimage")
+            var query = new QueryExpression(Sdkmessageprocessingstepimage.LogicalName)
             {
                 ColumnSet = new ColumnSet(false)
             };
-            query.Criteria.AddCondition(new ConditionExpression("sdkmessageprocessingstepid", ConditionOperator.Equal, sdkMessageProcessingStepRef.Id));
+            query.Criteria.AddCondition(new ConditionExpression(Sdkmessageprocessingstepimage.Sdkmessageprocessingstepid, ConditionOperator.Equal, sdkMessageProcessingStepRef.Id));
             var results = Service.RetrieveMultiple(query);
 
             return results.Entities.FirstOrDefault();
