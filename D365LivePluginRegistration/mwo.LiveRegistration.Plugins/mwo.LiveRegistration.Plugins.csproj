@@ -75,10 +75,11 @@
     <Compile Include="Helpers\ImageManager.cs" />
     <Compile Include="Interfaces\ICRMExecutable.cs" />
     <Compile Include="Models\CRMPluginContext.cs" />
-    <Compile Include="Interfaces\IContext.cs" />
+    <Compile Include="Interfaces\ICRMContext.cs" />
+    <Compile Include="Interfaces\ICRMEvent.cs" />
     <Compile Include="Models\ImageType.cs" />
     <Compile Include="Models\Stage.cs" />
-    <Compile Include="Models\Messages.cs" />
+    <Compile Include="Models\CRMMessages.cs" />
     <Compile Include="Models\PluginRegistration.cs" />
     <Compile Include="Models\Plugintype.cs" />
     <Compile Include="Models\Sdkmessage.cs" />

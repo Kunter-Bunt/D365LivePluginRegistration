@@ -1,7 +1,7 @@
 ﻿namespace mwo.LiveRegistration.Plugins.Interfaces
 {
-    interface ICRMExecutable
+    public interface ICRMExecutable
     {
-        void Execute(IContext context);
+        void Execute(ICRMEvent context);
     }
 }

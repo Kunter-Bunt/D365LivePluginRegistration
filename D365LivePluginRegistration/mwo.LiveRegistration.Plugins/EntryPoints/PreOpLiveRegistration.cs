@@ -26,11 +26,11 @@ namespace mwo.LiveRegistration.Plugins.EntryPoints
 
         public void Execute(IServiceProvider serviceProvider)
         {
-            IContext context = new CRMPluginContext(serviceProvider);
+            ICRMContext context = new CRMPluginContext(serviceProvider);
 
             try
             {
-                new Registrator(context).Execute(context);
+                new Registrator(context, context).Execute(context);
             }
             catch (Exception e)
             {

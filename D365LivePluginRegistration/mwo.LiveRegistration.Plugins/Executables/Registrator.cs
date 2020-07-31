@@ -10,65 +10,67 @@ namespace mwo.LiveRegistration.Plugins.Executables
     {
         private IPluginStepRegistrationManager StepManager { get; set; }
         private IImageManager ImageManager { get; set; }
+        private ITracingService Tracer { get; set; }
 
-        public Registrator(IOrganizationService service)
+        public Registrator(IOrganizationService service, ITracingService tracer)
         {
             StepManager = new PluginStepRegistrationManager(service);
             ImageManager = new ImageManager(service);
+            Tracer = tracer;
         }
 
-        public void Execute(IContext context)
+        public void Execute(ICRMEvent context)
         {
             if (!context.Subject.GetAttributeValue<bool>(PluginRegistration.Managed)) return;
 
-            var msg = context.PluginExecutionContext.MessageName.ToUpperInvariant();
+            var msg = context.MessageName.ToUpperInvariant();
             var pluginStepId = Guid.Empty;
             var hasId = context.Subject.Contains(PluginRegistration.Pluginstepid) && Guid.TryParse(context.Subject.GetAttributeValue<string>(PluginRegistration.Pluginstepid), out pluginStepId);
-            if (msg == Messages.Delete && hasId)
+            if (msg == CRMMessages.Delete && hasId)
             {
                 DoDelete(context, pluginStepId);
             }
-            else if (msg == Messages.Update && hasId)
+            else if (msg == CRMMessages.Update && hasId)
             {
                 DoUpdate(context, pluginStepId);
                 if (context.Target.Contains(PluginRegistration.Statecode))
                     DoManageStage(context, pluginStepId);
             }
-            else if ((msg == Messages.Update || msg == Messages.Create) && !hasId)
+            else if ((msg == CRMMessages.Update || msg == CRMMessages.Create) && !hasId)
             {
                 DoCreate(context);
             }
             else
             {
-                context.Tracer.Trace($"Nothing to do for {msg} and {(hasId ? "has Id" : "does not have Id")}");
+                Tracer.Trace($"Nothing to do for {msg} and {(hasId ? "has Id" : "does not have Id")}");
             }
         }
 
-        private void DoDelete(IContext context, Guid pluginStepId)
+        private void DoDelete(ICRMEvent context, Guid pluginStepId)
         {
             context.Subject[PluginRegistration.Imagetype] = new OptionSetValue(PluginRegistration.ImagetypeNone); //Pass Image none, as we are going to delete.
             DoManageImage(context, pluginStepId);
 
             StepManager.Delete(pluginStepId);
-            context.Tracer.Trace($"Deleted PluginStep: {pluginStepId}");
+            Tracer.Trace($"Deleted PluginStep: {pluginStepId}");
         }
 
-        private void DoManageStage(IContext context, Guid pluginStepId)
+        private void DoManageStage(ICRMEvent context, Guid pluginStepId)
         {
             var state = context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Statecode);
             if (state.Value == PluginRegistration.StatecodeActive)
             {
                 StepManager.Activate(pluginStepId);
-                context.Tracer.Trace($"Activated PluginStep: {pluginStepId}");
+                Tracer.Trace($"Activated PluginStep: {pluginStepId}");
             }
             else
             {
                 StepManager.Deactivate(pluginStepId);
-                context.Tracer.Trace($"Deactivated PluginStep: {pluginStepId}");
+                Tracer.Trace($"Deactivated PluginStep: {pluginStepId}");
             }
         }
 
-        private void DoUpdate(IContext context, Guid pluginStepId)
+        private void DoUpdate(ICRMEvent context, Guid pluginStepId)
         {
             StepManager.Update(
                                 pluginStepId,
@@ -82,12 +84,12 @@ namespace mwo.LiveRegistration.Plugins.Executables
                                 context.Subject.GetAttributeValue<string>(PluginRegistration.Filteringattributes),
                                 context.Subject.GetAttributeValue<string>(PluginRegistration.Description));
 
-            context.Tracer.Trace($"Updated PluginStep: {pluginStepId}");
+            Tracer.Trace($"Updated PluginStep: {pluginStepId}");
 
             DoManageImage(context, pluginStepId);
         }
 
-        private void DoCreate(IContext context)
+        private void DoCreate(ICRMEvent context)
         {
             var res = StepManager.Register(
                 context.Subject.GetAttributeValue<string>(PluginRegistration.Plugintypename),
@@ -100,23 +102,23 @@ namespace mwo.LiveRegistration.Plugins.Executables
                 context.Subject.GetAttributeValue<string>(PluginRegistration.Filteringattributes),
                 context.Subject.GetAttributeValue<string>(PluginRegistration.Description));
 
-            context.Tracer.Trace($"Created new PluginStep: {res}");
+            Tracer.Trace($"Created new PluginStep: {res}");
             context.Subject[PluginRegistration.Pluginstepid] = res.ToString();
 
             DoManageImage(context, res);
         }
 
-        private void DoManageImage(IContext context, Guid pluginStepId)
+        private void DoManageImage(ICRMEvent context, Guid pluginStepId)
         {
             if (context.Subject.Contains(PluginRegistration.Imagetype) && context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Imagetype) != null && context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Imagetype).Value != PluginRegistration.ImagetypeNone)
             {
                 ImageManager.Upsert(MapImageType(context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Imagetype)), context.Subject.GetAttributeValue<string>(PluginRegistration.Imagename), new EntityReference(Sdkmessageprocessingstep.LogicalName, pluginStepId), context.Subject.GetAttributeValue<string>(PluginRegistration.ImageAttributes));
-                context.Tracer.Trace($"Upserted image: {context.Subject.GetAttributeValue<string>(PluginRegistration.Imagename)}");
+                Tracer.Trace($"Upserted image: {context.Subject.GetAttributeValue<string>(PluginRegistration.Imagename)}");
             }
             else
             {
                 ImageManager.Delete(new EntityReference(Sdkmessageprocessingstep.LogicalName, pluginStepId));
-                context.Tracer.Trace($"Deleted image: {context.Subject.GetAttributeValue<string>(PluginRegistration.Imagename)}");
+                Tracer.Trace($"Deleted image: {context.Subject.GetAttributeValue<string>(PluginRegistration.Imagename)}");
             }
         }
 

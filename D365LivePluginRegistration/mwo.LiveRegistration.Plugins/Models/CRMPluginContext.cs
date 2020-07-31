@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace mwo.LiveRegistration.Plugins.Models
 {
-    class CRMPluginContext : IContext
+    public class CRMPluginContext : ICRMContext
     {
         public const string TargetName = "Target";
         public const string PreImageName = "Default";
@@ -19,6 +19,8 @@ namespace mwo.LiveRegistration.Plugins.Models
         public IPluginExecutionContext PluginExecutionContext { get; private set; }
         public IOrganizationServiceFactory Factory { get; private set; }
         public ITracingService Tracer { get; private set; }
+
+        public string MessageName => PluginExecutionContext.MessageName;
 
         public CRMPluginContext(IServiceProvider serviceProvider)
         {
