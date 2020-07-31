@@ -16,6 +16,8 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         private const string PluginTypeName = "abc.xyz";
         private const string PrimaryEntityName = "lead";
         private const string Create = nameof(Create);
+        private const string Update = nameof(Update);
+        private const string Delete = nameof(Delete);
         private const string Associate = nameof(Associate);
         private const string GlobalAction = nameof(GlobalAction);
         private const string Description = nameof(Description);
@@ -43,28 +45,28 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         public void Create_StepCreatedTest()
         {
             //Arrange
-            var target = new Entity("mwo_pluginstepregistration")
+            var target = new Entity(PluginRegistration.LogicalName)
             {
-                ["mwo_plugintypename"] = PluginTypeName,
-                ["mwo_sdkmessage"] = Create,
-                ["mwo_primaryentity"] = PrimaryEntityName,
-                ["mwo_secondaryentity"] = null,
-                ["mwo_stepconfiguration"] = null,
-                ["mwo_asynchronous"] = true,
-                ["mwo_pluginstepstage"] = new OptionSetValue(122870040),
-                ["mwo_filteringattributes"] = null,
-                ["mwo_description"] = null,
-                ["mwo_managed"] = true,
-                ["mwo_imagetype"] = null,
+                [PluginRegistration.Plugintypename] = PluginTypeName,
+                [PluginRegistration.Sdkmessage] = Create,
+                [PluginRegistration.Primaryentity] = PrimaryEntityName,
+                [PluginRegistration.Secondaryentity] = null,
+                [PluginRegistration.Stepconfiguration] = null,
+                [PluginRegistration.Asynchronous] = true,
+                [PluginRegistration.Pluginstepstage] = new OptionSetValue(122870040),
+                [PluginRegistration.Filteringattributes] = null,
+                [PluginRegistration.Description] = null,
+                [PluginRegistration.Managed] = true,
+                [PluginRegistration.Imagetype] = null,
             };
             
-            var ctx = CreateContext(target, null, "Create");
+            var ctx = CreateContext(target, null, Create);
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            Assert.IsNotNull(target.GetAttributeValue<string>("mwo_pluginstepid"));
+            Assert.IsNotNull(target.GetAttributeValue<string>(PluginRegistration.Pluginstepid));
 
             var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
             Assert.AreEqual(1, steps.Count);
@@ -76,24 +78,24 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         public void Create_ImageCreatedTest()
         {
             //Arrange
-            var target = new Entity("mwo_pluginstepregistration")
+            var target = new Entity(PluginRegistration.LogicalName)
             {
-                ["mwo_plugintypename"] = PluginTypeName,
-                ["mwo_sdkmessage"] = Create,
-                ["mwo_primaryentity"] = PrimaryEntityName,
-                ["mwo_secondaryentity"] = null,
-                ["mwo_stepconfiguration"] = null,
-                ["mwo_asynchronous"] = true,
-                ["mwo_pluginstepstage"] = new OptionSetValue(122870040),
-                ["mwo_filteringattributes"] = null,
-                ["mwo_description"] = null,
-                ["mwo_managed"] = true,
-                ["mwo_imagetype"] = new OptionSetValue(122870002),
-                ["mwo_imagename"] = "Default",
-                ["mwo_imageattributes"] = null,
+                [PluginRegistration.Plugintypename] = PluginTypeName,
+                [PluginRegistration.Sdkmessage] = Create,
+                [PluginRegistration.Primaryentity] = PrimaryEntityName,
+                [PluginRegistration.Secondaryentity] = null,
+                [PluginRegistration.Stepconfiguration] = null,
+                [PluginRegistration.Asynchronous] = true,
+                [PluginRegistration.Pluginstepstage] = new OptionSetValue(122870040),
+                [PluginRegistration.Filteringattributes] = null,
+                [PluginRegistration.Description] = null,
+                [PluginRegistration.Managed] = true,
+                [PluginRegistration.Imagetype] = new OptionSetValue(122870002),
+                [PluginRegistration.Imagename] = "Default",
+                [PluginRegistration.ImageAttributes] = null,
             };
 
-            var ctx = CreateContext(target, null, "Create");
+            var ctx = CreateContext(target, null, Create);
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
@@ -110,14 +112,14 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Create_StepCreatedTest();
-            var preImage = Context.CreateQuery("mwo_pluginstepregistration").First();
+            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
 
             var desc = "newDesc";
-            var target = new Entity("mwo_pluginstepregistration", preImage.Id)
+            var target = new Entity(PluginRegistration.LogicalName, preImage.Id)
             {
-                ["mwo_description"] = desc,
+                [PluginRegistration.Description] = desc,
             };
-            var ctx = CreateContext(target, preImage, "Update");
+            var ctx = CreateContext(target, preImage, Update);
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
@@ -133,14 +135,14 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Create_ImageCreatedTest();
-            var preImage = Context.CreateQuery("mwo_pluginstepregistration").First();
+            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
 
             var name = "newName";
-            var target = new Entity("mwo_pluginstepregistration", preImage.Id)
+            var target = new Entity(PluginRegistration.LogicalName, preImage.Id)
             {
-                ["mwo_imagename"] = name,
+                [PluginRegistration.Imagename] = name,
             };
-            var ctx = CreateContext(target, preImage, "Update");
+            var ctx = CreateContext(target, preImage, Update);
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
@@ -156,13 +158,13 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Create_StepCreatedTest();
-            var preImage = Context.CreateQuery("mwo_pluginstepregistration").First();
+            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
 
-            var target = new Entity("mwo_pluginstepregistration", preImage.Id)
+            var target = new Entity(PluginRegistration.LogicalName, preImage.Id)
             {
-                ["statecode"] = new OptionSetValue(1),
+                [PluginRegistration.Statecode] = new OptionSetValue(1),
             };
-            var ctx = CreateContext(target, preImage, "Update");
+            var ctx = CreateContext(target, preImage, Update);
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
@@ -178,13 +180,13 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Update_DeactivateTest();
-            var preImage = Context.CreateQuery("mwo_pluginstepregistration").First();
+            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
 
-            var target = new Entity("mwo_pluginstepregistration", preImage.Id)
+            var target = new Entity(PluginRegistration.LogicalName, preImage.Id)
             {
-                ["statecode"] = new OptionSetValue(0),
+                [PluginRegistration.Statecode] = new OptionSetValue(0),
             };
-            var ctx = CreateContext(target, preImage, "Update");
+            var ctx = CreateContext(target, preImage, Update);
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
@@ -201,10 +203,10 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Create_StepCreatedTest();
-            var preImage = Context.CreateQuery("mwo_pluginstepregistration").First();
+            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
 
-            var target = new Entity("mwo_pluginstepregistration", preImage.Id);
-            var ctx = CreateContext(target, preImage, "Delete");
+            var target = new Entity(PluginRegistration.LogicalName, preImage.Id);
+            var ctx = CreateContext(target, preImage, Delete);
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
@@ -219,9 +221,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Create_ImageCreatedTest();
-            var preImage = Context.CreateQuery("mwo_pluginstepregistration").First();
+            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
 
-            var ctx = CreateContext(preImage.ToEntityReference(), preImage, "Delete");
+            var ctx = CreateContext(preImage.ToEntityReference(), preImage, Delete);
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
@@ -236,10 +238,10 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Create_StepCreatedTest();
-            var preImage = Context.CreateQuery("mwo_pluginstepregistration").First();
-            preImage["mwo_managed"] = false;
+            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
+            preImage[PluginRegistration.Managed] = false;
 
-            var ctx = CreateContext(preImage.ToEntityReference(), preImage, "Delete");
+            var ctx = CreateContext(preImage.ToEntityReference(), preImage, Delete);
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
@@ -254,7 +256,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         public void Delete_NoTargetTest()
         {
             //Arrange
-            var ctx = CreateContext(null, null, "Delete");
+            var ctx = CreateContext(null, null, Delete);
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
@@ -265,7 +267,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         public void Delete_NoMessageTest()
         {
             //Arrange
-            var ctx = CreateContext(new Entity("mwo_pluginstepregistration") { ["mwo_managed"] = true }, null, null);
+            var ctx = CreateContext(new Entity(PluginRegistration.LogicalName) { [PluginRegistration.Managed] = true }, null, null);
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
@@ -276,9 +278,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Create_StepCreatedTest();
-            var preImage = Context.CreateQuery("mwo_pluginstepregistration").First();
+            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
 
-            var target = new Entity("mwo_pluginstepregistration", preImage.Id);
+            var target = new Entity(PluginRegistration.LogicalName, preImage.Id);
             var ctx = CreateContext(target, preImage, "Retrieve");
 
             //Act
