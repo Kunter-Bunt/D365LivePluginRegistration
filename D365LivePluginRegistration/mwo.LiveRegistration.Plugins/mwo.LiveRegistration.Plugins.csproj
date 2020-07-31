@@ -78,6 +78,8 @@
     <Compile Include="Interfaces\IContext.cs" />
     <Compile Include="Models\ImageType.cs" />
     <Compile Include="Models\Stage.cs" />
+    <Compile Include="Models\Messages.cs" />
+    <Compile Include="Models\PluginRegistration.cs" />
     <Compile Include="Models\Plugintype.cs" />
     <Compile Include="Models\Sdkmessage.cs" />
     <Compile Include="Models\Sdkmessagefilter.cs" />

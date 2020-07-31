@@ -19,22 +19,22 @@ namespace mwo.LiveRegistration.Plugins.Executables
 
         public void Execute(IContext context)
         {
-            if (!context.Subject.GetAttributeValue<bool>("mwo_managed")) return;
+            if (!context.Subject.GetAttributeValue<bool>(PluginRegistration.Managed)) return;
 
             var msg = context.PluginExecutionContext.MessageName.ToUpperInvariant();
             var pluginStepId = Guid.Empty;
-            var hasId = context.Subject.Contains("mwo_pluginstepid") && Guid.TryParse(context.Subject.GetAttributeValue<string>("mwo_pluginstepid"), out pluginStepId);
-            if (msg == "DELETE" && hasId)
+            var hasId = context.Subject.Contains(PluginRegistration.Pluginstepid) && Guid.TryParse(context.Subject.GetAttributeValue<string>(PluginRegistration.Pluginstepid), out pluginStepId);
+            if (msg == Messages.Delete && hasId)
             {
                 DoDelete(context, pluginStepId);
             }
-            else if (msg == "UPDATE" && hasId)
+            else if (msg == Messages.Update && hasId)
             {
                 DoUpdate(context, pluginStepId);
-                if (context.Target.Contains("statecode"))
+                if (context.Target.Contains(PluginRegistration.Statecode))
                     DoManageStage(context, pluginStepId);
             }
-            else if ((msg == "UPDATE" || msg == "CREATE") && !hasId)
+            else if ((msg == Messages.Update || msg == Messages.Create) && !hasId)
             {
                 DoCreate(context);
             }
@@ -46,7 +46,7 @@ namespace mwo.LiveRegistration.Plugins.Executables
 
         private void DoDelete(IContext context, Guid pluginStepId)
         {
-            context.Subject["mwo_imagetype"] = new OptionSetValue(122870010); //Pass Image none, as we are going to delete.
+            context.Subject[PluginRegistration.Imagetype] = new OptionSetValue(PluginRegistration.ImagetypeNone); //Pass Image none, as we are going to delete.
             DoManageImage(context, pluginStepId);
 
             StepManager.Delete(pluginStepId);
@@ -55,13 +55,13 @@ namespace mwo.LiveRegistration.Plugins.Executables
 
         private void DoManageStage(IContext context, Guid pluginStepId)
         {
-            var state = context.Subject.GetAttributeValue<OptionSetValue>("statecode");
-            if (state.Value == 0) //Active 
+            var state = context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Statecode);
+            if (state.Value == PluginRegistration.StatecodeActive)
             {
                 StepManager.Activate(pluginStepId);
                 context.Tracer.Trace($"Activated PluginStep: {pluginStepId}");
             }
-            else //Inactive
+            else
             {
                 StepManager.Deactivate(pluginStepId);
                 context.Tracer.Trace($"Deactivated PluginStep: {pluginStepId}");
@@ -72,15 +72,15 @@ namespace mwo.LiveRegistration.Plugins.Executables
         {
             StepManager.Update(
                                 pluginStepId,
-                                context.Subject.GetAttributeValue<string>("mwo_plugintypename"),
-                                context.Subject.GetAttributeValue<string>("mwo_sdkmessage"),
-                                context.Subject.GetAttributeValue<string>("mwo_primaryentity"),
-                                context.Subject.GetAttributeValue<string>("mwo_secondaryentity"),
-                                context.Subject.GetAttributeValue<string>("mwo_stepconfiguration"),
-                                context.Subject.GetAttributeValue<bool>("mwo_asynchronous"),
-                                MapStage(context.Subject.GetAttributeValue<OptionSetValue>("mwo_pluginstepstage")),
-                                context.Subject.GetAttributeValue<string>("mwo_filteringattributes"),
-                                context.Subject.GetAttributeValue<string>("mwo_description"));
+                                context.Subject.GetAttributeValue<string>(PluginRegistration.Plugintypename),
+                                context.Subject.GetAttributeValue<string>(PluginRegistration.Sdkmessage),
+                                context.Subject.GetAttributeValue<string>(PluginRegistration.Primaryentity),
+                                context.Subject.GetAttributeValue<string>(PluginRegistration.Secondaryentity),
+                                context.Subject.GetAttributeValue<string>(PluginRegistration.Stepconfiguration),
+                                context.Subject.GetAttributeValue<bool>(PluginRegistration.Asynchronous),
+                                MapStage(context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Pluginstepstage)),
+                                context.Subject.GetAttributeValue<string>(PluginRegistration.Filteringattributes),
+                                context.Subject.GetAttributeValue<string>(PluginRegistration.Description));
 
             context.Tracer.Trace($"Updated PluginStep: {pluginStepId}");
 
@@ -90,44 +90,44 @@ namespace mwo.LiveRegistration.Plugins.Executables
         private void DoCreate(IContext context)
         {
             var res = StepManager.Register(
-                context.Subject.GetAttributeValue<string>("mwo_plugintypename"),
-                context.Subject.GetAttributeValue<string>("mwo_sdkmessage"),
-                context.Subject.GetAttributeValue<string>("mwo_primaryentity"),
-                context.Subject.GetAttributeValue<string>("mwo_secondaryentity"),
-                context.Subject.GetAttributeValue<string>("mwo_stepconfiguration"),
-                context.Subject.GetAttributeValue<bool>("mwo_asynchronous"),
-                MapStage(context.Subject.GetAttributeValue<OptionSetValue>("mwo_pluginstepstage")),
-                context.Subject.GetAttributeValue<string>("mwo_filteringattributes"),
-                context.Subject.GetAttributeValue<string>("mwo_description"));
+                context.Subject.GetAttributeValue<string>(PluginRegistration.Plugintypename),
+                context.Subject.GetAttributeValue<string>(PluginRegistration.Sdkmessage),
+                context.Subject.GetAttributeValue<string>(PluginRegistration.Primaryentity),
+                context.Subject.GetAttributeValue<string>(PluginRegistration.Secondaryentity),
+                context.Subject.GetAttributeValue<string>(PluginRegistration.Stepconfiguration),
+                context.Subject.GetAttributeValue<bool>(PluginRegistration.Asynchronous),
+                MapStage(context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Pluginstepstage)),
+                context.Subject.GetAttributeValue<string>(PluginRegistration.Filteringattributes),
+                context.Subject.GetAttributeValue<string>(PluginRegistration.Description));
 
             context.Tracer.Trace($"Created new PluginStep: {res}");
-            context.Subject["mwo_pluginstepid"] = res.ToString();
+            context.Subject[PluginRegistration.Pluginstepid] = res.ToString();
 
             DoManageImage(context, res);
         }
 
         private void DoManageImage(IContext context, Guid pluginStepId)
         {
-            if (context.Subject.Contains("mwo_imagetype") && context.Subject.GetAttributeValue<OptionSetValue>("mwo_imagetype") != null && context.Subject.GetAttributeValue<OptionSetValue>("mwo_imagetype").Value != 122870010)
+            if (context.Subject.Contains(PluginRegistration.Imagetype) && context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Imagetype) != null && context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Imagetype).Value != PluginRegistration.ImagetypeNone)
             {
-                ImageManager.Upsert(MapImageType(context.Subject.GetAttributeValue<OptionSetValue>("mwo_imagetype")), context.Subject.GetAttributeValue<string>("mwo_imagename"), new EntityReference("sdkmessageprocessingstep", pluginStepId), context.Subject.GetAttributeValue<string>("mwo_imageattributes"));
-                context.Tracer.Trace($"Upserted image: {context.Subject.GetAttributeValue<string>("mwo_imagename")}");
+                ImageManager.Upsert(MapImageType(context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Imagetype)), context.Subject.GetAttributeValue<string>(PluginRegistration.Imagename), new EntityReference(Sdkmessageprocessingstep.LogicalName, pluginStepId), context.Subject.GetAttributeValue<string>(PluginRegistration.ImageAttributes));
+                context.Tracer.Trace($"Upserted image: {context.Subject.GetAttributeValue<string>(PluginRegistration.Imagename)}");
             }
             else
             {
-                ImageManager.Delete(new EntityReference("sdkmessageprocessingstep", pluginStepId));
-                context.Tracer.Trace($"Deleted image: {context.Subject.GetAttributeValue<string>("mwo_imagename")}");
+                ImageManager.Delete(new EntityReference(Sdkmessageprocessingstep.LogicalName, pluginStepId));
+                context.Tracer.Trace($"Deleted image: {context.Subject.GetAttributeValue<string>(PluginRegistration.Imagename)}");
             }
         }
 
         private static Stage MapStage(OptionSetValue optionSetValue)
         {
-            return (Stage)(optionSetValue.Value - 122870000); // Values were created to match stages!
+            return (Stage)(optionSetValue.Value - PluginRegistration.EnumPrefix); // Values were created to match stages!
         }
 
         private static ImageType MapImageType(OptionSetValue optionSetValue)
         {
-            return (ImageType)(optionSetValue.Value - 122870000); // Values were created to match types!
+            return (ImageType)(optionSetValue.Value - PluginRegistration.EnumPrefix); // Values were created to match types!
         }
     }
 }
