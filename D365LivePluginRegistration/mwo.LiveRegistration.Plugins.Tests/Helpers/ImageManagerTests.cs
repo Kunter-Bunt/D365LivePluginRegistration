@@ -27,7 +27,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
             Service = Context.GetOrganizationService();
             ImageManager = new ImageManager(Service);
 
-            MessageProccessingStep = new Entity("sdkmessageprocessingstep") { ["name"] = "Something" };
+            MessageProccessingStep = new Entity(Sdkmessageprocessingstep.LogicalName) { [Sdkmessageprocessingstep.Name] = "Something" };
             MessageProccessingStep.Id = Service.Create(MessageProccessingStep);
         }
 
@@ -38,14 +38,14 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
             ImageManager.Upsert(TypeEnum, ImageName, MessageProccessingStep.ToEntityReference(), null);
 
             //Assert
-            var results = Context.CreateQuery("sdkmessageprocessingstepimage").ToList();
+            var results = Context.CreateQuery(Sdkmessageprocessingstepimage.LogicalName).ToList();
             Assert.AreEqual(1, results.Count);
 
             var result = results.First();
-            Assert.AreEqual(MessageProccessingStep.Id, result.GetAttributeValue<EntityReference>("sdkmessageprocessingstepid").Id);
-            Assert.AreEqual(2, result.GetAttributeValue<OptionSetValue>("imagetype").Value);
-            Assert.AreEqual(ImageName, result.GetAttributeValue<string>("name"));
-            Assert.AreEqual("Target", result.GetAttributeValue<string>("messagepropertyname"));
+            Assert.AreEqual(MessageProccessingStep.Id, result.GetAttributeValue<EntityReference>(Sdkmessageprocessingstepimage.Sdkmessageprocessingstepid).Id);
+            Assert.AreEqual(2, result.GetAttributeValue<OptionSetValue>(Sdkmessageprocessingstepimage.Imagetype).Value);
+            Assert.AreEqual(ImageName, result.GetAttributeValue<string>(Sdkmessageprocessingstepimage.Name));
+            Assert.AreEqual("Target", result.GetAttributeValue<string>(Sdkmessageprocessingstepimage.Messagepropertyname));
         }
 
         [TestMethod]
@@ -58,11 +58,11 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
             ImageManager.Upsert(TypeEnum, ImageName, MessageProccessingStep.ToEntityReference(), Attributes);
 
             //Assert
-            var results = Context.CreateQuery("sdkmessageprocessingstepimage").ToList();
+            var results = Context.CreateQuery(Sdkmessageprocessingstepimage.LogicalName).ToList();
             Assert.AreEqual(1, results.Count);
 
             var result = results.First();
-            Assert.AreEqual(Attributes, result.GetAttributeValue<string>("attributes"));
+            Assert.AreEqual(Attributes, result.GetAttributeValue<string>(Sdkmessageprocessingstepimage.Attributes));
         }
 
         [TestMethod]
@@ -95,7 +95,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
             ImageManager.Delete(MessageProccessingStep.ToEntityReference());
 
             //Assert
-            var results = Context.CreateQuery("sdkmessageprocessingstepimage").ToList();
+            var results = Context.CreateQuery(Sdkmessageprocessingstepimage.LogicalName).ToList();
             Assert.AreEqual(0, results.Count);
         }
 

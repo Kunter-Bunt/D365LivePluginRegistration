@@ -38,25 +38,25 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
             Service = Context.GetOrganizationService();
             PluginManager = new PluginStepRegistrationManager(Service);
 
-            PluginType = new Entity("plugintype") { ["typename"] = PluginTypeName };
+            PluginType = new Entity(Plugintype.LogicalName) { [Plugintype.Typename] = PluginTypeName };
             PluginType.Id = Service.Create(PluginType);
 
-            MessageCreate = new Entity("sdkmessage") { ["name"] = Create };
+            MessageCreate = new Entity(Sdkmessage.LogicalName) { [Sdkmessage.Name] = Create };
             MessageCreate.Id = Service.Create(MessageCreate);
 
-            MessageAssociate = new Entity("sdkmessage") { ["name"] = Associate };
+            MessageAssociate = new Entity(Sdkmessage.LogicalName) { [Sdkmessage.Name] = Associate };
             MessageAssociate.Id = Service.Create(MessageAssociate);
 
-            MessageGlobalAction = new Entity("sdkmessage") { ["name"] = GlobalAction };
+            MessageGlobalAction = new Entity(Sdkmessage.LogicalName) { [Sdkmessage.Name] = GlobalAction };
             MessageGlobalAction.Id = Service.Create(MessageGlobalAction);
 
-            MessageFilterCreate = new Entity("sdkmessagefilter") { ["sdkmessageid"] = MessageCreate.ToEntityReference(), ["primaryobjecttypecode"] = PrimaryEntityName };
+            MessageFilterCreate = new Entity(Sdkmessagefilter.LogicalName) { [Sdkmessagefilter.Sdkmessageid] = MessageCreate.ToEntityReference(), [Sdkmessagefilter.Primaryobjecttypecode] = PrimaryEntityName };
             MessageFilterCreate.Id = Service.Create(MessageFilterCreate);
 
-            MessageFilterAssociate = new Entity("sdkmessagefilter") { ["sdkmessageid"] = MessageAssociate.ToEntityReference(), ["primaryobjecttypecode"] = PrimaryEntityName, ["secondaryobjecttypecode"] = SecondaryEntityName };
+            MessageFilterAssociate = new Entity(Sdkmessagefilter.LogicalName) { [Sdkmessagefilter.Sdkmessageid] = MessageAssociate.ToEntityReference(), [Sdkmessagefilter.Primaryobjecttypecode] = PrimaryEntityName, [Sdkmessagefilter.Secondaryobjecttypecode] = SecondaryEntityName };
             MessageFilterAssociate.Id = Service.Create(MessageFilterAssociate);
 
-            MessageProccessingStep = new Entity("sdkmessageprocessingstep") { ["name"] = "Something" };
+            MessageProccessingStep = new Entity(Sdkmessageprocessingstep.LogicalName) { [Sdkmessageprocessingstep.Name] = "Something" };
             MessageProccessingStep.Id = Service.Create(MessageProccessingStep);
         }
 
@@ -68,10 +68,10 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
 
             //Assert
             Assert.AreNotEqual(Guid.Empty, id);
-            var result = Service.Retrieve("sdkmessageprocessingstep", id, new ColumnSet(true));
-            Assert.AreEqual(MessageFilterCreate.Id, result.GetAttributeValue<EntityReference>("sdkmessagefilterid").Id);
-            Assert.AreEqual(1, result.GetAttributeValue<OptionSetValue>("mode").Value);
-            Assert.AreEqual((int)Stage.PostOperation, result.GetAttributeValue<OptionSetValue>("stage").Value);
+            var result = Service.Retrieve(Sdkmessageprocessingstep.LogicalName, id, new ColumnSet(true));
+            Assert.AreEqual(MessageFilterCreate.Id, result.GetAttributeValue<EntityReference>(Sdkmessageprocessingstep.Sdkmessagefilterid).Id);
+            Assert.AreEqual(1, result.GetAttributeValue<OptionSetValue>(Sdkmessageprocessingstep.Mode).Value);
+            Assert.AreEqual((int)Stage.PostOperation, result.GetAttributeValue<OptionSetValue>(Sdkmessageprocessingstep.Stage).Value);
         }
 
         [TestMethod]
@@ -82,10 +82,10 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
 
             //Assert
             Assert.AreNotEqual(Guid.Empty, id);
-            var result = Service.Retrieve("sdkmessageprocessingstep", id, new ColumnSet(true));
-            Assert.AreEqual(MessageFilterAssociate.Id, result.GetAttributeValue<EntityReference>("sdkmessagefilterid").Id);
-            Assert.AreEqual(1, result.GetAttributeValue<OptionSetValue>("mode").Value);
-            Assert.AreEqual((int)Stage.PostOperation, result.GetAttributeValue<OptionSetValue>("stage").Value);
+            var result = Service.Retrieve(Sdkmessageprocessingstep.LogicalName, id, new ColumnSet(true));
+            Assert.AreEqual(MessageFilterAssociate.Id, result.GetAttributeValue<EntityReference>(Sdkmessageprocessingstep.Sdkmessagefilterid).Id);
+            Assert.AreEqual(1, result.GetAttributeValue<OptionSetValue>(Sdkmessageprocessingstep.Mode).Value);
+            Assert.AreEqual((int)Stage.PostOperation, result.GetAttributeValue<OptionSetValue>(Sdkmessageprocessingstep.Stage).Value);
         }
 
         [TestMethod]
@@ -112,11 +112,11 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
 
             //Assert
             Assert.AreNotEqual(Guid.Empty, id);
-            var result = Service.Retrieve("sdkmessageprocessingstep", id, new ColumnSet(true));
-            Assert.AreEqual(0, result.GetAttributeValue<OptionSetValue>("mode").Value);
-            Assert.IsNull(result.GetAttributeValue<EntityReference>("sdkmessagefilterid"));
-            Assert.AreEqual(MessageGlobalAction.Id, result.GetAttributeValue<EntityReference>("sdkmessageid").Id);
-            Assert.AreEqual((int)Stage.PreOperation, result.GetAttributeValue<OptionSetValue>("stage").Value);
+            var result = Service.Retrieve(Sdkmessageprocessingstep.LogicalName, id, new ColumnSet(true));
+            Assert.AreEqual(0, result.GetAttributeValue<OptionSetValue>(Sdkmessageprocessingstep.Mode).Value);
+            Assert.IsNull(result.GetAttributeValue<EntityReference>(Sdkmessageprocessingstep.Sdkmessagefilterid));
+            Assert.AreEqual(MessageGlobalAction.Id, result.GetAttributeValue<EntityReference>(Sdkmessageprocessingstep.Sdkmessageid).Id);
+            Assert.AreEqual((int)Stage.PreOperation, result.GetAttributeValue<OptionSetValue>(Sdkmessageprocessingstep.Stage).Value);
         }
 
         [TestMethod]
@@ -127,14 +127,14 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
 
             //Assert
             Assert.AreNotEqual(Guid.Empty, id);
-            var result = Service.Retrieve("sdkmessageprocessingstep", id, new ColumnSet(true));
-            Assert.IsTrue(result.GetAttributeValue<string>("name").Contains(Associate));
-            Assert.IsTrue(result.GetAttributeValue<string>("name").Contains(PrimaryEntityName));
-            Assert.IsTrue(result.GetAttributeValue<string>("name").Contains(SecondaryEntityName));
-            Assert.IsTrue(result.GetAttributeValue<string>("name").Contains(Stage.PostOperation.ToString()));
-            Assert.IsTrue(result.GetAttributeValue<string>("name").Contains(PluginTypeName));
-            Assert.IsTrue(result.GetAttributeValue<string>("name").Contains("Asynchronous"));
-            Assert.AreEqual(Description, result.GetAttributeValue<string>("description"));
+            var result = Service.Retrieve(Sdkmessageprocessingstep.LogicalName, id, new ColumnSet(true));
+            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(Associate));
+            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(PrimaryEntityName));
+            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(SecondaryEntityName));
+            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(Stage.PostOperation.ToString()));
+            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(PluginTypeName));
+            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains("Asynchronous"));
+            Assert.AreEqual(Description, result.GetAttributeValue<string>(Sdkmessageprocessingstep.Description));
         }
 
 
@@ -145,14 +145,14 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
             PluginManager.Update(MessageProccessingStep.Id, PluginTypeName, Associate, PrimaryEntityName, SecondaryEntityName, null, true, Stage.PostOperation, null, Description);
 
             //Assert
-            var result = Service.Retrieve("sdkmessageprocessingstep", MessageProccessingStep.Id, new ColumnSet(true));
-            Assert.IsTrue(result.GetAttributeValue<string>("name").Contains(Associate));
-            Assert.IsTrue(result.GetAttributeValue<string>("name").Contains(PrimaryEntityName));
-            Assert.IsTrue(result.GetAttributeValue<string>("name").Contains(SecondaryEntityName));
-            Assert.IsTrue(result.GetAttributeValue<string>("name").Contains(Stage.PostOperation.ToString()));
-            Assert.IsTrue(result.GetAttributeValue<string>("name").Contains(PluginTypeName));
-            Assert.IsTrue(result.GetAttributeValue<string>("name").Contains("Asynchronous"));
-            Assert.AreEqual(Description, result.GetAttributeValue<string>("description"));
+            var result = Service.Retrieve(Sdkmessageprocessingstep.LogicalName, MessageProccessingStep.Id, new ColumnSet(true));
+            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(Associate));
+            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(PrimaryEntityName));
+            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(SecondaryEntityName));
+            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(Stage.PostOperation.ToString()));
+            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(PluginTypeName));
+            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains("Asynchronous"));
+            Assert.AreEqual(Description, result.GetAttributeValue<string>(Sdkmessageprocessingstep.Description));
         }
 
         [TestMethod]
@@ -165,8 +165,8 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
             PluginManager.Activate(MessageProccessingStep.Id);
 
             //Assert
-            var result = Service.Retrieve("sdkmessageprocessingstep", MessageProccessingStep.Id, new ColumnSet(true));
-            Assert.AreEqual(0, result.GetAttributeValue<OptionSetValue>("statecode").Value);
+            var result = Service.Retrieve(Sdkmessageprocessingstep.LogicalName, MessageProccessingStep.Id, new ColumnSet(true));
+            Assert.AreEqual(0, result.GetAttributeValue<OptionSetValue>(Sdkmessageprocessingstep.Statecode).Value);
         }
 
         [TestMethod]
@@ -176,8 +176,8 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
             PluginManager.Deactivate(MessageProccessingStep.Id);
 
             //Assert
-            var result = Service.Retrieve("sdkmessageprocessingstep", MessageProccessingStep.Id, new ColumnSet(true));
-            Assert.AreEqual(1, result.GetAttributeValue<OptionSetValue>("statecode").Value);
+            var result = Service.Retrieve(Sdkmessageprocessingstep.LogicalName, MessageProccessingStep.Id, new ColumnSet(true));
+            Assert.AreEqual(1, result.GetAttributeValue<OptionSetValue>(Sdkmessageprocessingstep.Statecode).Value);
         }
 
         [TestMethod]
@@ -188,7 +188,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
             PluginManager.Delete(MessageProccessingStep.Id);
 
             //Assert
-            Service.Retrieve("sdkmessageprocessingstep", MessageProccessingStep.Id, new ColumnSet(true));
+            Service.Retrieve(Sdkmessageprocessingstep.LogicalName, MessageProccessingStep.Id, new ColumnSet(true));
         }
     }
 }

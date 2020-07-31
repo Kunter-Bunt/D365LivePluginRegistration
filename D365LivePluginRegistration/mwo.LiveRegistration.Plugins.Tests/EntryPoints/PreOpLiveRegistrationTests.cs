@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xrm.Sdk;
 using mwo.LiveRegistration.Plugins.EntryPoints;
+using mwo.LiveRegistration.Plugins.Models;
 using System;
 using System.Linq;
 
@@ -28,13 +29,13 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context = new XrmFakedContext();
             Service = Context.GetOrganizationService();
 
-            PluginType = new Entity("plugintype") { ["typename"] = PluginTypeName };
+            PluginType = new Entity(Plugintype.LogicalName) { [Plugintype.Typename] = PluginTypeName };
             PluginType.Id = Service.Create(PluginType);
 
-            MessageCreate = new Entity("sdkmessage") { ["name"] = Create };
+            MessageCreate = new Entity(Sdkmessage.LogicalName) { [Sdkmessage.Name] = Create };
             MessageCreate.Id = Service.Create(MessageCreate);
 
-            MessageFilterCreate = new Entity("sdkmessagefilter") { ["sdkmessageid"] = MessageCreate.ToEntityReference(), ["primaryobjecttypecode"] = PrimaryEntityName };
+            MessageFilterCreate = new Entity(Sdkmessagefilter.LogicalName) { [Sdkmessagefilter.Sdkmessageid] = MessageCreate.ToEntityReference(), [Sdkmessagefilter.Primaryobjecttypecode] = PrimaryEntityName };
             MessageFilterCreate.Id = Service.Create(MessageFilterCreate);
         }
 
@@ -65,7 +66,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             //Assert
             Assert.IsNotNull(target.GetAttributeValue<string>("mwo_pluginstepid"));
 
-            var steps = Context.CreateQuery("sdkmessageprocessingstep").ToList();
+            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
             Assert.AreEqual(1, steps.Count);
 
             target.Id = Service.Create(target); //This is here for the other tests that rely on the Entity being there.
@@ -98,7 +99,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery("sdkmessageprocessingstepimage").ToList();
+            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
             Assert.AreEqual(1, steps.Count);
 
             target.Id = Service.Create(target); //This is here for the other tests that rely on the Entity being there.
@@ -122,9 +123,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery("sdkmessageprocessingstep").ToList();
+            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
             Assert.AreEqual(1, steps.Count);
-            Assert.AreEqual(desc, steps.First().GetAttributeValue<string>("description"));
+            Assert.AreEqual(desc, steps.First().GetAttributeValue<string>(Sdkmessageprocessingstep.Description));
         }
 
         [TestMethod]
@@ -145,9 +146,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery("sdkmessageprocessingstepimage").ToList();
+            var steps = Context.CreateQuery(Sdkmessageprocessingstepimage.LogicalName).ToList();
             Assert.AreEqual(1, steps.Count);
-            Assert.AreEqual(name, steps.First().GetAttributeValue<string>("entityalias"));
+            Assert.AreEqual(name, steps.First().GetAttributeValue<string>(Sdkmessageprocessingstepimage.Entityalias));
         }
 
         [TestMethod]
@@ -167,9 +168,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery("sdkmessageprocessingstep").ToList();
+            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
             Assert.AreEqual(1, steps.Count);
-            Assert.AreEqual(1, steps.First().GetAttributeValue<OptionSetValue>("statecode").Value);
+            Assert.AreEqual(1, steps.First().GetAttributeValue<OptionSetValue>(Sdkmessageprocessingstep.Statecode).Value);
         }
 
         [TestMethod]
@@ -189,9 +190,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery("sdkmessageprocessingstep").ToList();
+            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
             Assert.AreEqual(1, steps.Count);
-            Assert.AreEqual(0, steps.First().GetAttributeValue<OptionSetValue>("statecode").Value);
+            Assert.AreEqual(0, steps.First().GetAttributeValue<OptionSetValue>(Sdkmessageprocessingstep.Statecode).Value);
         }
 
 
@@ -209,7 +210,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery("sdkmessageprocessingstep").ToList();
+            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
             Assert.AreEqual(0, steps.Count);
         }
 
@@ -226,8 +227,8 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery("sdkmessageprocessingstepimage").ToList();
-            Assert.AreEqual(0, steps.Count);
+            var images = Context.CreateQuery(Sdkmessageprocessingstepimage.LogicalName).ToList();
+            Assert.AreEqual(0, images.Count);
         }
 
         [TestMethod]
@@ -244,7 +245,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery("sdkmessageprocessingstep").ToList();
+            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
             Assert.AreEqual(1, steps.Count);
         }
 
@@ -284,7 +285,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery("sdkmessageprocessingstep").ToList();
+            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
             Assert.AreEqual(1, steps.Count);
         }
 
