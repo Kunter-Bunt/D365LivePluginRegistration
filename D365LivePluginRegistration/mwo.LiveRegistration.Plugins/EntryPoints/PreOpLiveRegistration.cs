@@ -6,6 +6,9 @@ using System;
 
 namespace mwo.LiveRegistration.Plugins.EntryPoints
 {
+    /// <summary>
+    /// Entrypoint Class implementing IPlugin, to be registered in CRM.
+    /// </summary>
     [CrmPluginRegistration(MessageNameEnum.Create, PluginRegistration.LogicalName,
         StageEnum.PreOperation, ExecutionModeEnum.Synchronous, FilterAttribute,
         PluginNameCreate, Sdkmessageprocessingstep.RankDefault, IsolationModeEnum.Sandbox)]

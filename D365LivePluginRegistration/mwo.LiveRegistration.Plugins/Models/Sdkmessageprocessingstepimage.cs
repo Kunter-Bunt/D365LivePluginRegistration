@@ -1,5 +1,8 @@
 namespace mwo.LiveRegistration.Plugins.Models
 {
+    /// <summary>
+    /// Holder class for defining a model for the class sdkmessageprocessingstepimage
+    /// </summary>
     public static class Sdkmessageprocessingstepimage
     {
         public const string LogicalName = "sdkmessageprocessingstepimage";

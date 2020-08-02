@@ -7,6 +7,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace mwo.LiveRegistration.Plugins.Models
 {
+    /// <summary>
+    /// Generates a Context from an IServiceProvider to serve executables.
+    /// </summary>
     public class CRMPluginContext : ICRMContext
     {
         public const string TargetName = "Target";
@@ -15,7 +18,7 @@ namespace mwo.LiveRegistration.Plugins.Models
         public Entity Target { get; private set; }
         public Entity PreImage { get; private set; }
         public Entity Subject { get; private set; }
-        public IOrganizationService Service { get; set; }
+        public IOrganizationService Service { get; private set; }
         public IPluginExecutionContext PluginExecutionContext { get; private set; }
         public IOrganizationServiceFactory Factory { get; private set; }
         public ITracingService Tracer { get; private set; }

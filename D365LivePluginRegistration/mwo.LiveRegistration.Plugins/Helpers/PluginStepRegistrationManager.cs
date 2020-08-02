@@ -7,6 +7,9 @@ using System.Linq;
 
 namespace mwo.LiveRegistration.Plugins.Helpers
 {
+    /// <summary>
+    /// Class will help interacting with Plugin Steps.
+    /// </summary>
     public class PluginStepRegistrationManager : IPluginStepRegistrationManager
     {
         private readonly IOrganizationService Svc;
@@ -16,23 +19,35 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             Svc = service;
         }
 
+        /// <summary>
+        /// Removes the step.
+        /// </summary>
         public void Delete(Guid id)
         {
             Svc.Delete(Sdkmessageprocessingstep.LogicalName, id);
         }
 
+        /// <summary>
+        /// Enables the given step.
+        /// </summary>
         public void Activate(Guid id)
         {
             Entity step = ComposeMoniker(id, Sdkmessageprocessingstep.StateActive, Sdkmessageprocessingstep.StatusActive);
             Svc.Update(step);
         }
 
+        /// <summary>
+        /// Disables the given step.
+        /// </summary>
         public void Deactivate(Guid id)
         {
             Entity step = ComposeMoniker(id, Sdkmessageprocessingstep.StateInactive, Sdkmessageprocessingstep.StatusInactive);
             Svc.Update(step);
         }
 
+        /// <summary>
+        /// Given the existing Step, updates its properties.
+        /// </summary>
         public void Update(Guid id,
                             string pluginTypeName,
                             string sdkMessage,
@@ -49,6 +64,9 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             Svc.Update(step);
         }
 
+        /// <summary>
+        /// Creates a new Step for the specified plugintype.
+        /// </summary>
         public Guid Register(string pluginTypeName,
                             string sdkMessage,
                             string primaryEntity,

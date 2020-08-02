@@ -6,6 +6,9 @@ using System;
 
 namespace mwo.LiveRegistration.Plugins.Executables
 {
+    /// <summary>
+    /// Main Logic class managing registration step and image.
+    /// </summary>
     class Registrator : ICRMExecutable
     {
         private IPluginStepRegistrationManager StepManager { get; set; }

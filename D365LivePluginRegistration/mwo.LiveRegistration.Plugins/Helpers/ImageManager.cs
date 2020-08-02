@@ -7,6 +7,9 @@ using System.Linq;
 
 namespace mwo.LiveRegistration.Plugins.Helpers
 {
+    /// <summary>
+    /// Class will help interacting with Pre-/Post-Entity Images.
+    /// </summary>
     public class ImageManager : IImageManager
     {
         private readonly IOrganizationService Service;
@@ -16,6 +19,9 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             Service = svc;
         }
 
+        /// <summary>
+        /// Deletes the image of the specified step
+        /// </summary>
         public void Delete(EntityReference sdkMessageProcessingStepRef)
         {
             if (sdkMessageProcessingStepRef == null) return;
@@ -24,6 +30,9 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             if (existing != null) Service.Delete(Sdkmessageprocessingstepimage.LogicalName, existing.Id);
         }
 
+        /// <summary>
+        /// Will create or update the image of the step with the specified values.
+        /// </summary>
         public void Upsert(ImageType imageType, string imageName, EntityReference sdkMessageProcessingStepRef, string attributes)
         {
             if (string.IsNullOrEmpty(imageName)) return;

@@ -1,5 +1,8 @@
 namespace mwo.LiveRegistration.Plugins.Models
 {
+    /// <summary>
+    /// Holder class for defining a model for the class mwo_pluginregistration.
+    /// </summary>
     public static class PluginRegistration
     {
         public const string LogicalName = "mwo_pluginstepregistration";
@@ -23,7 +26,7 @@ namespace mwo.LiveRegistration.Plugins.Models
 
         public const string Imagetype = "mwo_imagetype";
         public const int ImagetypeNone = 122870010;
-        
+
         public const string Imagename = "mwo_imagename";
         public const string ImageAttributes = "mwo_imageattributes";
 
