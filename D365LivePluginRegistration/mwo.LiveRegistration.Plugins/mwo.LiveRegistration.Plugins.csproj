@@ -68,7 +68,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntryPoints\PreOpEventHandler.cs" />
     <Compile Include="EntryPoints\PreOpLiveRegistration.cs" />
+    <Compile Include="Executables\EventHandlerAssociator.cs" />
     <Compile Include="Executables\Registrator.cs" />
     <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="Interfaces\IImageManager.cs" />
@@ -77,7 +79,10 @@
     <Compile Include="Models\CRMPluginContext.cs" />
     <Compile Include="Interfaces\ICRMContext.cs" />
     <Compile Include="Interfaces\ICRMEvent.cs" />
+    <Compile Include="Models\EventHandlerType.cs" />
     <Compile Include="Models\ImageType.cs" />
+    <Compile Include="Models\PluginEventHandler.cs" />
+    <Compile Include="Models\ServiceEndpoint.cs" />
     <Compile Include="Models\Stage.cs" />
     <Compile Include="Models\CRMMessages.cs" />
     <Compile Include="Models\PluginRegistration.cs" />

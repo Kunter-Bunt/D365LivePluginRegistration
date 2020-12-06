@@ -104,6 +104,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="EntryPoints\PreOpEventHandlerTests.cs" />
     <Compile Include="Extensions\EntityExtensionsTests.cs" />
     <Compile Include="EntryPoints\PreOpLiveRegistrationTests.cs" />
     <Compile Include="Helpers\ImageManagerTests.cs" />

@@ -1,11 +1,12 @@
 ﻿using Microsoft.Xrm.Sdk;
+using mwo.LiveRegistration.Plugins.Models;
 
 namespace mwo.LiveRegistration.Plugins
 {
     /// <summary>
     /// Extentions for the base type int.
     /// </summary>
-    static class IntExtensions
+    public static class IntExtensions
     {
         /// <summary>
         /// Emits the integer as Microsoft.Xrm.Sdk.OptionSetValue.
@@ -13,6 +14,11 @@ namespace mwo.LiveRegistration.Plugins
         public static OptionSetValue ToOptionSetValue(this int i)
         {
             return new OptionSetValue(i);
+        }
+
+        public static EventHandlerType ToEventHandlerType(this int optionSetValue)
+        {
+            return (EventHandlerType)(optionSetValue - PluginRegistration.EnumPrefix);
         }
     }
 }

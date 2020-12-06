@@ -7,6 +7,7 @@ namespace mwo.LiveRegistration.Plugins.Models
     {
         public const string LogicalName = "sdkmessageprocessingstep";
         public const string Plugintypeid = "plugintypeid";
+        public const string EventHandler = "eventhandler";
         public const string Sdkmessageid = "sdkmessageid";
         public const string Sdkmessagefilterid = "sdkmessagefilterid";
         public const string Name = "name";

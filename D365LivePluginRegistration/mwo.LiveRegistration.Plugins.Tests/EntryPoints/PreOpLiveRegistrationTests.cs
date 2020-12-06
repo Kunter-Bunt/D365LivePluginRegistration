@@ -21,6 +21,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         private const string Associate = nameof(Associate);
         private const string GlobalAction = nameof(GlobalAction);
         private const string Description = nameof(Description);
+        private Entity EventHandler;
         private Entity PluginType;
         private Entity MessageCreate;
         private Entity MessageFilterCreate;
@@ -33,6 +34,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
 
             PluginType = new Entity(Plugintype.LogicalName) { [Plugintype.Typename] = PluginTypeName };
             PluginType.Id = Service.Create(PluginType);
+
+            EventHandler = new Entity(PluginEventHandler.LogicalName) { [PluginEventHandler.TypeLogicalName] = Plugintype.LogicalName, [PluginEventHandler.CrmEventHandlerId] = PluginType.Id.ToString(), };
+            EventHandler.Id = Service.Create(EventHandler);
 
             MessageCreate = new Entity(Sdkmessage.LogicalName) { [Sdkmessage.Name] = Create };
             MessageCreate.Id = Service.Create(MessageCreate);
@@ -47,7 +51,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             //Arrange
             var target = new Entity(PluginRegistration.LogicalName)
             {
-                [PluginRegistration.Plugintypename] = PluginTypeName,
+                [PluginRegistration.EventHandler] = EventHandler.ToEntityReference(),
                 [PluginRegistration.Sdkmessage] = Create,
                 [PluginRegistration.Primaryentity] = PrimaryEntityName,
                 [PluginRegistration.Secondaryentity] = null,
@@ -80,7 +84,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             //Arrange
             var target = new Entity(PluginRegistration.LogicalName)
             {
-                [PluginRegistration.Plugintypename] = PluginTypeName,
+                [PluginRegistration.EventHandler] = EventHandler.ToEntityReference(),
                 [PluginRegistration.Sdkmessage] = Create,
                 [PluginRegistration.Primaryentity] = PrimaryEntityName,
                 [PluginRegistration.Secondaryentity] = null,

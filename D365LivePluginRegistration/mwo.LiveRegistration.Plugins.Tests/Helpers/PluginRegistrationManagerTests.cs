@@ -17,12 +17,14 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
         private IOrganizationService Service;
         private IPluginStepRegistrationManager PluginManager;
         private const string PluginTypeName = "abc.xyz";
+        private const string StepName = "abc.xyz_Create";
         private const string PrimaryEntityName = "lead";
         private const string SecondaryEntityName = "account";
         private const string Create = nameof(Create);
         private const string Associate = nameof(Associate);
         private const string GlobalAction = nameof(GlobalAction);
         private const string Description = nameof(Description);
+        private Entity EventHandler;
         private Entity PluginType;
         private Entity MessageCreate;
         private Entity MessageAssociate;
@@ -40,6 +42,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
 
             PluginType = new Entity(Plugintype.LogicalName) { [Plugintype.Typename] = PluginTypeName };
             PluginType.Id = Service.Create(PluginType);
+
+            EventHandler = new Entity(PluginEventHandler.LogicalName) { [PluginEventHandler.TypeLogicalName] = Plugintype.LogicalName, [PluginEventHandler.CrmEventHandlerId] = PluginType.Id.ToString(), };
+            EventHandler.Id = Service.Create(EventHandler);
 
             MessageCreate = new Entity(Sdkmessage.LogicalName) { [Sdkmessage.Name] = Create };
             MessageCreate.Id = Service.Create(MessageCreate);
@@ -64,7 +69,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
         public void Register_CreateLeadTest()
         {
             //Act
-            var id = PluginManager.Register(PluginTypeName, Create, PrimaryEntityName, null, null, true, Stage.PostOperation, null, Description);
+            var id = PluginManager.Register(EventHandler.ToEntityReference(), StepName, Create, PrimaryEntityName, null, null, true, Stage.PostOperation, null, Description);
 
             //Assert
             Assert.AreNotEqual(Guid.Empty, id);
@@ -78,7 +83,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
         public void Register_AssociateLeadAccountTest()
         {
             //Act
-            var id = PluginManager.Register(PluginTypeName, Associate, PrimaryEntityName, SecondaryEntityName, null, true, Stage.PostOperation, null, null);
+            var id = PluginManager.Register(EventHandler.ToEntityReference(), StepName, Associate, PrimaryEntityName, SecondaryEntityName, null, true, Stage.PostOperation, null, null);
 
             //Assert
             Assert.AreNotEqual(Guid.Empty, id);
@@ -93,22 +98,22 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
         public void Register_MessageNotExisitingTest()
         {
             //Act
-            PluginManager.Register(PluginTypeName, "Nope", PrimaryEntityName, null, null, true, Stage.PostOperation, null, null);
+            PluginManager.Register(EventHandler.ToEntityReference(), StepName, "Nope", PrimaryEntityName, null, null, true, Stage.PostOperation, null, null);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ArgumentNullException))]
         public void Register_PluginNotExisitingTest()
         {
             //Act
-            PluginManager.Register("Nope", Create, PrimaryEntityName, null, null, true, Stage.PostOperation, null, null);
+            PluginManager.Register(null, StepName, Create, PrimaryEntityName, null, null, true, Stage.PostOperation, null, null);
         }
 
         [TestMethod]
         public void Register_GlobalActionTest()
         {
             //Act
-            var id = PluginManager.Register(PluginTypeName, GlobalAction, null, null, null, false, Stage.PreOperation, null, null);
+            var id = PluginManager.Register(EventHandler.ToEntityReference(), StepName, GlobalAction, null, null, null, false, Stage.PreOperation, null, null);
 
             //Assert
             Assert.AreNotEqual(Guid.Empty, id);
@@ -123,17 +128,12 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
         public void Register_NameDescTest()
         {
             //Act
-            var id = PluginManager.Register(PluginTypeName, Associate, PrimaryEntityName, SecondaryEntityName, null, true, Stage.PostOperation, null, Description);
+            var id = PluginManager.Register(EventHandler.ToEntityReference(), StepName, Associate, PrimaryEntityName, SecondaryEntityName, null, true, Stage.PostOperation, null, Description);
 
             //Assert
             Assert.AreNotEqual(Guid.Empty, id);
             var result = Service.Retrieve(Sdkmessageprocessingstep.LogicalName, id, new ColumnSet(true));
-            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(Associate));
-            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(PrimaryEntityName));
-            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(SecondaryEntityName));
-            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(Stage.PostOperation.ToString()));
-            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(PluginTypeName));
-            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains("Asynchronous"));
+            Assert.AreEqual(StepName, result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name));
             Assert.AreEqual(Description, result.GetAttributeValue<string>(Sdkmessageprocessingstep.Description));
         }
 
@@ -142,16 +142,11 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
         public void Update_NameDescTest()
         {
             //Act
-            PluginManager.Update(MessageProccessingStep.Id, PluginTypeName, Associate, PrimaryEntityName, SecondaryEntityName, null, true, Stage.PostOperation, null, Description);
+            PluginManager.Update(MessageProccessingStep.Id, EventHandler.ToEntityReference(), StepName, Associate, PrimaryEntityName, SecondaryEntityName, null, true, Stage.PostOperation, null, Description);
 
             //Assert
             var result = Service.Retrieve(Sdkmessageprocessingstep.LogicalName, MessageProccessingStep.Id, new ColumnSet(true));
-            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(Associate));
-            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(PrimaryEntityName));
-            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(SecondaryEntityName));
-            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(Stage.PostOperation.ToString()));
-            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains(PluginTypeName));
-            Assert.IsTrue(result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name).Contains("Asynchronous"));
+            Assert.AreEqual(StepName, result.GetAttributeValue<string>(Sdkmessageprocessingstep.Name));
             Assert.AreEqual(Description, result.GetAttributeValue<string>(Sdkmessageprocessingstep.Description));
         }
 

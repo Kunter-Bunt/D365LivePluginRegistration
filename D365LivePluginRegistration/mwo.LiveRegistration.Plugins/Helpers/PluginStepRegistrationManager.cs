@@ -49,7 +49,8 @@ namespace mwo.LiveRegistration.Plugins.Helpers
         /// Given the existing Step, updates its properties.
         /// </summary>
         public void Update(Guid id,
-                            string pluginTypeName,
+                            EntityReference eventHandler,
+                            string name,
                             string sdkMessage,
                             string primaryEntity,
                             string secondaryEntity,
@@ -59,7 +60,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
                             string filteringAttributes,
                             string description)
         {
-            Entity step = ComposeEntity(pluginTypeName, sdkMessage, primaryEntity, secondaryEntity, stepconfiguration, asynchronous, stage, filteringAttributes, description);
+            Entity step = ComposeEntity(eventHandler, name, sdkMessage, primaryEntity, secondaryEntity, stepconfiguration, asynchronous, stage, filteringAttributes, description);
             step.Id = id;
             Svc.Update(step);
         }
@@ -67,7 +68,8 @@ namespace mwo.LiveRegistration.Plugins.Helpers
         /// <summary>
         /// Creates a new Step for the specified plugintype.
         /// </summary>
-        public Guid Register(string pluginTypeName,
+        public Guid Register(EntityReference eventHandler,
+                            string name,
                             string sdkMessage,
                             string primaryEntity,
                             string secondaryEntity,
@@ -77,22 +79,22 @@ namespace mwo.LiveRegistration.Plugins.Helpers
                             string filteringAttributes,
                             string description)
         {
-            Entity step = ComposeEntity(pluginTypeName, sdkMessage, primaryEntity, secondaryEntity, stepconfiguration, asynchronous, stage, filteringAttributes, description);
+            Entity step = ComposeEntity(eventHandler, name, sdkMessage, primaryEntity, secondaryEntity, stepconfiguration, asynchronous, stage, filteringAttributes, description);
             return Svc.Create(step);
         }
 
-        private Entity ComposeEntity(string pluginTypeName, string sdkMessage, string primaryEntity, string secondaryEntity, string stepconfiguration, bool asynchronous, Stage stage, string filteringAttributes, string description)
+        private Entity ComposeEntity(EntityReference eventHandler, string name, string sdkMessage, string primaryEntity, string secondaryEntity, string stepconfiguration, bool asynchronous, Stage stage, string filteringAttributes, string description)
         {
-            Entity plugin = GetPlugin(pluginTypeName);
+            EntityReference handler = GetEventHandler(eventHandler);
             Entity message = GetMessage(sdkMessage);
             Entity messageFilter = GetMessageFilter(message, primaryEntity, secondaryEntity);
 
             var entity = new Entity(Sdkmessageprocessingstep.LogicalName)
             {
-                [Sdkmessageprocessingstep.Plugintypeid] = plugin.ToEntityReference(),
+                [Sdkmessageprocessingstep.EventHandler] = handler,
                 [Sdkmessageprocessingstep.Sdkmessageid] = message.ToEntityReference(),
                 [Sdkmessageprocessingstep.Sdkmessagefilterid] = messageFilter?.ToEntityReference(),
-                [Sdkmessageprocessingstep.Name] = BuildName(pluginTypeName, sdkMessage, stage, primaryEntity, secondaryEntity, asynchronous),
+                [Sdkmessageprocessingstep.Name] = name,
                 [Sdkmessageprocessingstep.Configuration] = stepconfiguration,
                 [Sdkmessageprocessingstep.Mode] = asynchronous ?
                                                     Sdkmessageprocessingstep.ModeAsynchronous.ToOptionSetValue() :
@@ -108,6 +110,19 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             return entity;
         }
 
+        private EntityReference GetEventHandler(EntityReference eventHandler)
+        {
+            if (eventHandler == null) throw new ArgumentNullException(nameof(eventHandler));
+
+            var handler = Svc.Retrieve(eventHandler.LogicalName, eventHandler.Id, new ColumnSet(PluginEventHandler.CrmEventHandlerId, PluginEventHandler.TypeLogicalName));
+            var logicalName = handler.GetAttributeValue<string>(PluginEventHandler.TypeLogicalName);
+            var hasId = Guid.TryParse(handler.GetAttributeValue<string>(PluginEventHandler.CrmEventHandlerId), out Guid id);
+            if (!hasId) throw new InvalidOperationException("EventHandler has no valid Id, please try to recreate it.");
+            if (string.IsNullOrEmpty(logicalName)) throw new InvalidOperationException("EventHandler has no valid logical name, please try to recreate it.");
+
+            return new EntityReference(logicalName, id);
+        }
+
         private Entity ComposeMoniker(Guid id, int statecode, int statuscode)
         {
             return new Entity(Sdkmessageprocessingstep.LogicalName)
@@ -116,15 +131,6 @@ namespace mwo.LiveRegistration.Plugins.Helpers
                 [Sdkmessageprocessingstep.Statecode] = statecode.ToOptionSetValue(),
                 [Sdkmessageprocessingstep.Statuscode] = statuscode.ToOptionSetValue()
             };
-        }
-
-        private static string BuildName(string pluginTypeName, string sdkMessage, Stage stage, string primaryEntity, string secondaryEntity, bool asynchronous)
-        {
-            string name = string.Join("_", pluginTypeName, stage, sdkMessage);
-            if (!string.IsNullOrEmpty(primaryEntity)) name = string.Join("_", name, primaryEntity);
-            if (!string.IsNullOrEmpty(secondaryEntity)) name = string.Join("_", name, secondaryEntity);
-            if (asynchronous) name = string.Join("_", name, "Asynchronous");
-            return name;
         }
 
         private Entity GetMessageFilter(Entity message, string primaryEntity, string secondaryEntity)
@@ -153,19 +159,6 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             query.Criteria.AddCondition(Sdkmessage.Name, ConditionOperator.Equal, sdkMessageName);
             var results = Svc.RetrieveMultiple(query);
             if (!results.Entities.Any()) throw new ArgumentException(nameof(sdkMessageName) + " does not exist");
-
-            return results.Entities.First();
-        }
-
-        private Entity GetPlugin(string pluginTypeName)
-        {
-            var query = new QueryExpression(Plugintype.LogicalName)
-            {
-                ColumnSet = new ColumnSet(false)
-            };
-            query.Criteria.AddCondition(Plugintype.Typename, ConditionOperator.Equal, pluginTypeName);
-            var results = Svc.RetrieveMultiple(query);
-            if (!results.Entities.Any()) throw new ArgumentException(nameof(pluginTypeName) + " does not exist");
 
             return results.Entities.First();
         }

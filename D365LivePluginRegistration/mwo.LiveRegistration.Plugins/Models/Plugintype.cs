@@ -7,5 +7,6 @@ namespace mwo.LiveRegistration.Plugins.Models
     {
         public const string LogicalName = "plugintype";
         public const string Typename = "typename";
+        public const string Id = "plugintypeid";
     }
 }

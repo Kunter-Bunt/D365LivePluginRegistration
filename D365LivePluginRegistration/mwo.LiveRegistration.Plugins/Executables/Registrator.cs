@@ -77,7 +77,8 @@ namespace mwo.LiveRegistration.Plugins.Executables
         {
             StepManager.Update(
                                 pluginStepId,
-                                context.Subject.GetAttributeValue<string>(PluginRegistration.Plugintypename),
+                                context.Subject.GetAttributeValue<EntityReference>(PluginRegistration.EventHandler),
+                                context.Subject.GetAttributeValue<string>(PluginRegistration.Name),
                                 context.Subject.GetAttributeValue<string>(PluginRegistration.Sdkmessage),
                                 context.Subject.GetAttributeValue<string>(PluginRegistration.Primaryentity),
                                 context.Subject.GetAttributeValue<string>(PluginRegistration.Secondaryentity),
@@ -95,7 +96,8 @@ namespace mwo.LiveRegistration.Plugins.Executables
         private void DoCreate(ICRMEvent context)
         {
             var res = StepManager.Register(
-                context.Subject.GetAttributeValue<string>(PluginRegistration.Plugintypename),
+                context.Subject.GetAttributeValue<EntityReference>(PluginRegistration.EventHandler),
+                context.Subject.GetAttributeValue<string>(PluginRegistration.Name),
                 context.Subject.GetAttributeValue<string>(PluginRegistration.Sdkmessage),
                 context.Subject.GetAttributeValue<string>(PluginRegistration.Primaryentity),
                 context.Subject.GetAttributeValue<string>(PluginRegistration.Secondaryentity),

@@ -14,7 +14,7 @@ namespace mwo.LiveRegistration.Plugins.Models
         public const string Statecode = "statecode";
         public const int StatecodeActive = 0;
 
-        public const string Plugintypename = "mwo_plugintypename";
+        public const string EventHandler = "mwo_eventhandler";
         public const string Sdkmessage = "mwo_sdkmessage";
         public const string Primaryentity = "mwo_primaryentity";
         public const string Secondaryentity = "mwo_secondaryentity";
@@ -23,6 +23,7 @@ namespace mwo.LiveRegistration.Plugins.Models
         public const string Pluginstepstage = "mwo_pluginstepstage";
         public const string Filteringattributes = "mwo_filteringattributes";
         public const string Description = "mwo_description";
+        public const string Name = "mwo_name";
 
         public const string Imagetype = "mwo_imagetype";
         public const int ImagetypeNone = 122870010;
