@@ -15,10 +15,5 @@ namespace mwo.LiveRegistration.Plugins
         {
             return new OptionSetValue(i);
         }
-
-        public static EventHandlerType ToEventHandlerType(this int optionSetValue)
-        {
-            return (EventHandlerType)(optionSetValue - PluginRegistration.EnumPrefix);
-        }
     }
 }

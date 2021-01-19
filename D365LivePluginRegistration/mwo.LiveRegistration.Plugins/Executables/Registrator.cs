@@ -24,24 +24,25 @@ namespace mwo.LiveRegistration.Plugins.Executables
 
         public void Execute(ICRMEvent context)
         {
-            if (!context.Subject.GetAttributeValue<bool>(PluginRegistration.Managed)) return;
+            var subject = context.Subject.ToEntity<mwo_PluginStepRegistration>();
+            if (!subject.mwo_Managed == true) return;
 
             var msg = context.MessageName.ToUpperInvariant();
-            var pluginStepId = Guid.Empty;
-            var hasId = context.Subject.Contains(PluginRegistration.Pluginstepid) && Guid.TryParse(context.Subject.GetAttributeValue<string>(PluginRegistration.Pluginstepid), out pluginStepId);
+            Guid pluginStepId;
+            var hasId = Guid.TryParse(subject.mwo_PluginStepId, out pluginStepId);
             if (msg == CRMMessages.Delete && hasId)
             {
-                DoDelete(context, pluginStepId);
+                DoDelete(context, pluginStepId, subject);
             }
             else if (msg == CRMMessages.Update && hasId)
             {
-                DoUpdate(context, pluginStepId);
-                if (context.Target.Contains(PluginRegistration.Statecode))
-                    DoManageStage(context, pluginStepId);
+                DoUpdate(context, pluginStepId, subject);
+                if (context.Target.Contains(mwo_PluginStepRegistration.Fields.StateCode))
+                    DoManageStage(context, pluginStepId, subject);
             }
             else if ((msg == CRMMessages.Update || msg == CRMMessages.Create) && !hasId)
             {
-                DoCreate(context);
+                DoCreate(context, subject);
             }
             else
             {
@@ -49,19 +50,18 @@ namespace mwo.LiveRegistration.Plugins.Executables
             }
         }
 
-        private void DoDelete(ICRMEvent context, Guid pluginStepId)
+        private void DoDelete(ICRMEvent context, Guid pluginStepId, mwo_PluginStepRegistration subject)
         {
-            context.Subject[PluginRegistration.Imagetype] = new OptionSetValue(PluginRegistration.ImagetypeNone); //Pass Image none, as we are going to delete.
-            DoManageImage(context, pluginStepId);
+            subject.mwo_ImageType = mwo_ImageType.None;
+            DoManageImage(context, pluginStepId, subject);
 
             StepManager.Delete(pluginStepId);
             Tracer.Trace($"Deleted PluginStep: {pluginStepId}");
         }
 
-        private void DoManageStage(ICRMEvent context, Guid pluginStepId)
+        private void DoManageStage(ICRMEvent context, Guid pluginStepId, mwo_PluginStepRegistration subject)
         {
-            var state = context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Statecode);
-            if (state.Value == PluginRegistration.StatecodeActive)
+            if (subject.StateCode == mwo_PluginStepRegistrationState.Active)
             {
                 StepManager.Activate(pluginStepId);
                 Tracer.Trace($"Activated PluginStep: {pluginStepId}");
@@ -73,68 +73,92 @@ namespace mwo.LiveRegistration.Plugins.Executables
             }
         }
 
-        private void DoUpdate(ICRMEvent context, Guid pluginStepId)
+        private void DoUpdate(ICRMEvent context, Guid pluginStepId, mwo_PluginStepRegistration subject)
         {
             StepManager.Update(
                                 pluginStepId,
-                                context.Subject.GetAttributeValue<EntityReference>(PluginRegistration.EventHandler),
-                                context.Subject.GetAttributeValue<string>(PluginRegistration.Name),
-                                context.Subject.GetAttributeValue<string>(PluginRegistration.Sdkmessage),
-                                context.Subject.GetAttributeValue<string>(PluginRegistration.Primaryentity),
-                                context.Subject.GetAttributeValue<string>(PluginRegistration.Secondaryentity),
-                                context.Subject.GetAttributeValue<string>(PluginRegistration.Stepconfiguration),
-                                context.Subject.GetAttributeValue<bool>(PluginRegistration.Asynchronous),
-                                MapStage(context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Pluginstepstage)),
-                                context.Subject.GetAttributeValue<string>(PluginRegistration.Filteringattributes),
-                                context.Subject.GetAttributeValue<string>(PluginRegistration.Description));
+                                subject.mwo_EventHandler,
+                                MapPluginType(subject.mwo_EventHandlerType),
+                                subject.mwo_Name,
+                                subject.mwo_SDKMessage,
+                                subject.mwo_PrimaryEntity,
+                                subject.mwo_SecondaryEntity,
+                                subject.mwo_StepConfiguration,
+                                subject.mwo_Asynchronous == true,
+                                MapStage(subject.mwo_PluginStepStage),
+                                subject.mwo_FilteringAttributes,
+                                subject.mwo_Description);
 
             Tracer.Trace($"Updated PluginStep: {pluginStepId}");
 
-            DoManageImage(context, pluginStepId);
+            DoManageImage(context, pluginStepId, subject);
         }
 
-        private void DoCreate(ICRMEvent context)
+        private void DoCreate(ICRMEvent context, mwo_PluginStepRegistration subject)
         {
             var res = StepManager.Register(
-                context.Subject.GetAttributeValue<EntityReference>(PluginRegistration.EventHandler),
-                context.Subject.GetAttributeValue<string>(PluginRegistration.Name),
-                context.Subject.GetAttributeValue<string>(PluginRegistration.Sdkmessage),
-                context.Subject.GetAttributeValue<string>(PluginRegistration.Primaryentity),
-                context.Subject.GetAttributeValue<string>(PluginRegistration.Secondaryentity),
-                context.Subject.GetAttributeValue<string>(PluginRegistration.Stepconfiguration),
-                context.Subject.GetAttributeValue<bool>(PluginRegistration.Asynchronous),
-                MapStage(context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Pluginstepstage)),
-                context.Subject.GetAttributeValue<string>(PluginRegistration.Filteringattributes),
-                context.Subject.GetAttributeValue<string>(PluginRegistration.Description));
+                subject.mwo_EventHandler,
+                MapPluginType(subject.mwo_EventHandlerType),
+                subject.mwo_Name,
+                subject.mwo_SDKMessage,
+                subject.mwo_PrimaryEntity,
+                subject.mwo_SecondaryEntity,
+                subject.mwo_StepConfiguration,
+                subject.mwo_Asynchronous == true,
+                MapStage(subject.mwo_PluginStepStage),
+                subject.mwo_FilteringAttributes,
+                subject.mwo_Description);
 
             Tracer.Trace($"Created new PluginStep: {res}");
-            context.Subject[PluginRegistration.Pluginstepid] = res.ToString();
+            subject.mwo_PluginStepId = res.ToString();
 
-            DoManageImage(context, res);
+            DoManageImage(context, res, subject);
         }
 
-        private void DoManageImage(ICRMEvent context, Guid pluginStepId)
+        private void DoManageImage(ICRMEvent context, Guid pluginStepId, mwo_PluginStepRegistration subject)
         {
-            if (context.Subject.Contains(PluginRegistration.Imagetype) && context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Imagetype) != null && context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Imagetype).Value != PluginRegistration.ImagetypeNone)
+            if (subject.mwo_ImageType != null && subject.mwo_ImageType != mwo_ImageType.None)
             {
-                ImageManager.Upsert(MapImageType(context.Subject.GetAttributeValue<OptionSetValue>(PluginRegistration.Imagetype)), context.Subject.GetAttributeValue<string>(PluginRegistration.Imagename), new EntityReference(Sdkmessageprocessingstep.LogicalName, pluginStepId), context.Subject.GetAttributeValue<string>(PluginRegistration.ImageAttributes));
-                Tracer.Trace($"Upserted image: {context.Subject.GetAttributeValue<string>(PluginRegistration.Imagename)}");
+                ImageManager.Upsert(MapImageType(subject.mwo_ImageType), subject.mwo_ImageName, new EntityReference(SdkMessageProcessingStep.EntityLogicalName, pluginStepId), subject.mwo_ImageAttributes);
+                Tracer.Trace($"Upserted image: {subject.mwo_ImageName}");
             }
             else
             {
-                ImageManager.Delete(new EntityReference(Sdkmessageprocessingstep.LogicalName, pluginStepId));
-                Tracer.Trace($"Deleted image: {context.Subject.GetAttributeValue<string>(PluginRegistration.Imagename)}");
+                ImageManager.Delete(new EntityReference(SdkMessageProcessingStep.EntityLogicalName, pluginStepId));
+                Tracer.Trace($"Deleted image: {subject.mwo_ImageName}");
             }
         }
 
-        private static Stage MapStage(OptionSetValue optionSetValue)
+        private static ImageType MapImageType(mwo_ImageType? imageType)
         {
-            return (Stage)(optionSetValue.Value - PluginRegistration.EnumPrefix); // Values were created to match stages!
+            switch (imageType)
+            {
+                case mwo_ImageType.PreImage: return ImageType.PreImage;
+                case mwo_ImageType.PostImage: return ImageType.PostImage;
+                case mwo_ImageType.Both: return ImageType.Both;
+                default: return ImageType.None;
+            }
         }
 
-        private static ImageType MapImageType(OptionSetValue optionSetValue)
+        private static EventHandlerType MapPluginType(mwo_EventHandlerType? handlerType)
         {
-            return (ImageType)(optionSetValue.Value - PluginRegistration.EnumPrefix); // Values were created to match types!
+            switch (handlerType)
+            {
+                case mwo_EventHandlerType.PluginType: return EventHandlerType.PluginType;
+                case mwo_EventHandlerType.ServiceEndpoint: return EventHandlerType.ServiceEndpoint;
+                default: return EventHandlerType.PluginType;
+            }
+        }
+
+        private static Stage MapStage(mwo_PluginStage? stage)
+        {
+            switch (stage)
+            {
+                case mwo_PluginStage.PreValidation: return Stage.PreValidation;
+                case mwo_PluginStage.PreOperation: return Stage.PreOperation;
+                case mwo_PluginStage.PostOperation: return Stage.PostOperation;
+                default: return Stage.PreOperation;
+            }
         }
     }
 }

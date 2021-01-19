@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.6\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props" Condition="Exists('..\packages\Microsoft.CodeAnalysis.FxCopAnalyzers.2.9.6\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props')" />
   <Import Project="..\packages\Microsoft.NetFramework.Analyzers.2.9.6\build\Microsoft.NetFramework.Analyzers.props" Condition="Exists('..\packages\Microsoft.NetFramework.Analyzers.2.9.6\build\Microsoft.NetFramework.Analyzers.props')" />
@@ -68,34 +68,53 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EntryPoints\PreOpEventHandler.cs" />
     <Compile Include="EntryPoints\PreOpLiveRegistration.cs" />
-    <Compile Include="Executables\EventHandlerAssociator.cs" />
     <Compile Include="Executables\Registrator.cs" />
     <Compile Include="Extensions\EntityExtensions.cs" />
-    <Compile Include="Interfaces\IImageManager.cs" />
+    <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Helpers\ImageManager.cs" />
-    <Compile Include="Interfaces\ICRMExecutable.cs" />
-    <Compile Include="Models\CRMPluginContext.cs" />
+    <Compile Include="Helpers\PluginStepRegistrationManager.cs" />
     <Compile Include="Interfaces\ICRMContext.cs" />
     <Compile Include="Interfaces\ICRMEvent.cs" />
+    <Compile Include="Interfaces\ICRMExecutable.cs" />
+    <Compile Include="Interfaces\IImageManager.cs" />
+    <Compile Include="Interfaces\IPluginStepRegistrationManager.cs" />
+    <Compile Include="Models\Actions.cs" />
+    <Compile Include="Models\ComponentState.cs" />
+    <Compile Include="Models\CRMMessages.cs" />
+    <Compile Include="Models\CRMPluginContext.cs" />
+    <Compile Include="Models\CrmServiceContext.cs" />
     <Compile Include="Models\EventHandlerType.cs" />
     <Compile Include="Models\ImageType.cs" />
-    <Compile Include="Models\PluginEventHandler.cs" />
-    <Compile Include="Models\ServiceEndpoint.cs" />
-    <Compile Include="Models\Stage.cs" />
-    <Compile Include="Models\CRMMessages.cs" />
-    <Compile Include="Models\PluginRegistration.cs" />
+    <Compile Include="Models\msdyn_msdyn_requirementrelationship_msdyn_resourcegroupings.cs" />
+    <Compile Include="Models\msdyn_oc_daysofweek.cs" />
+    <Compile Include="Models\mwo_EventHandlerType.cs" />
+    <Compile Include="Models\mwo_ImageType.cs" />
+    <Compile Include="Models\mwo_PluginStage.cs" />
+    <Compile Include="Models\mwo_PluginStepRegistration.cs" />
+    <Compile Include="Models\mwo_PluginStepRegistration_StatusCode.cs" />
+    <Compile Include="Models\OptionSets.cs" />
     <Compile Include="Models\Plugintype.cs" />
     <Compile Include="Models\Sdkmessage.cs" />
     <Compile Include="Models\Sdkmessagefilter.cs" />
     <Compile Include="Models\Sdkmessageprocessingstep.cs" />
     <Compile Include="Models\Sdkmessageprocessingstepimage.cs" />
-    <Compile Include="spkl\CrmPluginRegistrationAttribute.cs" />
-    <Compile Include="Extensions\IntExtensions.cs" />
-    <Compile Include="Interfaces\IPluginStepRegistrationManager.cs" />
-    <Compile Include="Helpers\PluginStepRegistrationManager.cs" />
+    <Compile Include="Models\SdkMessageProcessingStepImage_ImageType.cs" />
+    <Compile Include="Models\SdkMessageProcessingStep_InvocationSource.cs" />
+    <Compile Include="Models\SdkMessageProcessingStep_Mode.cs" />
+    <Compile Include="Models\SdkMessageProcessingStep_Stage.cs" />
+    <Compile Include="Models\SdkMessageProcessingStep_StatusCode.cs" />
+    <Compile Include="Models\SdkMessageProcessingStep_SupportedDeployment.cs" />
+    <Compile Include="Models\ServiceEndpoint.cs" />
+    <Compile Include="Models\ServiceEndpoint_AuthType.cs" />
+    <Compile Include="Models\ServiceEndpoint_ConnectionMode.cs" />
+    <Compile Include="Models\ServiceEndpoint_Contract.cs" />
+    <Compile Include="Models\ServiceEndpoint_MessageFormat.cs" />
+    <Compile Include="Models\ServiceEndpoint_NamespaceFormat.cs" />
+    <Compile Include="Models\ServiceEndpoint_UserClaim.cs" />
+    <Compile Include="Models\Stage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="spkl\CrmPluginRegistrationAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig">

@@ -12,11 +12,11 @@ namespace mwo.LiveRegistration.Plugins.Interfaces
         /// <summary>
         /// Creates a new Step for the specified plugintype.
         /// </summary>
-        Guid Register(EntityReference eventHandler, string name, string sdkMessage, string primaryEntity, string secondaryEntity, string stepconfiguration, bool asynchronous, Stage stage, string filteringAttributes, string description);
+        Guid Register(string eventHandler, EventHandlerType? eventHandlerType, string name, string sdkMessage, string primaryEntity, string secondaryEntity, string stepconfiguration, bool asynchronous, Stage stage, string filteringAttributes, string description);
         /// <summary>
         /// Given the existing Step, updates its properties.
         /// </summary>
-        void Update(Guid id, EntityReference eventHandler, string name, string sdkMessage, string primaryEntity, string secondaryEntity, string stepconfiguration, bool asynchronous, Stage stage, string filteringAttributes, string description);
+        void Update(Guid id, string eventHandler, EventHandlerType? eventHandlerType, string name, string sdkMessage, string primaryEntity, string secondaryEntity, string stepconfiguration, bool asynchronous, Stage stage, string filteringAttributes, string description);
         /// <summary>
         /// Removes the step.
         /// </summary>

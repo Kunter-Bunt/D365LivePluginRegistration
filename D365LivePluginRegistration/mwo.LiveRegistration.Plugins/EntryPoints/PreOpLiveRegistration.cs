@@ -9,16 +9,16 @@ namespace mwo.LiveRegistration.Plugins.EntryPoints
     /// <summary>
     /// Entrypoint Class implementing IPlugin, to be registered in CRM.
     /// </summary>
-    [CrmPluginRegistration(MessageNameEnum.Create, PluginRegistration.LogicalName,
+    [CrmPluginRegistration(MessageNameEnum.Create, mwo_PluginStepRegistration.EntityLogicalName,
         StageEnum.PreOperation, ExecutionModeEnum.Synchronous, FilterAttribute,
-        PluginNameCreate, Sdkmessageprocessingstep.RankDefault, IsolationModeEnum.Sandbox)]
-    [CrmPluginRegistration(MessageNameEnum.Update, PluginRegistration.LogicalName,
+        PluginNameCreate, 1, IsolationModeEnum.Sandbox)]
+    [CrmPluginRegistration(MessageNameEnum.Update, mwo_PluginStepRegistration.EntityLogicalName,
         StageEnum.PreOperation, ExecutionModeEnum.Synchronous, FilterAttribute,
-        PluginNameUpdate, Sdkmessageprocessingstep.RankDefault, IsolationModeEnum.Sandbox,
+        PluginNameUpdate, 1, IsolationModeEnum.Sandbox,
         Image1Type = ImageTypeEnum.PreImage, Image1Name = CRMPluginContext.PreImageName)]
-    [CrmPluginRegistration(MessageNameEnum.Delete, PluginRegistration.LogicalName,
+    [CrmPluginRegistration(MessageNameEnum.Delete, mwo_PluginStepRegistration.EntityLogicalName,
         StageEnum.PreOperation, ExecutionModeEnum.Synchronous, FilterAttribute,
-        PluginNameDelete, Sdkmessageprocessingstep.RankDefault, IsolationModeEnum.Sandbox,
+        PluginNameDelete, 1, IsolationModeEnum.Sandbox,
         Image1Type = ImageTypeEnum.PreImage, Image1Name = CRMPluginContext.PreImageName)]
     public class PreOpLiveRegistration : IPlugin
     {

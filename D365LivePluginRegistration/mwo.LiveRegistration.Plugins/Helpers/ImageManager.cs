@@ -27,7 +27,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             if (sdkMessageProcessingStepRef == null) return;
 
             var existing = Get(sdkMessageProcessingStepRef);
-            if (existing != null) Service.Delete(Sdkmessageprocessingstepimage.LogicalName, existing.Id);
+            if (existing != null) Service.Delete(SdkMessageProcessingStepImage.EntityLogicalName, existing.Id);
         }
 
         /// <summary>
@@ -60,25 +60,36 @@ namespace mwo.LiveRegistration.Plugins.Helpers
 
         private static Entity ComposeEntity(ImageType imageType, string imageName, EntityReference sdkMessageProcessingStepRef, string attributes)
         {
-            var image = new Entity(Sdkmessageprocessingstepimage.LogicalName)
+            var image = new SdkMessageProcessingStepImage
             {
-                [Sdkmessageprocessingstepimage.Imagetype] = new OptionSetValue((int)imageType),//Types are matched!
-                [Sdkmessageprocessingstepimage.Name] = imageName,
-                [Sdkmessageprocessingstepimage.Entityalias] = imageName,
-                [Sdkmessageprocessingstepimage.Sdkmessageprocessingstepid] = sdkMessageProcessingStepRef,
-                [Sdkmessageprocessingstepimage.Messagepropertyname] = Sdkmessageprocessingstepimage.MessagepropertynameTarget,
-                [Sdkmessageprocessingstepimage.Attributes] = attributes,
+                ImageType = MapImageType(imageType),
+                Name = imageName,
+                EntityAlias = imageName,
+                SdkMessageProcessingStepId = sdkMessageProcessingStepRef,
+                MessagePropertyName = "Target",
+                Attributes1 = attributes
             };
             return image;
         }
 
+        private static SdkMessageProcessingStepImage_ImageType MapImageType(ImageType imageType)
+        {
+            switch(imageType)
+            {
+                case ImageType.PreImage: return SdkMessageProcessingStepImage_ImageType.PreImage;
+                case ImageType.PostImage: return SdkMessageProcessingStepImage_ImageType.PostImage;
+                case ImageType.Both: return SdkMessageProcessingStepImage_ImageType.Both;
+                default: throw new ArgumentOutOfRangeException(nameof(imageType));
+            }
+        }
+
         private Entity Get(EntityReference sdkMessageProcessingStepRef)
         {
-            var query = new QueryExpression(Sdkmessageprocessingstepimage.LogicalName)
+            var query = new QueryExpression(SdkMessageProcessingStepImage.EntityLogicalName)
             {
                 ColumnSet = new ColumnSet(false)
             };
-            query.Criteria.AddCondition(new ConditionExpression(Sdkmessageprocessingstepimage.Sdkmessageprocessingstepid, ConditionOperator.Equal, sdkMessageProcessingStepRef.Id));
+            query.Criteria.AddCondition(new ConditionExpression(SdkMessageProcessingStepImage.Fields.SdkMessageProcessingStepId, ConditionOperator.Equal, sdkMessageProcessingStepRef.Id));
             var results = Service.RetrieveMultiple(query);
 
             return results.Entities.FirstOrDefault();

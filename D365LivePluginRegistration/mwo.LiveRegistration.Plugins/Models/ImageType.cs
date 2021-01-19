@@ -8,6 +8,7 @@
     {
         PreImage = 0,
         PostImage = 1,
-        Both = 2
+        Both = 2,
+        None = 1000 //Does not exist in CRM!
     }
 }

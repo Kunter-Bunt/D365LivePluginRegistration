@@ -24,7 +24,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
         /// </summary>
         public void Delete(Guid id)
         {
-            Svc.Delete(Sdkmessageprocessingstep.LogicalName, id);
+            Svc.Delete(SdkMessageProcessingStep.EntityLogicalName, id);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
         /// </summary>
         public void Activate(Guid id)
         {
-            Entity step = ComposeMoniker(id, Sdkmessageprocessingstep.StateActive, Sdkmessageprocessingstep.StatusActive);
+            Entity step = ComposeMoniker(id, SdkMessageProcessingStepState.Enabled, SdkMessageProcessingStep_StatusCode.Enabled);
             Svc.Update(step);
         }
 
@@ -41,7 +41,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
         /// </summary>
         public void Deactivate(Guid id)
         {
-            Entity step = ComposeMoniker(id, Sdkmessageprocessingstep.StateInactive, Sdkmessageprocessingstep.StatusInactive);
+            Entity step = ComposeMoniker(id, SdkMessageProcessingStepState.Disabled, SdkMessageProcessingStep_StatusCode.Disabled);
             Svc.Update(step);
         }
 
@@ -49,7 +49,8 @@ namespace mwo.LiveRegistration.Plugins.Helpers
         /// Given the existing Step, updates its properties.
         /// </summary>
         public void Update(Guid id,
-                            EntityReference eventHandler,
+                            string eventHandler,
+                            EventHandlerType? eventHandlerType,
                             string name,
                             string sdkMessage,
                             string primaryEntity,
@@ -60,7 +61,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
                             string filteringAttributes,
                             string description)
         {
-            Entity step = ComposeEntity(eventHandler, name, sdkMessage, primaryEntity, secondaryEntity, stepconfiguration, asynchronous, stage, filteringAttributes, description);
+            Entity step = ComposeEntity(eventHandler, eventHandlerType, name, sdkMessage, primaryEntity, secondaryEntity, stepconfiguration, asynchronous, stage, filteringAttributes, description);
             step.Id = id;
             Svc.Update(step);
         }
@@ -68,7 +69,9 @@ namespace mwo.LiveRegistration.Plugins.Helpers
         /// <summary>
         /// Creates a new Step for the specified plugintype.
         /// </summary>
-        public Guid Register(EntityReference eventHandler,
+        public Guid Register(
+                            string eventHandler,
+                            EventHandlerType? eventHandlerType,
                             string name,
                             string sdkMessage,
                             string primaryEntity,
@@ -79,88 +82,127 @@ namespace mwo.LiveRegistration.Plugins.Helpers
                             string filteringAttributes,
                             string description)
         {
-            Entity step = ComposeEntity(eventHandler, name, sdkMessage, primaryEntity, secondaryEntity, stepconfiguration, asynchronous, stage, filteringAttributes, description);
+            Entity step = ComposeEntity(eventHandler, eventHandlerType, name, sdkMessage, primaryEntity, secondaryEntity, stepconfiguration, asynchronous, stage, filteringAttributes, description);
             return Svc.Create(step);
         }
 
-        private Entity ComposeEntity(EntityReference eventHandler, string name, string sdkMessage, string primaryEntity, string secondaryEntity, string stepconfiguration, bool asynchronous, Stage stage, string filteringAttributes, string description)
+        private Entity ComposeEntity(string eventHandler, EventHandlerType? eventHandlerType, string name, string sdkMessage, string primaryEntity, string secondaryEntity, string stepconfiguration, bool asynchronous, Stage stage, string filteringAttributes, string description)
         {
-            EntityReference handler = GetEventHandler(eventHandler);
-            Entity message = GetMessage(sdkMessage);
-            Entity messageFilter = GetMessageFilter(message, primaryEntity, secondaryEntity);
+            EntityReference handler = GetEventHandler(eventHandler, eventHandlerType);
+            EntityReference message = GetMessage(sdkMessage);
+            EntityReference messageFilter = GetMessageFilter(message, primaryEntity, secondaryEntity);
 
-            var entity = new Entity(Sdkmessageprocessingstep.LogicalName)
+            var entity = new SdkMessageProcessingStep
             {
-                [Sdkmessageprocessingstep.EventHandler] = handler,
-                [Sdkmessageprocessingstep.Sdkmessageid] = message.ToEntityReference(),
-                [Sdkmessageprocessingstep.Sdkmessagefilterid] = messageFilter?.ToEntityReference(),
-                [Sdkmessageprocessingstep.Name] = name,
-                [Sdkmessageprocessingstep.Configuration] = stepconfiguration,
-                [Sdkmessageprocessingstep.Mode] = asynchronous ?
-                                                    Sdkmessageprocessingstep.ModeAsynchronous.ToOptionSetValue() :
-                                                    Sdkmessageprocessingstep.ModeSynchronous.ToOptionSetValue(),
-                [Sdkmessageprocessingstep.Rank] = Sdkmessageprocessingstep.RankDefault,
-                [Sdkmessageprocessingstep.Stage] = ((int)stage).ToOptionSetValue(),
-                [Sdkmessageprocessingstep.Supporteddeployment] = Sdkmessageprocessingstep.SupporteddeploymentServerOnly.ToOptionSetValue(),
-                [Sdkmessageprocessingstep.Invocationsource] = Sdkmessageprocessingstep.InvocationsourceParent.ToOptionSetValue(),
-                [Sdkmessageprocessingstep.Filteringattributes] = filteringAttributes,
-                [Sdkmessageprocessingstep.Description] = description,
+                EventHandler = handler,
+                SdkMessageId = message,
+                SdkMessageFilterId = messageFilter,
+                Name = name,
+                Configuration = stepconfiguration,
+                Mode = asynchronous ? SdkMessageProcessingStep_Mode.Asynchronous : SdkMessageProcessingStep_Mode.Synchronous,
+                Rank = 1,
+                Stage = MapMode(stage),
+                SupportedDeployment = SdkMessageProcessingStep_SupportedDeployment.ServerOnly,
+                FilteringAttributes = filteringAttributes,
+                Description = description
             };
-            if (asynchronous) entity[Sdkmessageprocessingstep.Asyncautodelete] = true;
+            if (asynchronous) entity.AsyncAutoDelete = true;
             return entity;
         }
 
-        private EntityReference GetEventHandler(EntityReference eventHandler)
+        private SdkMessageProcessingStep_Stage MapMode(Stage stage)
         {
-            if (eventHandler == null) throw new ArgumentNullException(nameof(eventHandler));
-
-            var handler = Svc.Retrieve(eventHandler.LogicalName, eventHandler.Id, new ColumnSet(PluginEventHandler.CrmEventHandlerId, PluginEventHandler.TypeLogicalName));
-            var logicalName = handler.GetAttributeValue<string>(PluginEventHandler.TypeLogicalName);
-            var hasId = Guid.TryParse(handler.GetAttributeValue<string>(PluginEventHandler.CrmEventHandlerId), out Guid id);
-            if (!hasId) throw new InvalidOperationException("EventHandler has no valid Id, please try to recreate it.");
-            if (string.IsNullOrEmpty(logicalName)) throw new InvalidOperationException("EventHandler has no valid logical name, please try to recreate it.");
-
-            return new EntityReference(logicalName, id);
+            switch (stage)
+            {
+                case Stage.PreValidation: return SdkMessageProcessingStep_Stage.Prevalidation;
+                case Stage.PreOperation: return SdkMessageProcessingStep_Stage.Preoperation;
+                case Stage.PostOperation: return SdkMessageProcessingStep_Stage.Postoperation;
+                default: throw new ArgumentOutOfRangeException(nameof(stage));
+            }
         }
 
-        private Entity ComposeMoniker(Guid id, int statecode, int statuscode)
+        private EntityReference GetEventHandler(string name, EventHandlerType? type)
         {
-            return new Entity(Sdkmessageprocessingstep.LogicalName)
+            if (name == null) throw new ArgumentNullException(nameof(name));
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            switch (type)
+            {
+                case EventHandlerType.PluginType:
+                    return GetPluginTypeId(name);
+                case EventHandlerType.ServiceEndpoint:
+                    return GetServiceEndpointId(name);
+                default:
+                    throw new InvalidOperationException($"Unrecognized type: {type}");
+            }
+        }
+
+        private EntityReference GetServiceEndpointId(string name)
+        {
+            var query = new QueryExpression(ServiceEndpoint.EntityLogicalName)
+            {
+                ColumnSet = new ColumnSet(false)
+            };
+            query.Criteria.AddCondition(ServiceEndpoint.Fields.Name, ConditionOperator.Equal, name);
+            var results = Svc.RetrieveMultiple(query);
+            if (!results.Entities.Any()) throw new ArgumentException(nameof(name) + " does not exist");
+
+            var plugintype = results.Entities.First();
+            return plugintype.ToEntityReference();
+        }
+
+        private EntityReference GetPluginTypeId(string pluginTypeName)
+        {
+            var query = new QueryExpression(PluginType.EntityLogicalName)
+            {
+                ColumnSet = new ColumnSet(false)
+            };
+            query.Criteria.AddCondition(PluginType.Fields.TypeName, ConditionOperator.Equal, pluginTypeName);
+            var results = Svc.RetrieveMultiple(query);
+            if (!results.Entities.Any()) throw new ArgumentException(nameof(pluginTypeName) + " does not exist");
+
+            var plugintype = results.Entities.First();
+            return plugintype.ToEntityReference();
+        }
+
+        private Entity ComposeMoniker(Guid id, SdkMessageProcessingStepState statecode, SdkMessageProcessingStep_StatusCode statuscode)
+        {
+            return new SdkMessageProcessingStep
             {
                 Id = id,
-                [Sdkmessageprocessingstep.Statecode] = statecode.ToOptionSetValue(),
-                [Sdkmessageprocessingstep.Statuscode] = statuscode.ToOptionSetValue()
+                StateCode = statecode,
+                StatusCode = statuscode
             };
         }
 
-        private Entity GetMessageFilter(Entity message, string primaryEntity, string secondaryEntity)
+        private EntityReference GetMessageFilter(EntityReference message, string primaryEntity, string secondaryEntity)
         {
             if (string.IsNullOrEmpty(primaryEntity) && string.IsNullOrEmpty(secondaryEntity)) return null;
 
-            var query = new QueryExpression(Sdkmessagefilter.LogicalName)
+            var query = new QueryExpression(SdkMessageFilter.EntityLogicalName)
             {
                 ColumnSet = new ColumnSet(false)
             };
-            query.Criteria.AddCondition(Sdkmessagefilter.Sdkmessageid, ConditionOperator.Equal, message.Id);
-            if (!string.IsNullOrEmpty(primaryEntity)) query.Criteria.AddCondition(Sdkmessagefilter.Primaryobjecttypecode, ConditionOperator.Equal, primaryEntity);
-            if (!string.IsNullOrEmpty(secondaryEntity)) query.Criteria.AddCondition(Sdkmessagefilter.Secondaryobjecttypecode, ConditionOperator.Equal, secondaryEntity);
+            query.Criteria.AddCondition(SdkMessageFilter.Fields.SdkMessageId, ConditionOperator.Equal, message.Id);
+            if (!string.IsNullOrEmpty(primaryEntity)) query.Criteria.AddCondition(SdkMessageFilter.Fields.PrimaryObjectTypeCode, ConditionOperator.Equal, primaryEntity);
+            if (!string.IsNullOrEmpty(secondaryEntity)) query.Criteria.AddCondition(SdkMessageFilter.Fields.SecondaryObjectTypeCode, ConditionOperator.Equal, secondaryEntity);
             var results = Svc.RetrieveMultiple(query);
             if (!results.Entities.Any()) throw new ArgumentException($"Message does not exist on {primaryEntity} {secondaryEntity}");
 
-            return results.Entities.First();
+            return results.Entities.First().ToEntityReference();
         }
 
-        private Entity GetMessage(string sdkMessageName)
+        private EntityReference GetMessage(string sdkMessageName)
         {
-            var query = new QueryExpression(Sdkmessage.LogicalName)
+            var query = new QueryExpression(SdkMessage.EntityLogicalName)
             {
                 ColumnSet = new ColumnSet(false)
             };
-            query.Criteria.AddCondition(Sdkmessage.Name, ConditionOperator.Equal, sdkMessageName);
+            query.Criteria.AddCondition(SdkMessage.Fields.Name, ConditionOperator.Equal, sdkMessageName);
             var results = Svc.RetrieveMultiple(query);
             if (!results.Entities.Any()) throw new ArgumentException(nameof(sdkMessageName) + " does not exist");
 
-            return results.Entities.First();
+            return results.Entities.First().ToEntityReference();
         }
     }
 }

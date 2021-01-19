@@ -21,7 +21,6 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         private const string Associate = nameof(Associate);
         private const string GlobalAction = nameof(GlobalAction);
         private const string Description = nameof(Description);
-        private Entity EventHandler;
         private Entity PluginType;
         private Entity MessageCreate;
         private Entity MessageFilterCreate;
@@ -32,16 +31,13 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context = new XrmFakedContext();
             Service = Context.GetOrganizationService();
 
-            PluginType = new Entity(Plugintype.LogicalName) { [Plugintype.Typename] = PluginTypeName };
+            PluginType = new PluginType { TypeName = PluginTypeName };
             PluginType.Id = Service.Create(PluginType);
 
-            EventHandler = new Entity(PluginEventHandler.LogicalName) { [PluginEventHandler.TypeLogicalName] = Plugintype.LogicalName, [PluginEventHandler.CrmEventHandlerId] = PluginType.Id.ToString(), };
-            EventHandler.Id = Service.Create(EventHandler);
-
-            MessageCreate = new Entity(Sdkmessage.LogicalName) { [Sdkmessage.Name] = Create };
+            MessageCreate = new SdkMessage { Name = Create };
             MessageCreate.Id = Service.Create(MessageCreate);
 
-            MessageFilterCreate = new Entity(Sdkmessagefilter.LogicalName) { [Sdkmessagefilter.Sdkmessageid] = MessageCreate.ToEntityReference(), [Sdkmessagefilter.Primaryobjecttypecode] = PrimaryEntityName };
+            MessageFilterCreate = new SdkMessageFilter { SdkMessageId = MessageCreate.ToEntityReference(), [SdkMessageFilter.Fields.PrimaryObjectTypeCode] = PrimaryEntityName };
             MessageFilterCreate.Id = Service.Create(MessageFilterCreate);
         }
 
@@ -49,19 +45,20 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         public void Create_StepCreatedTest()
         {
             //Arrange
-            var target = new Entity(PluginRegistration.LogicalName)
+            var target = new mwo_PluginStepRegistration
             {
-                [PluginRegistration.EventHandler] = EventHandler.ToEntityReference(),
-                [PluginRegistration.Sdkmessage] = Create,
-                [PluginRegistration.Primaryentity] = PrimaryEntityName,
-                [PluginRegistration.Secondaryentity] = null,
-                [PluginRegistration.Stepconfiguration] = null,
-                [PluginRegistration.Asynchronous] = true,
-                [PluginRegistration.Pluginstepstage] = new OptionSetValue(122870040),
-                [PluginRegistration.Filteringattributes] = null,
-                [PluginRegistration.Description] = null,
-                [PluginRegistration.Managed] = true,
-                [PluginRegistration.Imagetype] = null,
+                mwo_EventHandler = PluginTypeName,
+                mwo_EventHandlerType = mwo_EventHandlerType.PluginType,
+                mwo_SDKMessage = Create,
+                mwo_PrimaryEntity = PrimaryEntityName,
+                mwo_SecondaryEntity = null,
+                mwo_StepConfiguration = null,
+                mwo_Asynchronous = true,
+                mwo_PluginStepStage = mwo_PluginStage.PostOperation,
+                mwo_FilteringAttributes = null,
+                mwo_Description = null,
+                mwo_Managed = null,
+                mwo_ImageType = null
             };
             
             var ctx = CreateContext(target, null, Create);
@@ -70,9 +67,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            Assert.IsNotNull(target.GetAttributeValue<string>(PluginRegistration.Pluginstepid));
+            Assert.IsNotNull(target.mwo_PluginStepId);
 
-            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
+            var steps = Context.CreateQuery<SdkMessageProcessingStep>().ToList();
             Assert.AreEqual(1, steps.Count);
 
             target.Id = Service.Create(target); //This is here for the other tests that rely on the Entity being there.
@@ -82,21 +79,22 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         public void Create_ImageCreatedTest()
         {
             //Arrange
-            var target = new Entity(PluginRegistration.LogicalName)
+            var target = new mwo_PluginStepRegistration
             {
-                [PluginRegistration.EventHandler] = EventHandler.ToEntityReference(),
-                [PluginRegistration.Sdkmessage] = Create,
-                [PluginRegistration.Primaryentity] = PrimaryEntityName,
-                [PluginRegistration.Secondaryentity] = null,
-                [PluginRegistration.Stepconfiguration] = null,
-                [PluginRegistration.Asynchronous] = true,
-                [PluginRegistration.Pluginstepstage] = new OptionSetValue(122870040),
-                [PluginRegistration.Filteringattributes] = null,
-                [PluginRegistration.Description] = null,
-                [PluginRegistration.Managed] = true,
-                [PluginRegistration.Imagetype] = new OptionSetValue(122870002),
-                [PluginRegistration.Imagename] = "Default",
-                [PluginRegistration.ImageAttributes] = null,
+                mwo_EventHandler = PluginTypeName,
+                mwo_EventHandlerType = mwo_EventHandlerType.PluginType,
+                mwo_SDKMessage = Create,
+                mwo_PrimaryEntity = PrimaryEntityName,
+                mwo_SecondaryEntity = null,
+                mwo_StepConfiguration = null,
+                mwo_Asynchronous = true,
+                mwo_PluginStepStage = mwo_PluginStage.PostOperation,
+                mwo_FilteringAttributes = null,
+                mwo_Description = null,
+                mwo_Managed = true,
+                mwo_ImageType = mwo_ImageType.Both,
+                mwo_ImageName = "Default",
+                mwo_ImageAttributes = null
             };
 
             var ctx = CreateContext(target, null, Create);
@@ -105,7 +103,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
+            var steps = Context.CreateQuery<SdkMessageProcessingStep>().ToList();
             Assert.AreEqual(1, steps.Count);
 
             target.Id = Service.Create(target); //This is here for the other tests that rely on the Entity being there.
@@ -116,12 +114,12 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Create_StepCreatedTest();
-            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
+            var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
 
             var desc = "newDesc";
-            var target = new Entity(PluginRegistration.LogicalName, preImage.Id)
+            var target = new mwo_PluginStepRegistration(preImage.Id)
             {
-                [PluginRegistration.Description] = desc,
+                mwo_Description = desc,
             };
             var ctx = CreateContext(target, preImage, Update);
 
@@ -129,9 +127,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
+            var steps = Context.CreateQuery<SdkMessageProcessingStep>().ToList();
             Assert.AreEqual(1, steps.Count);
-            Assert.AreEqual(desc, steps.First().GetAttributeValue<string>(Sdkmessageprocessingstep.Description));
+            Assert.AreEqual(desc, steps.First().Description);
         }
 
         [TestMethod]
@@ -139,12 +137,12 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Create_ImageCreatedTest();
-            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
+            var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
 
             var name = "newName";
-            var target = new Entity(PluginRegistration.LogicalName, preImage.Id)
+            var target = new mwo_PluginStepRegistration(preImage.Id)
             {
-                [PluginRegistration.Imagename] = name,
+                mwo_ImageName = name
             };
             var ctx = CreateContext(target, preImage, Update);
 
@@ -152,9 +150,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery(Sdkmessageprocessingstepimage.LogicalName).ToList();
+            var steps = Context.CreateQuery<SdkMessageProcessingStepImage>().ToList();
             Assert.AreEqual(1, steps.Count);
-            Assert.AreEqual(name, steps.First().GetAttributeValue<string>(Sdkmessageprocessingstepimage.Entityalias));
+            Assert.AreEqual(name, steps.First().EntityAlias);
         }
 
         [TestMethod]
@@ -162,11 +160,11 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Create_StepCreatedTest();
-            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
+            var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
 
-            var target = new Entity(PluginRegistration.LogicalName, preImage.Id)
+            var target = new mwo_PluginStepRegistration(preImage.Id)
             {
-                [PluginRegistration.Statecode] = new OptionSetValue(1),
+                StateCode = mwo_PluginStepRegistrationState.Inactive,
             };
             var ctx = CreateContext(target, preImage, Update);
 
@@ -174,9 +172,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
+            var steps = Context.CreateQuery<SdkMessageProcessingStep>().ToList();
             Assert.AreEqual(1, steps.Count);
-            Assert.AreEqual(1, steps.First().GetAttributeValue<OptionSetValue>(Sdkmessageprocessingstep.Statecode).Value);
+            Assert.AreEqual(SdkMessageProcessingStepState.Disabled, steps.First().StateCode);
         }
 
         [TestMethod]
@@ -184,11 +182,11 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Update_DeactivateTest();
-            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
+            var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
 
-            var target = new Entity(PluginRegistration.LogicalName, preImage.Id)
+            var target = new mwo_PluginStepRegistration(preImage.Id)
             {
-                [PluginRegistration.Statecode] = new OptionSetValue(0),
+                StateCode = mwo_PluginStepRegistrationState.Active,
             };
             var ctx = CreateContext(target, preImage, Update);
 
@@ -196,9 +194,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
+            var steps = Context.CreateQuery<SdkMessageProcessingStep>().ToList();
             Assert.AreEqual(1, steps.Count);
-            Assert.AreEqual(0, steps.First().GetAttributeValue<OptionSetValue>(Sdkmessageprocessingstep.Statecode).Value);
+            Assert.AreEqual(SdkMessageProcessingStepState.Enabled, steps.First().StateCode);
         }
 
 
@@ -207,16 +205,16 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Create_StepCreatedTest();
-            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
+            var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
 
-            var target = new Entity(PluginRegistration.LogicalName, preImage.Id);
+            var target = new mwo_PluginStepRegistration(preImage.Id);
             var ctx = CreateContext(target, preImage, Delete);
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
+            var steps = Context.CreateQuery<SdkMessageProcessingStep>().ToList();
             Assert.AreEqual(0, steps.Count);
         }
 
@@ -225,7 +223,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Create_ImageCreatedTest();
-            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
+            var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
 
             var ctx = CreateContext(preImage.ToEntityReference(), preImage, Delete);
 
@@ -233,7 +231,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var images = Context.CreateQuery(Sdkmessageprocessingstepimage.LogicalName).ToList();
+            var images = Context.CreateQuery<SdkMessageProcessingStepImage>().ToList();
             Assert.AreEqual(0, images.Count);
         }
 
@@ -242,8 +240,8 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Create_StepCreatedTest();
-            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
-            preImage[PluginRegistration.Managed] = false;
+            var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
+            preImage.mwo_Managed = false;
 
             var ctx = CreateContext(preImage.ToEntityReference(), preImage, Delete);
 
@@ -251,7 +249,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
+            var steps = Context.CreateQuery<SdkMessageProcessingStep>().ToList();
             Assert.AreEqual(1, steps.Count);
         }
 
@@ -271,7 +269,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         public void Delete_NoMessageTest()
         {
             //Arrange
-            var ctx = CreateContext(new Entity(PluginRegistration.LogicalName) { [PluginRegistration.Managed] = true }, null, null);
+            var ctx = CreateContext(new mwo_PluginStepRegistration() { mwo_Managed = true }, null, null);
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
@@ -282,16 +280,16 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         {
             //Arrange
             Create_StepCreatedTest();
-            var preImage = Context.CreateQuery(PluginRegistration.LogicalName).First();
+            var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
 
-            var target = new Entity(PluginRegistration.LogicalName, preImage.Id);
+            var target = new mwo_PluginStepRegistration(preImage.Id);
             var ctx = CreateContext(target, preImage, "Retrieve");
 
             //Act
             Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
 
             //Assert
-            var steps = Context.CreateQuery(Sdkmessageprocessingstep.LogicalName).ToList();
+            var steps = Context.CreateQuery<SdkMessageProcessingStep>().ToList();
             Assert.AreEqual(1, steps.Count);
         }
 
