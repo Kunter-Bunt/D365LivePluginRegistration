@@ -79,12 +79,16 @@
     <Compile Include="Interfaces\IImageManager.cs" />
     <Compile Include="Interfaces\IPluginStepRegistrationManager.cs" />
     <Compile Include="Models\Actions.cs" />
+    <Compile Include="Models\appaction_ClientType.cs" />
     <Compile Include="Models\ComponentState.cs" />
     <Compile Include="Models\CRMMessages.cs" />
     <Compile Include="Models\CRMPluginContext.cs" />
     <Compile Include="Models\CrmServiceContext.cs" />
     <Compile Include="Models\EventHandlerType.cs" />
     <Compile Include="Models\ImageType.cs" />
+    <Compile Include="Models\msdyn_knowledgemanagementsetting_msdyn_actionlist.cs" />
+    <Compile Include="Models\msdyn_msdyn_requirementrelationship_msdyn_resourcegroupings.cs" />
+    <Compile Include="Models\msdyn_oc_daysofweek.cs" />
     <Compile Include="Models\mwo_EventHandlerType.cs" />
     <Compile Include="Models\mwo_ImageType.cs" />
     <Compile Include="Models\mwo_PluginStage.cs" />
@@ -106,8 +110,10 @@
     <Compile Include="Models\ServiceEndpoint_AuthType.cs" />
     <Compile Include="Models\ServiceEndpoint_ConnectionMode.cs" />
     <Compile Include="Models\ServiceEndpoint_Contract.cs" />
+    <Compile Include="Models\ServiceEndpoint_MessageCharset.cs" />
     <Compile Include="Models\ServiceEndpoint_MessageFormat.cs" />
     <Compile Include="Models\ServiceEndpoint_NamespaceFormat.cs" />
+    <Compile Include="Models\ServiceEndpoint_SchemaType.cs" />
     <Compile Include="Models\ServiceEndpoint_UserClaim.cs" />
     <Compile Include="Models\Stage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -119,6 +125,7 @@
     </None>
     <None Include="bin\coretools\CrmSvcUtil.exe.config" />
     <None Include="bin\coretools\LicenseTerms.docx" />
+    <None Include="bin\coretools\pacTelemetryUpload.exe.config" />
     <None Include="bin\coretools\SolutionPackager.exe.config" />
     <None Include="LiveRegistration.snk" />
     <None Include="packages.config" />
@@ -144,6 +151,7 @@
     <Content Include="bin\coretools\Microsoft.IdentityModel.Clients.ActiveDirectory.dll" />
     <Content Include="bin\coretools\Microsoft.PowerApps.AppInsights.BatchedTelemetry.dll" />
     <Content Include="bin\coretools\Microsoft.PowerApps.AppInsights.BatchedTelemetryChannel.dll" />
+    <Content Include="bin\coretools\Microsoft.PowerPlatform.Tooling.BatchedTelemetry.dll" />
     <Content Include="bin\coretools\Microsoft.Rest.ClientRuntime.dll" />
     <Content Include="bin\coretools\Microsoft.Xrm.Sdk.Deployment.dll" />
     <Content Include="bin\coretools\Microsoft.Xrm.Sdk.dll" />

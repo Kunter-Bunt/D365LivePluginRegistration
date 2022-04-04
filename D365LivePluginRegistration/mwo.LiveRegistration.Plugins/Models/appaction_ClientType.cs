@@ -11,34 +11,16 @@ namespace mwo.LiveRegistration.Plugins.Models
 {
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	public enum ServiceEndpoint_Contract
+	public enum appaction_ClientType
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		EventGrid = 9,
+		Browser = 0,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		EventHub = 7,
+		Mobile = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		OneWay = 1,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Queue = 2,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Queue_Persistent = 6,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Rest = 3,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Topic = 5,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		TwoWay = 4,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Webhook = 8,
+		MailApp = 2,
 	}
 }

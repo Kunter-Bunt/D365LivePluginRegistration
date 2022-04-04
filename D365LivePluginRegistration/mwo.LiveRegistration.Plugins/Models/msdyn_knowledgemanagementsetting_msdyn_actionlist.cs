@@ -11,34 +11,19 @@ namespace mwo.LiveRegistration.Plugins.Models
 {
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	public enum ServiceEndpoint_Contract
+	public enum msdyn_knowledgemanagementsetting_msdyn_actionlist
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		EventGrid = 9,
+		Linkunlinkarticle = 0,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		EventHub = 7,
+		CopyURL = 1,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		OneWay = 1,
+		LinkarticleandemailURL = 2,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Queue = 2,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Queue_Persistent = 6,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Rest = 3,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Topic = 5,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		TwoWay = 4,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Webhook = 8,
+		Linkarticleandsendarticlecontent = 3,
 	}
 }

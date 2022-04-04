@@ -34,6 +34,7 @@ namespace mwo.LiveRegistration.Plugins.Models
 		{
 			public const string AsyncAutoDelete = "asyncautodelete";
 			public const string CanUseReadOnlyConnection = "canusereadonlyconnection";
+			public const string Category = "category";
 			public const string ComponentState = "componentstate";
 			public const string Configuration = "configuration";
 			public const string CreatedBy = "createdby";
@@ -59,6 +60,7 @@ namespace mwo.LiveRegistration.Plugins.Models
 			public const string OverwriteTime = "overwritetime";
 			public const string PluginTypeId = "plugintypeid";
 			public const string Rank = "rank";
+			public const string RuntimeIntegrationProperties = "runtimeintegrationproperties";
 			public const string SdkMessageFilterId = "sdkmessagefilterid";
 			public const string SdkMessageId = "sdkmessageid";
 			public const string SdkMessageProcessingStepId = "sdkmessageprocessingstepid";
@@ -176,6 +178,26 @@ namespace mwo.LiveRegistration.Plugins.Models
 				this.OnPropertyChanging("CanUseReadOnlyConnection");
 				this.SetAttributeValue("canusereadonlyconnection", value);
 				this.OnPropertyChanged("CanUseReadOnlyConnection");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("category")]
+		public string Category
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("category");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("Category");
+				this.SetAttributeValue("category", value);
+				this.OnPropertyChanged("Category");
 			}
 		}
 		
@@ -615,6 +637,26 @@ namespace mwo.LiveRegistration.Plugins.Models
 				this.OnPropertyChanging("Rank");
 				this.SetAttributeValue("rank", value);
 				this.OnPropertyChanged("Rank");
+			}
+		}
+		
+		/// <summary>
+		/// For internal use only. Holds miscellaneous properties related to runtime integration.
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("runtimeintegrationproperties")]
+		public string RuntimeIntegrationProperties
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<string>("runtimeintegrationproperties");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("RuntimeIntegrationProperties");
+				this.SetAttributeValue("runtimeintegrationproperties", value);
+				this.OnPropertyChanged("RuntimeIntegrationProperties");
 			}
 		}
 		

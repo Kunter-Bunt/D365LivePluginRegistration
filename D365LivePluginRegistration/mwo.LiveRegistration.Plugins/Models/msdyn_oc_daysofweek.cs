@@ -11,34 +11,28 @@ namespace mwo.LiveRegistration.Plugins.Models
 {
 	
 	[System.Runtime.Serialization.DataContractAttribute()]
-	public enum ServiceEndpoint_Contract
+	public enum msdyn_oc_daysofweek
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		EventGrid = 9,
+		Sun = 192350000,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		EventHub = 7,
+		Mon = 192350001,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		OneWay = 1,
+		Tue = 192350002,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Queue = 2,
+		Wed = 192350003,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Queue_Persistent = 6,
+		Thu = 192350004,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Rest = 3,
+		Fri = 192350005,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Topic = 5,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		TwoWay = 4,
-		
-		[System.Runtime.Serialization.EnumMemberAttribute()]
-		Webhook = 8,
+		Sat = 192350006,
 	}
 }

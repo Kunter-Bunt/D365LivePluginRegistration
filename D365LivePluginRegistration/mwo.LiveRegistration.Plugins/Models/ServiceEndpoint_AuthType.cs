@@ -15,7 +15,13 @@ namespace mwo.LiveRegistration.Plugins.Models
 	{
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
+		AccessKey = 8,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
 		ACS = 1,
+		
+		[System.Runtime.Serialization.EnumMemberAttribute()]
+		ConnectionString = 7,
 		
 		[System.Runtime.Serialization.EnumMemberAttribute()]
 		HttpHeader = 5,
