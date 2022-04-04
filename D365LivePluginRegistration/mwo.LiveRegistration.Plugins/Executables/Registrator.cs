@@ -87,7 +87,9 @@ namespace mwo.LiveRegistration.Plugins.Executables
                                 subject.mwo_Asynchronous == true,
                                 MapStage(subject.mwo_PluginStepStage),
                                 subject.mwo_FilteringAttributes,
-                                subject.mwo_Description);
+                                subject.mwo_Description,
+                                subject.mwo_Rank,
+                                subject.mwo_AsyncAutoDelete);
 
             Tracer.Trace($"Updated PluginStep: {pluginStepId}");
 
@@ -107,7 +109,8 @@ namespace mwo.LiveRegistration.Plugins.Executables
                 subject.mwo_Asynchronous == true,
                 MapStage(subject.mwo_PluginStepStage),
                 subject.mwo_FilteringAttributes,
-                subject.mwo_Description);
+                subject.mwo_Description,
+                subject.mwo_Rank);
 
             Tracer.Trace($"Created new PluginStep: {res}");
             subject.mwo_PluginStepId = res.ToString();

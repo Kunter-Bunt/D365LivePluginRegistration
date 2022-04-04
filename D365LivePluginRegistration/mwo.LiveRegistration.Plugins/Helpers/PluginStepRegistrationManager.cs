@@ -59,9 +59,11 @@ namespace mwo.LiveRegistration.Plugins.Helpers
                             bool asynchronous,
                             Stage stage,
                             string filteringAttributes,
-                            string description)
+                            string description,
+                            int? rank,
+                            bool? asyncAutoDelete)
         {
-            Entity step = ComposeEntity(eventHandler, eventHandlerType, name, sdkMessage, primaryEntity, secondaryEntity, stepconfiguration, asynchronous, stage, filteringAttributes, description);
+            Entity step = ComposeEntity(eventHandler, eventHandlerType, name, sdkMessage, primaryEntity, secondaryEntity, stepconfiguration, asynchronous, stage, filteringAttributes, description, rank, asyncAutoDelete);
             step.Id = id;
             Svc.Update(step);
         }
@@ -80,13 +82,15 @@ namespace mwo.LiveRegistration.Plugins.Helpers
                             bool asynchronous,
                             Stage stage,
                             string filteringAttributes,
-                            string description)
+                            string description,
+                            int? rank,
+                            bool? asyncAutoDelete)
         {
-            Entity step = ComposeEntity(eventHandler, eventHandlerType, name, sdkMessage, primaryEntity, secondaryEntity, stepconfiguration, asynchronous, stage, filteringAttributes, description);
+            Entity step = ComposeEntity(eventHandler, eventHandlerType, name, sdkMessage, primaryEntity, secondaryEntity, stepconfiguration, asynchronous, stage, filteringAttributes, description, rank, asyncAutoDelete);
             return Svc.Create(step);
         }
 
-        private Entity ComposeEntity(string eventHandler, EventHandlerType? eventHandlerType, string name, string sdkMessage, string primaryEntity, string secondaryEntity, string stepconfiguration, bool asynchronous, Stage stage, string filteringAttributes, string description)
+        private Entity ComposeEntity(string eventHandler, EventHandlerType? eventHandlerType, string name, string sdkMessage, string primaryEntity, string secondaryEntity, string stepconfiguration, bool asynchronous, Stage stage, string filteringAttributes, string description, int? rank, bool? asyncAutoDelete)
         {
             EntityReference handler = GetEventHandler(eventHandler, eventHandlerType);
             EntityReference message = GetMessage(sdkMessage);
@@ -100,13 +104,13 @@ namespace mwo.LiveRegistration.Plugins.Helpers
                 Name = name,
                 Configuration = stepconfiguration,
                 Mode = asynchronous ? SdkMessageProcessingStep_Mode.Asynchronous : SdkMessageProcessingStep_Mode.Synchronous,
-                Rank = 1,
+                Rank = (rank.HasValue && rank.Value > 0) ? rank : 1,
                 Stage = MapMode(stage),
                 SupportedDeployment = SdkMessageProcessingStep_SupportedDeployment.ServerOnly,
                 FilteringAttributes = filteringAttributes,
                 Description = description
             };
-            if (asynchronous) entity.AsyncAutoDelete = true;
+            if (asynchronous) entity.AsyncAutoDelete = asyncAutoDelete ?? true;
             return entity;
         }
 

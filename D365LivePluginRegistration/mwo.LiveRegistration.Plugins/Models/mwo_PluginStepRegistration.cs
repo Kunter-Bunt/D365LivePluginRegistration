@@ -39,6 +39,7 @@ namespace mwo.LiveRegistration.Plugins.Models
 			public const string ModifiedBy = "modifiedby";
 			public const string ModifiedOn = "modifiedon";
 			public const string ModifiedOnBehalfBy = "modifiedonbehalfby";
+			public const string mwo_AsyncAutoDelete = "mwo_asyncautodelete";
 			public const string mwo_Asynchronous = "mwo_asynchronous";
 			public const string mwo_Description = "mwo_description";
 			public const string mwo_EventHandler = "mwo_eventhandler";
@@ -54,6 +55,7 @@ namespace mwo.LiveRegistration.Plugins.Models
 			public const string Id = "mwo_pluginstepregistrationid";
 			public const string mwo_PluginStepStage = "mwo_pluginstepstage";
 			public const string mwo_PrimaryEntity = "mwo_primaryentity";
+			public const string mwo_Rank = "mwo_rank";
 			public const string mwo_SDKMessage = "mwo_sdkmessage";
 			public const string mwo_SecondaryEntity = "mwo_secondaryentity";
 			public const string mwo_StepConfiguration = "mwo_stepconfiguration";
@@ -92,6 +94,8 @@ namespace mwo.LiveRegistration.Plugins.Models
 				base(EntityLogicalName, keyAttributes)
 		{
 		}
+		
+		public const string AlternateKeys = "mwo_pluginstepid";
 		
 		public const string EntityLogicalName = "mwo_pluginstepregistration";
 		
@@ -236,6 +240,26 @@ namespace mwo.LiveRegistration.Plugins.Models
 				this.OnPropertyChanging("ModifiedOnBehalfBy");
 				this.SetAttributeValue("modifiedonbehalfby", value);
 				this.OnPropertyChanged("ModifiedOnBehalfBy");
+			}
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("mwo_asyncautodelete")]
+		public System.Nullable<bool> mwo_AsyncAutoDelete
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<bool>>("mwo_asyncautodelete");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("mwo_AsyncAutoDelete");
+				this.SetAttributeValue("mwo_asyncautodelete", value);
+				this.OnPropertyChanged("mwo_AsyncAutoDelete");
 			}
 		}
 		
@@ -539,6 +563,26 @@ namespace mwo.LiveRegistration.Plugins.Models
 				this.OnPropertyChanging("mwo_PrimaryEntity");
 				this.SetAttributeValue("mwo_primaryentity", value);
 				this.OnPropertyChanged("mwo_PrimaryEntity");
+			}
+		}
+		
+		/// <summary>
+		/// 
+		/// </summary>
+		[Microsoft.Xrm.Sdk.AttributeLogicalNameAttribute("mwo_rank")]
+		public System.Nullable<int> mwo_Rank
+		{
+			[System.Diagnostics.DebuggerNonUserCode()]
+			get
+			{
+				return this.GetAttributeValue<System.Nullable<int>>("mwo_rank");
+			}
+			[System.Diagnostics.DebuggerNonUserCode()]
+			set
+			{
+				this.OnPropertyChanging("mwo_Rank");
+				this.SetAttributeValue("mwo_rank", value);
+				this.OnPropertyChanged("mwo_Rank");
 			}
 		}
 		
