@@ -132,6 +132,7 @@
     <None Include="spkl\earlybound.bat" />
     <None Include="spkl\instrument-plugin-code.bat" />
     <None Include="spkl\pack+import.bat" />
+    <None Include="spkl\pack.bat" />
     <None Include="spkl\unpack.bat" />
   </ItemGroup>
   <ItemGroup>

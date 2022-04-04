@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{c1737e95-da5b-4c31-94e0-ae882aa20998}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{b553e9dc-e03b-47c5-ba89-c3b86c48d6a8}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{6b5a5554-d568-426f-bd6e-5b4f3221446a}" columns="11">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{12197b53-e4c3-4cd7-a590-fae715ac7d76}">
+                        <labels>
+                          <label description="Name" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="mwo_name" />
+                      </cell>
+                      <cell id="{8e6fde15-bd35-4e75-9e22-5372b754a8dc}" showlabel="true" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Managed" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_managed" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="mwo_managed" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ef5f1d7b-9a4a-43d6-a6f9-acb25539d0a2}" locklevel="0">
+                        <labels>
+                          <label description="Event Handler" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_eventhandler" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="mwo_eventhandler" disabled="false" />
+                      </cell>
+                      <cell id="{fe1b9ee0-2240-4f0b-936d-25fb9f1e1248}" showlabel="true" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Plugin Step Id" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_pluginstepid" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="mwo_pluginstepid" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{5e4fa581-af6c-4c6d-80ef-7ebbb538778b}" locklevel="0">
+                        <labels>
+                          <label description="Event Handler Type" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_eventhandlertype" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="mwo_eventhandlertype" disabled="false" />
+                      </cell>
+                      <cell locklevel="0" id="{70e901ca-0d9d-4a7c-ba94-ee17df32fef9}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_stepconfiguration" id="55544447-c256-43cd-b358-ac031a9de188" IsUserDefined="0" locklevel="0" showlabel="true">
+          <labels>
+            <label description="Step Configuration" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="50%">
+              <sections>
+                <section name="tab_stepconfiguration_section_step" id="76d94274-4598-46e1-8d3b-e78102aad385" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Step" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{dc35993e-1cc9-45a5-8236-f41375238bea}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="SDK Message" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_sdkmessage" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="mwo_sdkmessage" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{1aae5602-5026-4991-97f0-859cd6b38a90}" showlabel="true" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Filtering Attributes" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_filteringattributes" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="mwo_filteringattributes" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{240711f9-4a6c-4596-8f06-d5e482b452c1}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Primary Entity" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_primaryentity" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="mwo_primaryentity" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c4682c03-60d4-47ba-a968-c14cd3cff017}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Secondary Entity" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_secondaryentity" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="mwo_secondaryentity" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e1a4137a-59eb-40d4-8b2c-9bdb935c37a0}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Plugin Step Stage" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_pluginstepstage" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="mwo_pluginstepstage" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{a8b7a604-8069-4828-bfee-81ae5918fb74}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Execution Order" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_rank" classid="{C6D124CA-7EDA-4A60-AEA9-7FB8D318B68F}" datafieldname="mwo_rank" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ea1ae3ae-2418-46b8-8f32-6c51dc8d8dd3}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Delete AsyncOperation on success" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_asyncautodelete" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="mwo_asyncautodelete" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{a5f81bdc-ef46-47de-9646-b9781d703e7c}" showlabel="true" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Asynchronous" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_asynchronous" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="mwo_asynchronous" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="50%">
+              <sections>
+                <section name="tab_stepconfiguration_section_configuration" id="a2f03402-d464-41c7-9b25-59cdf3b85904" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Configuration" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{34bc23df-36a0-4aeb-bb42-0ebe98e100b2}" showlabel="true" locklevel="0" rowspan="4">
+                        <labels>
+                          <label description="Step Configuration" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_stepconfiguration" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="mwo_stepconfiguration" disabled="false" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{673f09f8-fa8d-427f-8241-82fdca4c46d3}" showlabel="true" locklevel="0" rowspan="4">
+                        <labels>
+                          <label description="Description" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_description" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="mwo_description" disabled="false" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row>
+                      <cell showlabel="true" locklevel="0" id="{c1710982-67b5-4656-a26b-a666803d10ec}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_imageconfiguration" id="e0840aa3-7ebd-49b7-aeb3-f3f598127f1a" IsUserDefined="0" locklevel="0" showlabel="true">
+          <labels>
+            <label description="Image Configuration" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section name="tab_3_section_1" id="d5169912-a827-40f9-8a00-d032d78ee60b" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="New Section" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{d3475e7a-4035-4c59-920a-1a7269294251}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Image Type" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_imagetype" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="mwo_imagetype" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{41ff5fac-14f3-4d52-971d-f60a7676e4f6}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Image Name" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_imagename" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="mwo_imagename" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{6b10836b-cb15-4cf8-a93b-758fe8c9bbf7}" showlabel="true" locklevel="0" rowspan="4">
+                        <labels>
+                          <label description="Image Attributes" languagecode="1033" />
+                        </labels>
+                        <control id="mwo_imageattributes" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="mwo_imageattributes" disabled="false" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row>
+                      <cell showlabel="true" locklevel="0" id="{7dab9959-773e-42b9-a159-16fb470f2a2d}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{78c00f79-2192-4b34-8ff8-7db910140aa9}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{74cea3dd-99e0-4271-a5af-7cb31605b808}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{31b3bec7-7b4b-4601-9a3c-42e5a1b69154}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{5759fb5e-dbbb-4ddd-927d-05a31c7e1149}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{664794d6-5399-4ddf-8be3-d8511b8be4ce}" showlabel="true" locklevel="0">
+              <labels>
+                <label description="Created By" languagecode="1033" />
+              </labels>
+              <control id="header_createdby" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="createdby" disabled="false" />
+            </cell>
+            <cell id="{9c6236f4-188c-420f-a172-d9fc5620b037}" showlabel="true" locklevel="0">
+              <labels>
+                <label description="Created On" languagecode="1033" />
+              </labels>
+              <control id="header_createdon" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="createdon" disabled="false" />
+            </cell>
+            <cell id="{68d41470-d4f8-4f9f-a2b3-46233b06e177}" showlabel="true" locklevel="0">
+              <labels>
+                <label description="Modified By" languagecode="1033" />
+              </labels>
+              <control id="header_modifiedby" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="modifiedby" disabled="false" />
+            </cell>
+            <cell id="{16af7487-4e12-483a-a7e1-cad1cdcf6b26}" showlabel="true" locklevel="0">
+              <labels>
+                <label description="Modified On" languagecode="1033" />
+              </labels>
+              <control id="header_modifiedon" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="modifiedon" disabled="false" />
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{e59c51f6-a157-47a9-a21d-dfcc956ed677}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{46ca3237-c6a5-43ee-88fd-a355305a05fc}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{173a3693-2b93-4f43-88bb-17d8a74704f2}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{9481fa47-5e06-4c2a-8636-8d9270f9286b}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{a94f4ec5-0cd4-4c64-8b7c-52b2d0ba2df7}" showlabel="true" locklevel="0">
+              <labels>
+                <label description="Status" languagecode="1033" />
+              </labels>
+              <control id="statecode" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="statecode" disabled="false" />
+            </cell>
+            <cell id="{b813cb0c-5b29-4f96-882b-01ff6fb4dad3}" showlabel="true" locklevel="0">
+              <labels>
+                <label description="Status Reason" languagecode="1033" />
+              </labels>
+              <control id="statuscode" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="statuscode" disabled="false" />
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <Navigation>
+        <NavBar />
+        <NavBarAreas>
+          <NavBarArea Id="Info">
+            <Titles>
+              <Title LCID="1033" Text="Common" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Sales">
+            <Titles>
+              <Title LCID="1033" Text="Sales" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Service">
+            <Titles>
+              <Title LCID="1033" Text="Service" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Marketing">
+            <Titles>
+              <Title LCID="1033" Text="Marketing" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="ProcessCenter">
+            <Titles>
+              <Title LCID="1033" Text="Process Sessions" />
+            </Titles>
+          </NavBarArea>
+        </NavBarAreas>
+      </Navigation>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Everyone />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

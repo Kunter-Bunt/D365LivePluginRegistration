@@ -32,8 +32,8 @@
       "map": [
         {
           "map": "file",
-          "from": "PluginAssemblies\\**\\mwoSharepointAutomationPlugins.dll",
-          "to": "..\\mwo.LiveRegistration.Plugins\\bin\\Debug\\mwo.LiveRegistration.Plugins.dll"
+          "from": "PluginAssemblies\\**\\mwoLiveRegistrationPlugins.dll",
+          "to": "..\\..\\mwo.LiveRegistration.Plugins\\bin\\Debug\\mwo.LiveRegistration.Plugins.dll"
         }
       ]
 

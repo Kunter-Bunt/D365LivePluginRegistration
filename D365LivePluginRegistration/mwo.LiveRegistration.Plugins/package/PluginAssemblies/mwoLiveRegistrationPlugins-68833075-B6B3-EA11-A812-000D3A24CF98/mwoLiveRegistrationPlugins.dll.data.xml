@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PluginAssembly FullName="mwo.LiveRegistration.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f930ac74fdf04bf6" PluginAssemblyId="68833075-b6b3-ea11-a812-000d3a24cf98" CustomizationLevel="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <IsolationMode>2</IsolationMode>
+  <SourceType>0</SourceType>
+  <IntroducedVersion>1.0</IntroducedVersion>
+  <FileName>/PluginAssemblies/mwoLiveRegistrationPlugins-68833075-B6B3-EA11-A812-000D3A24CF98/mwoLiveRegistrationPlugins.dll</FileName>
+  <PluginTypes>
+    <PluginType AssemblyQualifiedName="mwo.LiveRegistration.Plugins.EntryPoints.PreOpLiveRegistration, mwo.LiveRegistration.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f930ac74fdf04bf6" PluginTypeId="9070dc06-4bc0-ea11-a812-000d3a24cf98" Name="mwo.LiveRegistration.Plugins.EntryPoints.PreOpLiveRegistration">
+      <FriendlyName>mwo.LiveRegistration.Plugins.EntryPoints.PreOpLiveRegistration</FriendlyName>
+    </PluginType>
+  </PluginTypes>
+</PluginAssembly>

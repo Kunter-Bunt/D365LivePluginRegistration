@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{636f32d3-1c46-478b-be3d-2da954f8a4e9}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="mwo_name" select="1" icon="1" preview="1">
+        <row name="result" id="mwo_pluginstepregistrationid">
+          <cell name="mwo_name" width="300" />
+          <cell name="mwo_eventhandler" width="251" />
+          <cell name="mwo_pluginstepid" width="150" />
+          <cell name="mwo_managed" width="100" />
+          <cell name="modifiedon" width="150" />
+          <cell name="modifiedby" width="150" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="mwo_pluginstepregistration">
+          <attribute name="mwo_pluginstepregistrationid" />
+          <attribute name="mwo_name" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="1" />
+          </filter>
+          <attribute name="mwo_pluginstepid" />
+          <attribute name="mwo_managed" />
+          <attribute name="modifiedon" />
+          <attribute name="modifiedby" />
+          <order attribute="modifiedon" descending="true" />
+          <attribute name="mwo_eventhandler" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Inactive Plugin Step Registrations" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>
