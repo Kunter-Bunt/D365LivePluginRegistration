@@ -37,7 +37,7 @@ namespace mwo.LiveRegistration.Plugins.Executables
             else if (msg == CRMMessages.Update && hasId)
             {
                 DoUpdate(context, pluginStepId, subject);
-                if (context.Target.Contains(mwo_PluginStepRegistration.Fields.StateCode))
+                if (context.Target.Contains("statecode"))
                     DoManageStage(context, pluginStepId, subject);
             }
             else if ((msg == CRMMessages.Update || msg == CRMMessages.Create) && !hasId)
@@ -52,7 +52,7 @@ namespace mwo.LiveRegistration.Plugins.Executables
 
         private void DoDelete(ICRMEvent context, Guid pluginStepId, mwo_PluginStepRegistration subject)
         {
-            subject.mwo_ImageType = mwo_ImageType.None;
+            subject.mwo_ImageType = mwo_imagetype.None;
             DoManageImage(context, pluginStepId, subject);
 
             StepManager.Delete(pluginStepId);
@@ -61,7 +61,7 @@ namespace mwo.LiveRegistration.Plugins.Executables
 
         private void DoManageStage(ICRMEvent context, Guid pluginStepId, mwo_PluginStepRegistration subject)
         {
-            if (subject.StateCode == mwo_PluginStepRegistrationState.Active)
+            if (subject.statecode == mwo_PluginStepRegistrationState.Active)
             {
                 StepManager.Activate(pluginStepId);
                 Tracer.Trace($"Activated PluginStep: {pluginStepId}");
@@ -121,7 +121,7 @@ namespace mwo.LiveRegistration.Plugins.Executables
 
         private void DoManageImage(ICRMEvent context, Guid pluginStepId, mwo_PluginStepRegistration subject)
         {
-            if (subject.mwo_ImageType != null && subject.mwo_ImageType != mwo_ImageType.None)
+            if (subject.mwo_ImageType != null && subject.mwo_ImageType != mwo_imagetype.None)
             {
                 ImageManager.Upsert(MapImageType(subject.mwo_ImageType), subject.mwo_ImageName, new EntityReference(SdkMessageProcessingStep.EntityLogicalName, pluginStepId), subject.mwo_ImageAttributes);
                 Tracer.Trace($"Upserted image: {subject.mwo_ImageName}");
@@ -133,35 +133,35 @@ namespace mwo.LiveRegistration.Plugins.Executables
             }
         }
 
-        private static ImageType MapImageType(mwo_ImageType? imageType)
+        private static ImageType MapImageType(mwo_imagetype? imageType)
         {
             switch (imageType)
             {
-                case mwo_ImageType.PreImage: return ImageType.PreImage;
-                case mwo_ImageType.PostImage: return ImageType.PostImage;
-                case mwo_ImageType.Both: return ImageType.Both;
+                case mwo_imagetype.PreImage: return ImageType.PreImage;
+                case mwo_imagetype.PostImage: return ImageType.PostImage;
+                case mwo_imagetype.Both: return ImageType.Both;
                 default: return ImageType.None;
             }
         }
 
-        private static EventHandlerType MapPluginType(mwo_EventHandlerType? handlerType)
+        private static EventHandlerType MapPluginType(mwo_eventhandlertype? handlerType)
         {
             switch (handlerType)
             {
-                case mwo_EventHandlerType.PluginType: return EventHandlerType.PluginType;
-                case mwo_EventHandlerType.ServiceEndpoint: return EventHandlerType.ServiceEndpoint;
+                case mwo_eventhandlertype.PluginType: return EventHandlerType.PluginType;
+                case mwo_eventhandlertype.ServiceEndpoint: return EventHandlerType.ServiceEndpoint;
                 default: return EventHandlerType.PluginType;
             }
         }
 
-        private static Stage MapStage(mwo_PluginStage? stage)
+        private static StageEnum MapStage(mwo_pluginstage? stage)
         {
             switch (stage)
             {
-                case mwo_PluginStage.PreValidation: return Stage.PreValidation;
-                case mwo_PluginStage.PreOperation: return Stage.PreOperation;
-                case mwo_PluginStage.PostOperation: return Stage.PostOperation;
-                default: return Stage.PreOperation;
+                case mwo_pluginstage.PreValidation: return StageEnum.PreValidation;
+                case mwo_pluginstage.PreOperation: return StageEnum.PreOperation;
+                case mwo_pluginstage.PostOperation: return StageEnum.PostOperation;
+                default: return StageEnum.PreOperation;
             }
         }
     }

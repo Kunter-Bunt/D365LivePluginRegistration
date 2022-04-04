@@ -32,7 +32,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
         /// </summary>
         public void Activate(Guid id)
         {
-            Entity step = ComposeMoniker(id, SdkMessageProcessingStepState.Enabled, SdkMessageProcessingStep_StatusCode.Enabled);
+            Entity step = ComposeMoniker(id, SdkMessageProcessingStepState.Enabled, sdkmessageprocessingstep_statuscode.Enabled);
             Svc.Update(step);
         }
 
@@ -41,7 +41,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
         /// </summary>
         public void Deactivate(Guid id)
         {
-            Entity step = ComposeMoniker(id, SdkMessageProcessingStepState.Disabled, SdkMessageProcessingStep_StatusCode.Disabled);
+            Entity step = ComposeMoniker(id, SdkMessageProcessingStepState.Disabled, sdkmessageprocessingstep_statuscode.Disabled);
             Svc.Update(step);
         }
 
@@ -57,7 +57,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
                             string secondaryEntity,
                             string stepconfiguration,
                             bool asynchronous,
-                            Stage stage,
+                            StageEnum stage,
                             string filteringAttributes,
                             string description,
                             int? rank,
@@ -80,7 +80,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
                             string secondaryEntity,
                             string stepconfiguration,
                             bool asynchronous,
-                            Stage stage,
+                            StageEnum stage,
                             string filteringAttributes,
                             string description,
                             int? rank,
@@ -90,7 +90,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             return Svc.Create(step);
         }
 
-        private Entity ComposeEntity(string eventHandler, EventHandlerType? eventHandlerType, string name, string sdkMessage, string primaryEntity, string secondaryEntity, string stepconfiguration, bool asynchronous, Stage stage, string filteringAttributes, string description, int? rank, bool? asyncAutoDelete)
+        private Entity ComposeEntity(string eventHandler, EventHandlerType? eventHandlerType, string name, string sdkMessage, string primaryEntity, string secondaryEntity, string stepconfiguration, bool asynchronous, StageEnum stage, string filteringAttributes, string description, int? rank, bool? asyncAutoDelete)
         {
             EntityReference handler = GetEventHandler(eventHandler, eventHandlerType);
             EntityReference message = GetMessage(sdkMessage);
@@ -103,10 +103,10 @@ namespace mwo.LiveRegistration.Plugins.Helpers
                 SdkMessageFilterId = messageFilter,
                 Name = name,
                 Configuration = stepconfiguration,
-                Mode = asynchronous ? SdkMessageProcessingStep_Mode.Asynchronous : SdkMessageProcessingStep_Mode.Synchronous,
+                Mode = asynchronous ? sdkmessageprocessingstep_mode.Asynchronous : sdkmessageprocessingstep_mode.Synchronous,
                 Rank = (rank.HasValue && rank.Value > 0) ? rank : 1,
                 Stage = MapMode(stage),
-                SupportedDeployment = SdkMessageProcessingStep_SupportedDeployment.ServerOnly,
+                SupportedDeployment = sdkmessageprocessingstep_supporteddeployment.ServerOnly,
                 FilteringAttributes = filteringAttributes,
                 Description = description
             };
@@ -114,13 +114,13 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             return entity;
         }
 
-        private SdkMessageProcessingStep_Stage MapMode(Stage stage)
+        private static sdkmessageprocessingstep_stage MapMode(StageEnum stage)
         {
             switch (stage)
             {
-                case Stage.PreValidation: return SdkMessageProcessingStep_Stage.Prevalidation;
-                case Stage.PreOperation: return SdkMessageProcessingStep_Stage.Preoperation;
-                case Stage.PostOperation: return SdkMessageProcessingStep_Stage.Postoperation;
+                case StageEnum.PreValidation: return sdkmessageprocessingstep_stage.Prevalidation;
+                case StageEnum.PreOperation: return sdkmessageprocessingstep_stage.Preoperation;
+                case StageEnum.PostOperation: return sdkmessageprocessingstep_stage.Postoperation;
                 default: throw new ArgumentOutOfRangeException(nameof(stage));
             }
         }
@@ -147,7 +147,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             {
                 ColumnSet = new ColumnSet(false)
             };
-            query.Criteria.AddCondition(ServiceEndpoint.Fields.Name, ConditionOperator.Equal, name);
+            query.Criteria.AddCondition("name", ConditionOperator.Equal, name);
             var results = Svc.RetrieveMultiple(query);
             if (!results.Entities.Any()) throw new ArgumentException(nameof(name) + " does not exist");
 
@@ -161,7 +161,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             {
                 ColumnSet = new ColumnSet(false)
             };
-            query.Criteria.AddCondition(PluginType.Fields.TypeName, ConditionOperator.Equal, pluginTypeName);
+            query.Criteria.AddCondition("typename", ConditionOperator.Equal, pluginTypeName);
             var results = Svc.RetrieveMultiple(query);
             if (!results.Entities.Any()) throw new ArgumentException(nameof(pluginTypeName) + " does not exist");
 
@@ -169,7 +169,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             return plugintype.ToEntityReference();
         }
 
-        private Entity ComposeMoniker(Guid id, SdkMessageProcessingStepState statecode, SdkMessageProcessingStep_StatusCode statuscode)
+        private Entity ComposeMoniker(Guid id, SdkMessageProcessingStepState statecode, sdkmessageprocessingstep_statuscode statuscode)
         {
             return new SdkMessageProcessingStep
             {
@@ -187,9 +187,9 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             {
                 ColumnSet = new ColumnSet(false)
             };
-            query.Criteria.AddCondition(SdkMessageFilter.Fields.SdkMessageId, ConditionOperator.Equal, message.Id);
-            if (!string.IsNullOrEmpty(primaryEntity)) query.Criteria.AddCondition(SdkMessageFilter.Fields.PrimaryObjectTypeCode, ConditionOperator.Equal, primaryEntity);
-            if (!string.IsNullOrEmpty(secondaryEntity)) query.Criteria.AddCondition(SdkMessageFilter.Fields.SecondaryObjectTypeCode, ConditionOperator.Equal, secondaryEntity);
+            query.Criteria.AddCondition("sdkmessageid", ConditionOperator.Equal, message.Id);
+            if (!string.IsNullOrEmpty(primaryEntity)) query.Criteria.AddCondition("primaryobjecttypecode", ConditionOperator.Equal, primaryEntity);
+            if (!string.IsNullOrEmpty(secondaryEntity)) query.Criteria.AddCondition("secondaryobjecttypecode", ConditionOperator.Equal, secondaryEntity);
             var results = Svc.RetrieveMultiple(query);
             if (!results.Entities.Any()) throw new ArgumentException($"Message does not exist on {primaryEntity} {secondaryEntity}");
 
@@ -202,7 +202,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             {
                 ColumnSet = new ColumnSet(false)
             };
-            query.Criteria.AddCondition(SdkMessage.Fields.Name, ConditionOperator.Equal, sdkMessageName);
+            query.Criteria.AddCondition("name", ConditionOperator.Equal, sdkMessageName);
             var results = Svc.RetrieveMultiple(query);
             if (!results.Entities.Any()) throw new ArgumentException(nameof(sdkMessageName) + " does not exist");
 

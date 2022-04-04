@@ -8,14 +8,35 @@
       "assemblypath": "bin\\Debug"
     }
   ],
+  "earlyboundtypes": [
+    {
+      "entities": "mwo_pluginstepregistration,plugintype,sdkmessage,sdkmessagefilter,sdkmessageprocessingstep,sdkmessageprocessingstepimage,serviceendpoint",
+      "actions": "",
+      "generateOptionsetEnums": "true",
+      "generateStateEnums": "true",
+      "generateGlobalOptionsets": true,
+      "filename": "Models/EarlyBoundTypes.cs",
+      "oneTypePerFile": true,
+      "classNamespace": "mwo.LiveRegistration.Plugins.Models",
+      "serviceContextName": "CrmServiceContext"
+    }
+  ],
   "solutions": [
     {
       "profile": "default,release",
       "solution_uniquename": "LivePluginRegistration",
       "packagepath": "package",
       "solutionpath": "solution_{0}_{1}_{2}_{3}.zip",
-      "packagetype": "unmanaged",
-      "increment_on_import": false
+      "packagetype": "both_managed_import",
+      "increment_on_import": false,
+      "map": [
+        {
+          "map": "file",
+          "from": "PluginAssemblies\\**\\mwoSharepointAutomationPlugins.dll",
+          "to": "..\\mwo.LiveRegistration.Plugins\\bin\\Debug\\mwo.LiveRegistration.Plugins.dll"
+        }
+      ]
+
     }
   ]
 }

@@ -37,7 +37,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             MessageCreate = new SdkMessage { Name = Create };
             MessageCreate.Id = Service.Create(MessageCreate);
 
-            MessageFilterCreate = new SdkMessageFilter { SdkMessageId = MessageCreate.ToEntityReference(), [SdkMessageFilter.Fields.PrimaryObjectTypeCode] = PrimaryEntityName };
+            MessageFilterCreate = new SdkMessageFilter { SdkMessageId = MessageCreate.ToEntityReference(), ["primaryobjecttypecode"] = PrimaryEntityName };
             MessageFilterCreate.Id = Service.Create(MessageFilterCreate);
         }
 
@@ -48,19 +48,19 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             var target = new mwo_PluginStepRegistration
             {
                 mwo_EventHandler = PluginTypeName,
-                mwo_EventHandlerType = mwo_EventHandlerType.PluginType,
+                mwo_EventHandlerType = mwo_eventhandlertype.PluginType,
                 mwo_SDKMessage = Create,
                 mwo_PrimaryEntity = PrimaryEntityName,
                 mwo_SecondaryEntity = null,
                 mwo_StepConfiguration = null,
                 mwo_Asynchronous = true,
-                mwo_PluginStepStage = mwo_PluginStage.PostOperation,
+                mwo_PluginStepStage = mwo_pluginstage.PostOperation,
                 mwo_FilteringAttributes = null,
                 mwo_Description = null,
                 mwo_Managed = null,
                 mwo_ImageType = null
             };
-            
+
             var ctx = CreateContext(target, null, Create);
 
             //Act
@@ -84,13 +84,13 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             var target = new mwo_PluginStepRegistration
             {
                 mwo_EventHandler = PluginTypeName,
-                mwo_EventHandlerType = mwo_EventHandlerType.PluginType,
+                mwo_EventHandlerType = mwo_eventhandlertype.PluginType,
                 mwo_SDKMessage = Create,
                 mwo_PrimaryEntity = PrimaryEntityName,
                 mwo_SecondaryEntity = null,
                 mwo_StepConfiguration = null,
                 mwo_Asynchronous = true,
-                mwo_PluginStepStage = mwo_PluginStage.PostOperation,
+                mwo_PluginStepStage = mwo_pluginstage.PostOperation,
                 mwo_FilteringAttributes = null,
                 mwo_Description = null,
                 mwo_Managed = null,
@@ -122,17 +122,17 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             var target = new mwo_PluginStepRegistration
             {
                 mwo_EventHandler = PluginTypeName,
-                mwo_EventHandlerType = mwo_EventHandlerType.PluginType,
+                mwo_EventHandlerType = mwo_eventhandlertype.PluginType,
                 mwo_SDKMessage = Create,
                 mwo_PrimaryEntity = PrimaryEntityName,
                 mwo_SecondaryEntity = null,
                 mwo_StepConfiguration = null,
                 mwo_Asynchronous = true,
-                mwo_PluginStepStage = mwo_PluginStage.PostOperation,
+                mwo_PluginStepStage = mwo_pluginstage.PostOperation,
                 mwo_FilteringAttributes = null,
                 mwo_Description = null,
                 mwo_Managed = true,
-                mwo_ImageType = mwo_ImageType.Both,
+                mwo_ImageType = mwo_imagetype.Both,
                 mwo_ImageName = "Default",
                 mwo_ImageAttributes = null
             };
@@ -157,8 +157,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
 
             var desc = "newDesc";
-            var target = new mwo_PluginStepRegistration(preImage.Id)
+            var target = new mwo_PluginStepRegistration()
             {
+                Id = preImage.Id,
                 mwo_Description = desc,
             };
             var ctx = CreateContext(target, preImage, Update);
@@ -180,8 +181,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
 
             var order = 8;
-            var target = new mwo_PluginStepRegistration(preImage.Id)
+            var target = new mwo_PluginStepRegistration()
             {
+                Id = preImage.Id,
                 mwo_Rank = order,
             };
             var ctx = CreateContext(target, preImage, Update);
@@ -203,8 +205,9 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
 
             var name = "newName";
-            var target = new mwo_PluginStepRegistration(preImage.Id)
+            var target = new mwo_PluginStepRegistration()
             {
+                Id = preImage.Id,
                 mwo_ImageName = name
             };
             var ctx = CreateContext(target, preImage, Update);
@@ -225,9 +228,10 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Create_StepCreatedTest();
             var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
 
-            var target = new mwo_PluginStepRegistration(preImage.Id)
+            var target = new mwo_PluginStepRegistration()
             {
-                StateCode = mwo_PluginStepRegistrationState.Inactive,
+                Id = preImage.Id,
+                statecode = mwo_PluginStepRegistrationState.Inactive,
             };
             var ctx = CreateContext(target, preImage, Update);
 
@@ -247,9 +251,10 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Update_DeactivateTest();
             var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
 
-            var target = new mwo_PluginStepRegistration(preImage.Id)
+            var target = new mwo_PluginStepRegistration()
             {
-                StateCode = mwo_PluginStepRegistrationState.Active,
+                Id = preImage.Id,
+                statecode = mwo_PluginStepRegistrationState.Active,
             };
             var ctx = CreateContext(target, preImage, Update);
 
@@ -270,7 +275,10 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Create_StepCreatedTest();
             var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
 
-            var target = new mwo_PluginStepRegistration(preImage.Id);
+            var target = new mwo_PluginStepRegistration()
+            {
+                Id = preImage.Id
+            };
             var ctx = CreateContext(target, preImage, Delete);
 
             //Act
@@ -345,7 +353,10 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             Create_StepCreatedTest();
             var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
 
-            var target = new mwo_PluginStepRegistration(preImage.Id);
+            var target = new mwo_PluginStepRegistration()
+            {
+                Id = preImage.Id
+            };
             var ctx = CreateContext(target, preImage, "Retrieve");
 
             //Act
