@@ -71,6 +71,46 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
 
             var steps = Context.CreateQuery<SdkMessageProcessingStep>().ToList();
             Assert.AreEqual(1, steps.Count);
+            Assert.AreEqual(1, steps.First().Rank);
+            Assert.IsTrue(steps.First().AsyncAutoDelete.Value);
+
+            target.Id = Service.Create(target); //This is here for the other tests that rely on the Entity being there.
+        }
+
+        [TestMethod]
+        public void Create_StepCreatedTest_ExecutionOrder()
+        {
+            //Arrange
+            var target = new mwo_PluginStepRegistration
+            {
+                mwo_EventHandler = PluginTypeName,
+                mwo_EventHandlerType = mwo_EventHandlerType.PluginType,
+                mwo_SDKMessage = Create,
+                mwo_PrimaryEntity = PrimaryEntityName,
+                mwo_SecondaryEntity = null,
+                mwo_StepConfiguration = null,
+                mwo_Asynchronous = true,
+                mwo_PluginStepStage = mwo_PluginStage.PostOperation,
+                mwo_FilteringAttributes = null,
+                mwo_Description = null,
+                mwo_Managed = null,
+                mwo_ImageType = null,
+                mwo_Rank = 5,
+                mwo_AsyncAutoDelete = false,
+            };
+
+            var ctx = CreateContext(target, null, Create);
+
+            //Act
+            Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
+
+            //Assert
+            Assert.IsNotNull(target.mwo_PluginStepId);
+
+            var steps = Context.CreateQuery<SdkMessageProcessingStep>().ToList();
+            Assert.AreEqual(1, steps.Count);
+            Assert.AreEqual(5, steps.First().Rank);
+            Assert.IsFalse(steps.First().AsyncAutoDelete.Value);
 
             target.Id = Service.Create(target); //This is here for the other tests that rely on the Entity being there.
         }
@@ -292,6 +332,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
             var steps = Context.CreateQuery<SdkMessageProcessingStep>().ToList();
             Assert.AreEqual(1, steps.Count);
         }
+
 
         private XrmFakedPluginExecutionContext CreateContext(object target, Entity preImage, string messagename)
         {

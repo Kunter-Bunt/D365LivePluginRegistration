@@ -110,7 +110,8 @@ namespace mwo.LiveRegistration.Plugins.Executables
                 MapStage(subject.mwo_PluginStepStage),
                 subject.mwo_FilteringAttributes,
                 subject.mwo_Description,
-                subject.mwo_Rank);
+                subject.mwo_Rank,
+                subject.mwo_AsyncAutoDelete);
 
             Tracer.Trace($"Created new PluginStep: {res}");
             subject.mwo_PluginStepId = res.ToString();
