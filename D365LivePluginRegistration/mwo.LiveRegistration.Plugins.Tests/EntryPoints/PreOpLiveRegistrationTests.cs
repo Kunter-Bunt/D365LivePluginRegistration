@@ -173,6 +173,29 @@ namespace mwo.LiveRegistration.Plugins.Tests.EntryPoints
         }
 
         [TestMethod]
+        public void Update_ChangeExecutionOrderTest()
+        {
+            //Arrange
+            Create_StepCreatedTest();
+            var preImage = Context.CreateQuery<mwo_PluginStepRegistration>().First();
+
+            var order = 8;
+            var target = new mwo_PluginStepRegistration(preImage.Id)
+            {
+                mwo_Rank = order,
+            };
+            var ctx = CreateContext(target, preImage, Update);
+
+            //Act
+            Context.ExecutePluginWith<PreOpLiveRegistration>(ctx);
+
+            //Assert
+            var steps = Context.CreateQuery<SdkMessageProcessingStep>().ToList();
+            Assert.AreEqual(1, steps.Count);
+            Assert.AreEqual(order, steps.First().Rank);
+        }
+
+        [TestMethod]
         public void Update_ImageChangeTest()
         {
             //Arrange
