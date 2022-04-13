@@ -11,6 +11,10 @@ For /R %package_root% %%G IN (spkl.exe) do (
 REM spkl instrument [path] [connection-string] [/p:release]
 "%spkl_path%" unpack "%cd%\.." %*
 
+@echo Using '%spkl_path%' 
+REM spkl instrument [path] [connection-string] [/p:release]
+"%spkl_path%" pack "%cd%\.." %
+
 if errorlevel 1 (
 echo Error Code=%errorlevel%
 exit /b %errorlevel%

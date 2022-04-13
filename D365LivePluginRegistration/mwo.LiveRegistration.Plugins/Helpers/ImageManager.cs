@@ -72,13 +72,13 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             return image;
         }
 
-        private static SdkMessageProcessingStepImage_ImageType MapImageType(ImageType imageType)
+        private static sdkmessageprocessingstepimage_imagetype MapImageType(ImageType imageType)
         {
             switch(imageType)
             {
-                case ImageType.PreImage: return SdkMessageProcessingStepImage_ImageType.PreImage;
-                case ImageType.PostImage: return SdkMessageProcessingStepImage_ImageType.PostImage;
-                case ImageType.Both: return SdkMessageProcessingStepImage_ImageType.Both;
+                case ImageType.PreImage: return sdkmessageprocessingstepimage_imagetype.PreImage;
+                case ImageType.PostImage: return sdkmessageprocessingstepimage_imagetype.PostImage;
+                case ImageType.Both: return sdkmessageprocessingstepimage_imagetype.Both;
                 default: throw new ArgumentOutOfRangeException(nameof(imageType));
             }
         }
@@ -89,7 +89,7 @@ namespace mwo.LiveRegistration.Plugins.Helpers
             {
                 ColumnSet = new ColumnSet(false)
             };
-            query.Criteria.AddCondition(new ConditionExpression(SdkMessageProcessingStepImage.Fields.SdkMessageProcessingStepId, ConditionOperator.Equal, sdkMessageProcessingStepRef.Id));
+            query.Criteria.AddCondition(new ConditionExpression("sdkmessageprocessingstepid", ConditionOperator.Equal, sdkMessageProcessingStepRef.Id));
             var results = Service.RetrieveMultiple(query);
 
             return results.Entities.FirstOrDefault();

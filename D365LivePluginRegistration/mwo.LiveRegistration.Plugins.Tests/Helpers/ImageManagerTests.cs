@@ -43,7 +43,7 @@ namespace mwo.LiveRegistration.Plugins.Tests.Helpers
 
             var result = results.First();
             Assert.AreEqual(MessageProccessingStep.Id, result.SdkMessageProcessingStepId.Id);
-            Assert.AreEqual(SdkMessageProcessingStepImage_ImageType.Both, result.ImageType);
+            Assert.AreEqual(sdkmessageprocessingstepimage_imagetype.Both, result.ImageType);
             Assert.AreEqual(ImageName, result.Name);
             Assert.AreEqual("Target", result.MessagePropertyName);
         }

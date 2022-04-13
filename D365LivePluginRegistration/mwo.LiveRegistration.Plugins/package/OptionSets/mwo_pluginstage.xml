@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<optionset Name="mwo_pluginstage" localizedName="Plugin Stage" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <OptionSetType>picklist</OptionSetType>
+  <IsGlobal>1</IsGlobal>
+  <IntroducedVersion>1.0.0.0</IntroducedVersion>
+  <IsCustomizable>1</IsCustomizable>
+  <displaynames>
+    <displayname description="Plugin Stage" languagecode="1033" />
+  </displaynames>
+  <options>
+    <option value="122870010">
+      <labels>
+        <label description="PreValidation" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="122870020">
+      <labels>
+        <label description="PreOperation" languagecode="1033" />
+      </labels>
+    </option>
+    <option value="122870040">
+      <labels>
+        <label description="PostOperation" languagecode="1033" />
+      </labels>
+    </option>
+  </options>
+</optionset>
