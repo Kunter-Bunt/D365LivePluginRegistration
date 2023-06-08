@@ -15,11 +15,11 @@ namespace mwo.LiveRegistration.Plugins.EntryPoints
     [CrmPluginRegistration(MessageNameEnum.Update, mwo_PluginStepRegistration.EntityLogicalName,
         StageEnum.PreOperation, ExecutionModeEnum.Synchronous, FilterAttribute,
         PluginNameUpdate, 1, IsolationModeEnum.Sandbox,
-        Image1Type = ImageTypeEnum.PreImage, Image1Name = CRMPluginContext.PreImageName)]
+        Image1Type = ImageTypeEnum.PreImage, Image1Name = CRMPluginContext.PreImageName, Image1Attributes = "")]
     [CrmPluginRegistration(MessageNameEnum.Delete, mwo_PluginStepRegistration.EntityLogicalName,
         StageEnum.PreOperation, ExecutionModeEnum.Synchronous, FilterAttribute,
         PluginNameDelete, 1, IsolationModeEnum.Sandbox,
-        Image1Type = ImageTypeEnum.PreImage, Image1Name = CRMPluginContext.PreImageName)]
+        Image1Type = ImageTypeEnum.PreImage, Image1Name = CRMPluginContext.PreImageName, Image1Attributes = "")]
     public class PreOpLiveRegistration : IPlugin
     {
         public const string FilterAttribute = "";
